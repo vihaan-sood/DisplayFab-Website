@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+from .models import *
 
 class UserSerialiser(serializers.ModelSerializer):
     class Meta:
@@ -11,3 +12,9 @@ class UserSerialiser(serializers.ModelSerializer):
         print(validated_data)
         user = User.objects.create_user(**validated_data)
         return user
+    
+class PostSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ["id","title","content","keywords","link_to_paper","authors"]
+        
