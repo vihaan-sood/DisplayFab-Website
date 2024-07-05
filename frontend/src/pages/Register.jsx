@@ -2,7 +2,7 @@ import Form from "../components/Form";
 
 function Register() {
     return <div>
-        <Form route = "api/token/" method = "register" />
+        <Form route = "api/register/" method = "register" />
     </div>
 }
 
