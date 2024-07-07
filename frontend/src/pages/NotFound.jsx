@@ -1,7 +1,7 @@
 function NotFound() {
     return <div>
         <h1>
-        NotFound
+            Error: Page Not Found
         </h1>
     </div>
 }

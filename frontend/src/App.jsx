@@ -9,13 +9,14 @@ import NotFound from "./pages/NotFound"
 import Register from "./pages/Register"
 import ProtectedRoute from "./components/ProtectedRoute"
 
+
 function Logout() {
   localStorage.clear()
   return <Navigate to="/login" />
 
 }
 
-function Register_User() {
+function Register_user (){
   localStorage.clear()
   return <Register />
 }
@@ -27,8 +28,8 @@ function App() {
   return (
 
     <BrowserRouter>
+  
       <Routes>
-
         {/* HOME */}
         <Route
           path="/"
@@ -64,7 +65,7 @@ function App() {
         {/* REGISTER */}
         <Route
           path="/register"
-          element={<Register />}
+          element={<Register_user />}
         />
 
         {/* LOGOUT */}
@@ -79,6 +80,7 @@ function App() {
           element={<NotFound />}
         />
       </Routes>
+      
     </BrowserRouter>
 
   )

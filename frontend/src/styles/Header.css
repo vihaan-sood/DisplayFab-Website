@@ -1,0 +1,42 @@
+/* src/components/Header.css */
+
+header {
+    width: 100%;
+  }
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f9fa; /* Light gray background */
+  }
+  
+  .logo {
+    height: 100px;
+    /* Adjust the size of the emblem as needed */
+  }
+  
+  .navbar {
+    background-color: #343a40; /* Dark background for the navbar */
+    padding: 10px 20px;
+  }
+  
+  .navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  
+  .navbar li {
+    margin-right: 20px;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .navbar a:hover {
+    text-decoration: underline;
+  }
