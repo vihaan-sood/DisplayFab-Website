@@ -16,10 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 from api.views import *
 
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +34,9 @@ urlpatterns = [
     path("api/token/", TokenObtainPairView.as_view(), name = "obtain_token" ),
     path("api/token/refresh/", TokenRefreshView.as_view(), name = "refresh_token"),
     path("api-auth/", include("rest_framework.urls")),
-]
+    path("api/posts/",PostListView.as_view(),name="posts_list"),
+    path("posts/delete/<int:pk>", PostDelete.as_view(),name="post_delete"),
+
+  
+
+] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

@@ -12,12 +12,20 @@ from .models import *
 
 
 class PostListView(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerialiser
+    permission_classes = [IsAuthenticated]
+
+    
+    
+
+class PostDelete(generics.DestroyAPIView):
     serializer_class = PostSerialiser
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.all()  ##to show notes written by only user, use Post.objects.filter(author=user)
+        return Post.objects.filter(author=user)
     
   
 

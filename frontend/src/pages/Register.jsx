@@ -4,7 +4,7 @@ import Header from "../components/Header";
 function Register() {
     return (
         <>
-    <Header></Header>
+    <Header/>
     <div>
         <Form route = "api/register/" method = "register" />
     </div></>

@@ -20,6 +20,8 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+#MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -63,6 +65,11 @@ INSTALLED_APPS = [
     "corsheaders",
 
 ]
+
+
+#CHANGE LATER FOR SECURITY###########################
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWS_CREDENTIALS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -143,11 +150,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+MEDIA_ROOT = 'media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#CHANGE LATER FOR SECURITY###########################
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWS_CREDENTIALS = True
