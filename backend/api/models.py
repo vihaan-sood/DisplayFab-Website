@@ -11,7 +11,8 @@ class Keywords(models.Model):
     IsRegistered = models.BooleanField(null= True)
     occurances = models.IntegerField(default=0)
 
-
+    def __str__(self):
+        return self.word
 
 
 
