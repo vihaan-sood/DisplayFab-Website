@@ -1,0 +1,97 @@
+.user-profile {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile h1 {
+    text-align: center;
+    color: #333;
+}
+
+.user-details {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.user-details h2 {
+    margin-top: 0;
+    color: #555;
+}
+
+.user-details p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.posts-section {
+    margin-bottom: 20px;
+}
+
+.posts-section h2 {
+    color: #333;
+}
+
+.post {
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-section {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-section h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+.create-post-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-post-section input[type="text"],
+.create-post-section input[type="url"],
+.create-post-section textarea,
+.create-post-section select {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.create-post-section select {
+    height: 100px;
+}
+
+.create-post-section input[type="file"] {
+    margin-bottom: 10px;
+}
+
+.create-post-section button {
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.create-post-section button:hover {
+    background-color: #0056b3;
+}

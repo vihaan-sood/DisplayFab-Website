@@ -35,9 +35,11 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name = "refresh_token"),
     path("api-auth/", include("rest_framework.urls")),
 
+    path("api/user/myprofile/<int:pk>/",UserDetails.as_view(),name="user_details"),
+
     path("api/posts/",PostListView.as_view(),name="posts_list"),
-    path("api/posts/delete/<int:pk>", PostDelete.as_view(),name="post_delete"),
-    path("api/posts/create",PostCreate.as_view(),name="post_create"),
+    path("api/posts/delete/<int:pk>/", PostDelete.as_view(),name="post_delete"),
+    path("api/posts/create/",PostCreate.as_view(),name="post_create"),
 
     path("api/keywords/",ShowKeywords.as_view(),name='show_keywords'),
     path("api/authors/",ShowUsers.as_view(),name='show_users'),

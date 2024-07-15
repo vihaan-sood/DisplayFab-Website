@@ -32,6 +32,8 @@ class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerialiser
     permission_classes = [IsAuthenticated]
     
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
   
 
 
@@ -50,4 +52,12 @@ class ShowKeywords(generics.ListAPIView):
 class ShowUsers(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserNameSerialiser
+
+class UserDetails(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.queryset.get(pk=self.kwargs['pk'])
 
