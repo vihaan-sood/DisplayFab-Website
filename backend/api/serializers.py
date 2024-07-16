@@ -13,9 +13,29 @@ class UserSerialiser(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
     
+
+
+class KeywordSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Keywords
+        fields = '__all__'
+
+class UserNameSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id","username"]
+        
+class MarkdownTextSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MarkdownText
+        fields = ['id', 'content']
+
+
 class PostSerialiser(serializers.ModelSerializer):
     keywords = serializers.PrimaryKeyRelatedField(queryset=Keywords.objects.all(), many=True)
     authors = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    content = MarkdownTextSerializer(read_only=True)  # Ensure this is nested correctly
+
 
     
     class Meta:
@@ -31,14 +51,3 @@ class PostSerialiser(serializers.ModelSerializer):
         post.authors.set(authors_data)
         return post
 
-class KeywordSerialiser(serializers.ModelSerializer):
-    class Meta:
-        model = Keywords
-        fields = '__all__'
-
-class UserNameSerialiser(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ["id","username"]
-        
-      

@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound"
 import Register from "./pages/Register"
 import ProtectedRoute from "./components/ProtectedRoute"
 import UserProfile from "./pages/UserProfile"
+import MarkdownPage from "./components/Markdownpage"
 
 
 function Logout() {
@@ -80,6 +81,16 @@ function App() {
           element={
             <ProtectedRoute>
               <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Markdown */}
+        <Route
+          path="/markdowntext/:pk"
+          element={
+            <ProtectedRoute>
+              <MarkdownPage />
             </ProtectedRoute>
           }
         />

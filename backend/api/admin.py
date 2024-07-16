@@ -5,3 +5,4 @@ from . models import *
 
 admin.site.register(Post)
 admin.site.register(Keywords)
+admin.site.register(MarkdownText)

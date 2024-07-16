@@ -60,4 +60,10 @@ class UserDetails(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.queryset.get(pk=self.kwargs['pk'])
+    
+
+class MarkdownPage(generics.RetrieveAPIView):
+    queryset = MarkdownText.objects.all()
+    serializer_class = MarkdownTextSerializer
+
 

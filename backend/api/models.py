@@ -14,12 +14,15 @@ class Keywords(models.Model):
     def __str__(self):
         return self.word
 
+class MarkdownText(models.Model):
+    id = models.AutoField(primary_key=True)
+    content = models.TextField()
 
 
 class Post(models.Model):
     title = models.CharField(max_length = 100)
     subheading = models.CharField(max_length=250, null=True)
-    content = models.TextField()                                                            #markdown here
+    content = models.ForeignKey(MarkdownText,on_delete=models.CASCADE,null=True)                                                       #markdown here
     keywords = models.ManyToManyField(Keywords,related_name="Posts") 
     link_to_paper = models.URLField()
     authors = models.ManyToManyField(User,related_name="Posts")
@@ -29,6 +32,5 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
 
-
-#User page

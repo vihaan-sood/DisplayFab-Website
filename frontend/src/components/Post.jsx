@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Post.css";
+import { Link } from "react-router-dom";
 
 
 function Post({ post}) {
@@ -9,7 +10,9 @@ function Post({ post}) {
         <div className="post-container">
             <p className="post-title">Title :{post.title}</p>
             <p className="post-subheading">Subheading:{post.subheading}</p>
-            <p className="post-content">Content:{post.content}</p>
+            {post.content && post.content.id && (
+                <Link to={`/markdowntext/${post.content.id}`} className="post-content-link">View Content</Link>
+            )}
            <p className="post-keywords">Keywords:{post.keywords.join(", ")}</p> 
             <p className="post-authors">Authors:{post.authors.join(", ")}</p> 
             <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
