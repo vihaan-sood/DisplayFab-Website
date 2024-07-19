@@ -30,24 +30,34 @@ class MarkdownTextSerializer(serializers.ModelSerializer):
         model = MarkdownText
         fields = ['id', 'content']
 
+    def create(self, validated_data):
+        md_text = super().create(validated_data)
+        return md_text.id
+
 
 class PostSerialiser(serializers.ModelSerializer):
     keywords = serializers.PrimaryKeyRelatedField(queryset=Keywords.objects.all(), many=True)
     authors = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
-    content = MarkdownTextSerializer(read_only=True)  # Ensure this is nested correctly
+    content = MarkdownTextSerializer()
+    creation_user = UserSerialiser(read_only=True)
 
-
-    
     class Meta:
         model = Post
-        fields = ['id','title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image']
-
+        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image', 'creation_user']
 
     def create(self, validated_data):
         keywords_data = validated_data.pop('keywords')
         authors_data = validated_data.pop('authors')
-        post = Post.objects.create(**validated_data)
+        content_data = validated_data.pop('content')
+
+        content = MarkdownText.objects.create(**content_data)
+        post = Post.objects.create(content=content, **validated_data)
         post.keywords.set(keywords_data)
         post.authors.set(authors_data)
         return post
 
+class BookmarkSerialiser(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserBookmarks
+        fields = '__all__'

@@ -1,0 +1,126 @@
+.create-post-section {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-post-section h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.create-post-section form {
+    display: flex;
+    flex-direction: column;
+}
+
+.create-post-section input,
+.create-post-section textarea,
+.create-post-section select,
+.create-post-section button {
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.create-post-section input:focus,
+.create-post-section textarea:focus,
+.create-post-section select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.create-post-section textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.create-post-section button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.create-post-section button:hover {
+    background-color: #0056b3;
+}
+
+.create-post-section select[multiple] {
+    height: auto;
+}
+
+.create-post-section p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.create-post-section p + select {
+    margin-top: -5px;
+}
+
+.create-post-section input[type="file"] {
+    border: none;
+    padding: 0;
+}
+
+.content-section {
+    display: flex;
+    align-items: center;
+}
+
+.content-section textarea {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 90%;
+    width: 600px;
+}
+
+.modal-content textarea {
+    width: 100%;
+    height: 80vh;
+}
+
+.modal-content button {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+    background-color: #0056b3;
+}

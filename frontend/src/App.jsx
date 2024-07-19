@@ -10,6 +10,8 @@ import Register from "./pages/Register"
 import ProtectedRoute from "./components/ProtectedRoute"
 import UserProfile from "./pages/UserProfile"
 import MarkdownPage from "./components/Markdownpage"
+import CreatePostPage from "./pages/CreatePost"
+
 
 
 function Logout() {
@@ -80,7 +82,21 @@ function App() {
           path="/myprofile"
           element={
             <ProtectedRoute>
-              <UserProfile />
+    
+                <UserProfile />
+
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Post creation */}
+        <Route
+          path="/createpost"
+          element={
+            <ProtectedRoute>
+    
+                <CreatePostPage/>
+
             </ProtectedRoute>
           }
         />
