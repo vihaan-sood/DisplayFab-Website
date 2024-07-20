@@ -3,11 +3,12 @@ from django.contrib.auth.models import User
 from rest_framework import generics, filters
 
 from .serializers import *
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import *
 
 from .models import *
 
 from django.db.models import F
+
 
 
 # Create your views here.
@@ -16,7 +17,7 @@ from django.db.models import F
 class PostListView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerialiser
-    permission_classes = [IsAuthenticated]    
+    permission_classes = [IsAuthenticatedOrReadOnly]    
 
 class PostDelete(generics.DestroyAPIView):
     serializer_class = PostSerialiser
@@ -28,12 +29,22 @@ class PostDelete(generics.DestroyAPIView):
     
 class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerialiser
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         post = serializer.save(creation_user=self.request.user)
         for keyword in post.keywords.all():
             Keywords.objects.filter(key_id=keyword.key_id).update(occurances=F('occurances') + 1)
+
+class PostDetails(generics.RetrieveAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerialiser
+    permission_classes = [IsAuthenticatedOrReadOnly]    
+
+    def get(self, request, *args, **kwargs):
+        
+        return super().get(request, *args, **kwargs)
+
 
 
     
@@ -59,7 +70,7 @@ class ShowUsers(generics.ListAPIView):
 class UserDetails(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerialiser
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         return self.queryset.get(pk=self.kwargs['pk'])
@@ -78,7 +89,7 @@ class BookmarkDetails(generics.RetrieveAPIView):
 
     queryset = UserBookmarks.objects.all()
     serializer_class = BookmarkSerialiser
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_object(self):
         return self.queryset.get(pk=self.kwargs['pk'])

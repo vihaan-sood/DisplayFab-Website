@@ -20,6 +20,7 @@ class MarkdownText(models.Model):
     content = models.TextField()
 
 class Post(models.Model):
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length = 100)
     subheading = models.CharField(max_length=250, null=True)
     content = models.ForeignKey(MarkdownText,on_delete=models.SET_NULL,null=True)                                                       #markdown here

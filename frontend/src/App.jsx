@@ -11,6 +11,7 @@ import ProtectedRoute from "./components/ProtectedRoute"
 import UserProfile from "./pages/UserProfile"
 import MarkdownPage from "./components/Markdownpage"
 import CreatePostPage from "./pages/CreatePost"
+import ExpandedPostPage from "./pages/ExpandedPost"
 
 
 
@@ -38,9 +39,9 @@ function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
+
+            <Home />
+
           }
         />
 
@@ -54,9 +55,9 @@ function App() {
         <Route
           path="/listview"
           element={
-            <ProtectedRoute>
-              <ListView />
-            </ProtectedRoute>
+
+            <ListView />
+
           }
         />
 
@@ -81,11 +82,11 @@ function App() {
         <Route
           path="/myprofile"
           element={
-            <ProtectedRoute>
-    
-                <UserProfile />
 
-            </ProtectedRoute>
+
+            <UserProfile />
+
+
           }
         />
 
@@ -94,8 +95,8 @@ function App() {
           path="/createpost"
           element={
             <ProtectedRoute>
-    
-                <CreatePostPage/>
+
+              <CreatePostPage />
 
             </ProtectedRoute>
           }
@@ -105,10 +106,19 @@ function App() {
         <Route
           path="/markdowntext/:pk"
           element={
-            <ProtectedRoute>
-              <MarkdownPage />
-            </ProtectedRoute>
+
+            <MarkdownPage />
+
           }
+        />
+
+        {/* Expanded Post*/}
+        <Route
+          path="/post/:id"
+          element={
+            <ExpandedPostPage />
+          }
+
         />
 
         {/* NOTFOUND */}

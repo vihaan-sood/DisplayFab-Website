@@ -40,6 +40,8 @@ urlpatterns = [
     path('api/markdowntext/create/', MarkdownPage.as_view(), name='markdowntext-create'),
 
     path("api/posts/",PostListView.as_view(),name="posts_list"),
+    path("api/posts/<int:pk>/",PostDetails.as_view(),name="posts_expanded"),
+
     path('api/markdowntext/<int:pk>/', MarkdownPage.as_view(), name='markdown-page'),
     path("api/posts/delete/<int:pk>/", PostDelete.as_view(),name="post_delete"),
     

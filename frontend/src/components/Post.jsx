@@ -10,8 +10,9 @@ function Post({ post}) {
         <div className="post-container">
             <p className="post-title">Title :{post.title}</p>
             <p className="post-subheading">Subheading:{post.subheading}</p>
+            <p className="post-subheading">Subheading: {post.subheading}</p>
             {post.content && post.content.id && (
-                <Link to={`/markdowntext/${post.content.id}`} className="post-content-link">View Content</Link>
+                <Link to={`/post/${post.id}`} className="post-content-link">Expand</Link>
             )}
            <p className="post-keywords">Keywords:{post.keywords.join(", ")}</p> 
             <p className="post-authors">Authors:{post.authors.join(", ")}</p> 

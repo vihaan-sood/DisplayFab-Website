@@ -1,0 +1,35 @@
+.expanded-post-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.expanded-post-container h1 {
+    margin-bottom: 10px;
+}
+
+.expanded-post-container h2 {
+    margin-bottom: 20px;
+}
+
+.post-authors,
+.post-keywords {
+    margin-bottom: 10px;
+}
+
+.post-link {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.post-image {
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.markdown-content {
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}
