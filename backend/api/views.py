@@ -79,6 +79,12 @@ class UserDetails(generics.RetrieveAPIView):
 class MarkdownPage(generics.CreateAPIView):
     queryset = MarkdownText.objects.all()
     serializer_class = MarkdownTextSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class MarkdownPageDetails(generics.RetrieveAPIView):
+    queryset = MarkdownText.objects.all()
+    serializer_class = MarkdownTextSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class KeywordCreate(generics.CreateAPIView):

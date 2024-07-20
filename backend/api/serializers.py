@@ -30,9 +30,6 @@ class MarkdownTextSerializer(serializers.ModelSerializer):
         model = MarkdownText
         fields = ['id', 'content']
 
-    def create(self, validated_data):
-        md_text = super().create(validated_data)
-        return md_text.id
 
 
 class PostSerialiser(serializers.ModelSerializer):

@@ -1,24 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 import api from "../api";
-import MarkdownPage from "../components/Markdownpage";
 import Header from "../components/Header";
 import "../styles/ExpandedPost.css";
+
 
 function ExpandedPostPage() {
     const { id } = useParams();
     const [post, setPost] = useState(null);
+    const [markdown, setMarkdown] = useState("");
 
     useEffect(() => {
         api.get(`/api/posts/${id}/`)
             .then((response) => {
                 setPost(response.data);
-                console.log(response.data);
+                if (response.data.content && response.data.content.id) {
+                    fetchMarkdownContent(response.data.content.id);
+                }
             })
             .catch((error) => {
                 console.error('Error fetching post details:', error);
             });
     }, [id]);
+
+    const fetchMarkdownContent = (contentId) => {
+        api.get(`/api/markdowntext/${contentId}/`)
+            .then((response) => {
+                setMarkdown(response.data.content);
+            })
+            .catch((error) => {
+                console.error('Error fetching markdown content:', error);
+            });
+    };
 
     if (!post) {
         return <div>Loading...</div>;
@@ -31,7 +46,7 @@ function ExpandedPostPage() {
                 <h1>{post.title}</h1>
                 <h2>{post.subheading}</h2>
                 <div className="post-authors">
-                    <strong>Authors:</strong> {post.authors.join(", ")}
+                    <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
                 </div>
                 <div className="post-keywords">
                     <strong>Keywords:</strong> {post.keywords.join(", ")}
@@ -43,7 +58,7 @@ function ExpandedPostPage() {
                     <img className="post-image" src={post.image} alt={post.title} onError={(e) => e.target.style.display = 'none'} />
                 )}
                 <div className="markdown-content">
-                    <MarkdownPage pk={post.content.id} />
+                <ReactMarkdown remarkPlugins={[gfm]}>{markdown}</ReactMarkdown>
                 </div>
             </div>
         </>
