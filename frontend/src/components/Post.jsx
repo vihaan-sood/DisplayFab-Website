@@ -18,7 +18,7 @@ function Post({ post}) {
            <p className="post-keywords">
                 Keywords: {post.keywords.map(keywords => keywords.word).join(", ")}
             </p>
-            <p className="post-authors">Authors:{post.authors.join(", ")}</p> 
+            <p className="post-authors">Authors:{post.authors.map(authors => authors.username).join(", ")}</p> 
             <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
                 Link to Paper
             </a>

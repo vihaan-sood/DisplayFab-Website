@@ -1,5 +1,6 @@
 import React from "react"
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { UserProvider } from "./UserContext";
 
 import About from "./pages/About"
 import Home from "./pages/Home"
@@ -32,105 +33,108 @@ function App() {
 
   return (
 
-    <BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
 
-      <Routes>
-        {/* HOME */}
-        <Route
-          path="/"
-          element={
+        <Routes>
+          {/* HOME */}
+          <Route
+            path="/"
+            element={
 
-            <Home />
+              <Home />
 
-          }
-        />
+            }
+          />
 
-        {/* LOGIN */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+          {/* LOGIN */}
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-        {/* LISTVIEW */}
-        <Route
-          path="/listview"
-          element={
+          {/* LISTVIEW */}
+          <Route
+            path="/listview"
+            element={
 
-            <ListView />
+              <ListView />
 
-          }
-        />
+            }
+          />
 
-        {/* ABOUT */}
-        <Route
-          path="/about"
-          element={<About />}
-        />
+          {/* ABOUT */}
+          <Route
+            path="/about"
+            element={<About />}
+          />
 
-        {/* REGISTER */}
-        <Route
-          path="/register"
-          element={<Register_user />}
-        />
+          {/* REGISTER */}
+          <Route
+            path="/register"
+            element={<Register_user />}
+          />
 
-        {/* LOGOUT */}
-        <Route
-          path="/logout"
-          element={<Logout />}
-        />
-        {/* User Profile */}
-        <Route
-          path="/myprofile"
-          element={
+          {/* LOGOUT */}
+          <Route
+            path="/logout"
+            element={<Logout />}
+          />
+          {/* User Profile */}
+          <Route
+            path="/myprofile"
+            element={
+
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+              
 
 
-            <UserProfile />
+            }
+          />
 
+          {/* Post creation */}
+          <Route
+            path="/createpost"
+            element={
+              <ProtectedRoute>
 
-          }
-        />
+                <CreatePostPage />
 
-        {/* Post creation */}
-        <Route
-          path="/createpost"
-          element={
-            <ProtectedRoute>
+              </ProtectedRoute>
+            }
+          />
 
-              <CreatePostPage />
+          {/* Markdown */}
+          <Route
+            path="/markdowntext/:pk"
+            element={
 
-            </ProtectedRoute>
-          }
-        />
+              <MarkdownPage />
 
-        {/* Markdown */}
-        <Route
-          path="/markdowntext/:pk"
-          element={
+            }
+          />
 
-            <MarkdownPage />
+          {/* Expanded Post*/}
+          <Route
+            path="/post/:id"
+            element={
+              <ExpandedPostPage />
+            }
 
-          }
-        />
+          />
 
-        {/* Expanded Post*/}
-        <Route
-          path="/post/:id"
-          element={
-            <ExpandedPostPage />
-          }
+          {/* NOTFOUND */}
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
 
-        />
+        </Routes>
 
-        {/* NOTFOUND */}
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
-
-      </Routes>
-
-    </BrowserRouter>
-
+      </BrowserRouter>
+    </UserProvider>
   )
 }
 

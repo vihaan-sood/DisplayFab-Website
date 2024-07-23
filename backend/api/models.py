@@ -37,7 +37,7 @@ class Post(models.Model):
     
 class UserBookmark(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    posts = models.ManyToManyField(Post)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
 
 # class UserBookmarks(models.Model):
 #     id = models.AutoField(primary_key=True)

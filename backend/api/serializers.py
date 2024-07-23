@@ -67,17 +67,16 @@ class ReadOnlyPostSerialiser(serializers.ModelSerializer):
 class BookmarkSerialiser(serializers.ModelSerializer):
 
     user = UserSerialiser(read_only=True)
-    post_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all(), write_only=True)
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
         model = UserBookmark
-        fields = ['id','user', 'post_ids']
+        fields = ['id','user', 'post']
 
     def create(self, validated_data):
-        posts = validated_data.pop('post_ids')
         user = self.context['request'].user
-        user_bookmark = UserBookmark.objects.create(user=user)
-        user_bookmark.posts.set(posts)
+        post = validated_data['post']
+        user_bookmark = UserBookmark.objects.create(user=user, post=post)
         return user_bookmark
 
 

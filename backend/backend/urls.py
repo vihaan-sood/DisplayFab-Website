@@ -36,11 +36,13 @@ urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
 
     path("api/user/myprofile/<int:pk>/",UserDetails.as_view(),name="user_details"),
+    path("api/user/currentuser/",CurrentUser.as_view(),name="user_details"),
     path("api/posts/create/",PostCreate.as_view(),name="post_create"),
     path('api/markdowntext/create/', MarkdownPageCreate.as_view(), name='markdowntext-create'),
 
     path("api/posts/",PostListView.as_view(),name="posts_list"),
     path("api/posts/<int:pk>/",PostDetails.as_view(),name="posts_expanded"),
+    path("api/posts/userspecific/<int:pk>/",UserProfilePosts.as_view(),name="user_profile_posts"),
 
     path('api/markdowntext/<int:pk>/', MarkdownPageDetails.as_view(), name='markdown-page'),
     path("api/posts/delete/<int:pk>/", PostDelete.as_view(),name="post_delete"),
@@ -53,7 +55,7 @@ urlpatterns = [
     path("api/authors/",ShowUsers.as_view(),name='show_users'),
 
     path('api/user/bookmarks/create/', UserBookmarksCreateView.as_view(), name='user_bookmarks_create'),
-    # path('api/bookmarks/<int:pk>/', BookmarkDetails.as_view(), name='bookmark_detail'),
+    path('api/bookmarks/<int:pk>/', UserBookmarksListView.as_view(), name='bookmark_detail'),
     
 
     

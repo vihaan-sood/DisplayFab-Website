@@ -1,21 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
 import "../styles/UserProfile.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../UserContext";
+
 
 function UserProfile() {
     const [userDetails, setUserDetails] = useState({});
     const [posts, setPosts] = useState([]);
 
 
-    const userId = 1;
+    const user = useContext(UserContext);
+    const navigate = useNavigate();
+
+
 
     useEffect(() => {
-        getUserDetails(userId);
-        getPosts();
-    }, [userId]);
+        if (user) {
+            getUserDetails(user.id);
+            getUserPosts(user.id);
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (user) {
+            navigate(`/myprofile`, { replace: true });
+        }
+    }, []);
 
     const getUserDetails = (userId) => {
         api.get(`/api/user/myprofile/${userId}/`)
@@ -25,8 +38,8 @@ function UserProfile() {
             .catch((err) => console.error(err));
     };
 
-    const getPosts = () => {
-        api.get("/api/posts/")
+    const getUserPosts = (userId) => {
+        api.get(`/api/posts/userspecific/${userId}/`)
             .then((res) => {
                 setPosts(res.data);
             })

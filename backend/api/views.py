@@ -9,6 +9,8 @@ from .models import *
 
 from django.db.models import F
 
+from django.shortcuts import get_object_or_404
+
 
 
 # Create your views here.
@@ -107,22 +109,18 @@ class UserBookmarksListView(generics.ListAPIView):
     def get_queryset(self):
         return UserBookmark.objects.filter(user=self.request.user)
 
-# class BookmarkDetails(generics.RetrieveAPIView):
+class UserProfilePosts(generics.ListAPIView):
+    serializer_class = ReadOnlyPostSerialiser
+    permission_classes = [AllowAny] 
 
-#     queryset = UserBookmarks.objects.all()
-#     serializer_class = BookmarkSerialiser
-#     permission_classes = [IsAuthenticatedOrReadOnly]
+    def get_queryset(self):
+        author_id = self.kwargs['pk']
+        author = get_object_or_404(User, pk=author_id)
+        return Post.objects.filter(authors=author)
+    
+class CurrentUser(generics.RetrieveAPIView):
+    serializer_class = UserSerialiser
+    permission_classes = [IsAuthenticated]
 
-#     def get_queryset(self):
-#         return UserBookmarks.objects.filter(user_id=self.request.user)
-
-# class BookmarkCreate(generics.ListCreateAPIView):
-
-#     serializer_class = BookmarkSerialiser
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         return UserBookmarks.objects.filter(user=self.request.user)
-
-#     def perform_create(self, serializer):
-#         serializer.save(user=self.request.user)
+    def get_object(self):
+        return self.request.user

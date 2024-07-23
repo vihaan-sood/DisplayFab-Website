@@ -6,8 +6,7 @@ function BookmarkButton({ postId }) {
 
     const handleBookmark = async () => {
         try {
-            const data = { post_ids: [postId] };
-            console.log("Bookmarking data:", data);
+            const data = { post: postId };  
             const res = await api.post('/api/user/bookmarks/create/', data);
             if (res.status === 201) {
                 setBookmarked(true);
@@ -30,3 +29,4 @@ function BookmarkButton({ postId }) {
 }
 
 export default BookmarkButton;
+
