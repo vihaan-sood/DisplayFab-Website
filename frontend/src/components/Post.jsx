@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Post.css";
 import { Link } from "react-router-dom";
+import Bookmark from "./BookmarkButton"
 
 
 function Post({ post}) {
@@ -14,7 +15,9 @@ function Post({ post}) {
             {post.content && post.content.id && (
                 <Link to={`/post/${post.id}`} className="post-content-link">Expand</Link>
             )}
-           <p className="post-keywords">Keywords:{post.keywords.join(", ")}</p> 
+           <p className="post-keywords">
+                Keywords: {post.keywords.map(keywords => keywords.word).join(", ")}
+            </p>
             <p className="post-authors">Authors:{post.authors.join(", ")}</p> 
             <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
                 Link to Paper
@@ -23,6 +26,7 @@ function Post({ post}) {
                 <img className="post-image" src={post.image} alt={post.title} onError={(e) => e.target.style.display = 'none'} />
             )}
             {/* <p className="post-date">{date}</p> */}
+            <Bookmark postId={post.id} />
         </div>
     );
 }

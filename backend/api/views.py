@@ -14,10 +14,10 @@ from django.db.models import F
 # Create your views here.
 
 
-class PostListView(generics.ListCreateAPIView):
+class PostListView(generics.ListAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerialiser
-    permission_classes = [IsAuthenticatedOrReadOnly]    
+    permission_classes = [AllowAny]    
 
 class PostDelete(generics.DestroyAPIView):
     serializer_class = PostSerialiser
@@ -29,7 +29,7 @@ class PostDelete(generics.DestroyAPIView):
     
 class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerialiser
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         post = serializer.save(creation_user=self.request.user)
@@ -38,8 +38,8 @@ class PostCreate(generics.CreateAPIView):
 
 class PostDetails(generics.RetrieveAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerialiser
-    permission_classes = [IsAuthenticatedOrReadOnly]    
+    serializer_class = ReadOnlyPostSerialiser
+    permission_classes = [AllowAny]    
 
     def get(self, request, *args, **kwargs):
         
@@ -76,27 +76,53 @@ class UserDetails(generics.RetrieveAPIView):
         return self.queryset.get(pk=self.kwargs['pk'])
     
 
-class MarkdownPage(generics.CreateAPIView):
+class MarkdownPageCreate(generics.CreateAPIView):
     queryset = MarkdownText.objects.all()
     serializer_class = MarkdownTextSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
 class MarkdownPageDetails(generics.RetrieveAPIView):
     queryset = MarkdownText.objects.all()
     serializer_class = MarkdownTextSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [AllowAny]
 
 
 class KeywordCreate(generics.CreateAPIView):
     queryset = Keywords.objects.all()
     serializer_class = KeywordSerialiser
 
-class BookmarkDetails(generics.RetrieveAPIView):
 
-    queryset = UserBookmarks.objects.all()
+
+class UserBookmarksCreateView(generics.CreateAPIView):
     serializer_class = BookmarkSerialiser
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.queryset.get(pk=self.kwargs['pk'])
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
+class UserBookmarksListView(generics.ListAPIView):
+    serializer_class = BookmarkSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return UserBookmark.objects.filter(user=self.request.user)
+
+# class BookmarkDetails(generics.RetrieveAPIView):
+
+#     queryset = UserBookmarks.objects.all()
+#     serializer_class = BookmarkSerialiser
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+#     def get_queryset(self):
+#         return UserBookmarks.objects.filter(user_id=self.request.user)
+
+# class BookmarkCreate(generics.ListCreateAPIView):
+
+#     serializer_class = BookmarkSerialiser
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return UserBookmarks.objects.filter(user=self.request.user)
+
+#     def perform_create(self, serializer):
+#         serializer.save(user=self.request.user)

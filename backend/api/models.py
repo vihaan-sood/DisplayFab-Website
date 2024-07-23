@@ -34,11 +34,18 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+class UserBookmark(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    posts = models.ManyToManyField(Post)
 
-class UserBookmarks(models.Model):
-    id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ManyToManyField(Post)
+# class UserBookmarks(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     posts = models.ManyToManyField(Post)
+
+#     def __str__(self):
+#         return f"{self.user_id.username}'s bookmarks"
 
 
 

@@ -53,8 +53,45 @@ class PostSerialiser(serializers.ModelSerializer):
         post.authors.set(authors_data)
         return post
 
-class BookmarkSerialiser(serializers.ModelSerializer):
+class ReadOnlyPostSerialiser(serializers.ModelSerializer):
+    keywords = KeywordSerialiser(many=True, read_only=True)
+    authors = UserSerialiser(many=True, read_only=True)
+    content = MarkdownTextSerializer(read_only=True)
 
     class Meta:
-        model = UserBookmarks
-        fields = '__all__'
+        model = Post
+        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image']
+        read_only_fields = fields
+
+
+class BookmarkSerialiser(serializers.ModelSerializer):
+
+    user = UserSerialiser(read_only=True)
+    post_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all(), write_only=True)
+
+    class Meta:
+        model = UserBookmark
+        fields = ['id','user', 'post_ids']
+
+    def create(self, validated_data):
+        posts = validated_data.pop('post_ids')
+        user = self.context['request'].user
+        user_bookmark = UserBookmark.objects.create(user=user)
+        user_bookmark.posts.set(posts)
+        return user_bookmark
+
+
+# class BookmarkSerialiser(serializers.ModelSerializer):
+
+#     post_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all(), write_only=True)
+
+#     class Meta:
+#         model = UserBookmarks
+#         fields = ['id', 'user_id', 'post_ids']
+
+#     def create(self, validated_data):
+#         posts = validated_data.pop('post_ids')
+#         user = self.context['request'].user
+#         user_bookmark, created = UserBookmarks.objects.get_or_create(user_id=user)
+#         user_bookmark[0].posts.set(posts)
+#         return user_bookmark

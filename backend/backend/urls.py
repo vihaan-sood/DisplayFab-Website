@@ -37,7 +37,7 @@ urlpatterns = [
 
     path("api/user/myprofile/<int:pk>/",UserDetails.as_view(),name="user_details"),
     path("api/posts/create/",PostCreate.as_view(),name="post_create"),
-    path('api/markdowntext/create/', MarkdownPage.as_view(), name='markdowntext-create'),
+    path('api/markdowntext/create/', MarkdownPageCreate.as_view(), name='markdowntext-create'),
 
     path("api/posts/",PostListView.as_view(),name="posts_list"),
     path("api/posts/<int:pk>/",PostDetails.as_view(),name="posts_expanded"),
@@ -47,12 +47,13 @@ urlpatterns = [
     
 
     path("api/keywords/",ShowKeywords.as_view(),name='show_keywords'),
-    path('api/keywords/create/', KeywordCreate.as_view(), name='keyword-create'),
+    path('api/keywords/create/', KeywordCreate.as_view(), name='keyword_create'),
 
 
     path("api/authors/",ShowUsers.as_view(),name='show_users'),
 
-    path("api/user/bookmarks/",BookmarkDetails.as_view(),name='user_bookmarks'),
+    path('api/user/bookmarks/create/', UserBookmarksCreateView.as_view(), name='user_bookmarks_create'),
+    # path('api/bookmarks/<int:pk>/', BookmarkDetails.as_view(), name='bookmark_detail'),
     
 
     
