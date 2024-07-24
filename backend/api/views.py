@@ -107,7 +107,8 @@ class UserBookmarksListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return UserBookmark.objects.filter(user=self.request.user)
+        user_id = self.kwargs['pk']
+        return UserBookmark.objects.filter(user=user_id)
 
 class UserProfilePosts(generics.ListAPIView):
     serializer_class = ReadOnlyPostSerialiser

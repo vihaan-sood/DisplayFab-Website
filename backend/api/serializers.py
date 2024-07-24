@@ -80,17 +80,3 @@ class BookmarkSerialiser(serializers.ModelSerializer):
         return user_bookmark
 
 
-# class BookmarkSerialiser(serializers.ModelSerializer):
-
-#     post_ids = serializers.PrimaryKeyRelatedField(many=True, queryset=Post.objects.all(), write_only=True)
-
-#     class Meta:
-#         model = UserBookmarks
-#         fields = ['id', 'user_id', 'post_ids']
-
-#     def create(self, validated_data):
-#         posts = validated_data.pop('post_ids')
-#         user = self.context['request'].user
-#         user_bookmark, created = UserBookmarks.objects.get_or_create(user_id=user)
-#         user_bookmark[0].posts.set(posts)
-#         return user_bookmark

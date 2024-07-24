@@ -55,7 +55,7 @@ urlpatterns = [
     path("api/authors/",ShowUsers.as_view(),name='show_users'),
 
     path('api/user/bookmarks/create/', UserBookmarksCreateView.as_view(), name='user_bookmarks_create'),
-    path('api/bookmarks/<int:pk>/', UserBookmarksListView.as_view(), name='bookmark_detail'),
+    path('api/user/bookmarks/<int:pk>/', UserBookmarksListView.as_view(), name='bookmark_detail'),
     
 
     

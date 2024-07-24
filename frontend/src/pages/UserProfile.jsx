@@ -10,7 +10,7 @@ import { UserContext } from "../UserContext";
 function UserProfile() {
     const [userDetails, setUserDetails] = useState({});
     const [posts, setPosts] = useState([]);
-
+    const [bookmarks, setBookmarks] = useState([]);
 
     const user = useContext(UserContext);
     const navigate = useNavigate();
@@ -21,6 +21,7 @@ function UserProfile() {
         if (user) {
             getUserDetails(user.id);
             getUserPosts(user.id);
+            getUserBookmarks(user.id);
         }
     }, [user]);
 
@@ -45,6 +46,20 @@ function UserProfile() {
             })
             .catch((err) => console.error(err));
     };
+
+    const getUserBookmarks = (userId) => {
+        api.get(`/api/user/bookmarks/${userId}/`)
+            .then(async (res) => {
+                const bookmarksData = res.data;
+                const postDetailsPromises = bookmarksData.map(bookmark =>
+                    api.get(`/api/posts/${bookmark.post}/`).then(res => res.data)
+                );
+                const postsDetails = await Promise.all(postDetailsPromises);
+                setBookmarks(bookmarksData.map((bookmark, index) => ({ ...bookmark, post: postsDetails[index] })));
+            })
+            .catch((err) => console.error(err));
+    };
+
 
     const deletePost = (id) => {
         api.delete(`/api/posts/delete/${id}/`)
@@ -77,6 +92,15 @@ function UserProfile() {
                         <Post key={post.id} post={post} onDelete={() => deletePost(post.id)} />
                     ))}
                     <Link to="/createpost">Create New Post</Link>
+                    <div className="bookmarks-section">
+                    <h2>Your Bookmarks</h2>
+                    {bookmarks.map((bookmark) => (
+                        <div key={bookmark.id}>
+                            <p>Bookmark ID: {bookmark.id}</p>
+                            <Post post={bookmark.post} />
+                        </div>
+                    ))}
+                </div>
                 </div>
             </div>
         </>
