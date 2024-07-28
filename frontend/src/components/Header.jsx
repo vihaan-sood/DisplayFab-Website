@@ -1,24 +1,41 @@
 import "../styles/Header.css"
 import React from "react"
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom"
 import logo from "../assets/Untitled.png"
 
-function Header() {
+import SearchBar from "./Searchbar"
+
+
+import { FaRegUserCircle, FaSignOutAlt } from "react-icons/fa";
+import { CiViewList } from "react-icons/ci";
+import { BsQuestionCircleFill } from "react-icons/bs";
+import { SiBookstack } from "react-icons/si";
+import { ImBooks } from "react-icons/im";
+
+function Header( { onSearch }) {
     return (
-        <div>
+
+        <div className="header-container">
             <div className="header-left">
-                <img src={logo} alt="logo" className="logo" />
+                <Link to="/">
+                    <img src={logo} alt="logo" className="logo" />
+                </Link>
+                <Link to="/" className="home-link">
+                    <h1>Active Materials Library</h1>
+                </Link>
             </div>
             <nav className="navbar">
                 <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/about">About</Link></li>
-                    <li><Link to="/listview">List View</Link></li>
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/register">Register</Link></li>
-                    <li><Link to="/logout">Logout</Link></li>
-                    <li><Link to="/myprofile">My Profile</Link></li>
+                    <li>< SearchBar onSearch={onSearch}/></li>
+                    {/* <li>< SearchBar/></li> */}
+                    <li><Link to="/about" title="About Us" alt="About Us"><BsQuestionCircleFill /></Link></li>
+                    <li><Link to="/listview"  title="All Posts" alt="All Posts"><ImBooks/></Link></li>
+                    <li><Link to="/logout" title="Log Out" alt="Log Out"> <FaSignOutAlt /></Link></li>
+                    <li><Link to="/myprofile" alt="My Profile" title="My Profile"><FaRegUserCircle /></Link></li>
                 </ul>
+
             </nav>
         </div>
     );
