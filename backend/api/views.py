@@ -18,7 +18,7 @@ from django.shortcuts import get_object_or_404
 
 class PostListView(generics.ListAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerialiser
+    serializer_class = ReadOnlyPostSerialiser
     permission_classes = [AllowAny]   
     search_fields = ['title'] 
 
