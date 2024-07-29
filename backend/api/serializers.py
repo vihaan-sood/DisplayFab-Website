@@ -1,16 +1,23 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from .models import *
 
 class UserSerialiser(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+
     class Meta:
-        model = User
-        fields = ["id", "username", "password","email","first_name","last_name"]
-        extra_kwargs = {"password": {"write_only": True}}
+        model = CustomUser
+        fields = ['username', 'email', 'password', 'password2', 'first_name', 'last_name', 'image', 'about_me']
+
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        return attrs
 
     def create(self, validated_data):
-        print(validated_data)
-        user = User.objects.create_user(**validated_data)
+        validated_data.pop('password2')
+        user = CustomUser.objects.create_user(**validated_data)
         return user
     
 
@@ -22,7 +29,7 @@ class KeywordSerialiser(serializers.ModelSerializer):
 
 class UserNameSerialiser(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ["id","username"]
         
 class MarkdownTextSerializer(serializers.ModelSerializer):
@@ -34,7 +41,7 @@ class MarkdownTextSerializer(serializers.ModelSerializer):
 
 class PostSerialiser(serializers.ModelSerializer):
     keywords = serializers.PrimaryKeyRelatedField(queryset=Keywords.objects.all(), many=True)
-    authors = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), many=True)
+    authors = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), many=True)
     content = MarkdownTextSerializer()
     creation_user = UserSerialiser(read_only=True)
 

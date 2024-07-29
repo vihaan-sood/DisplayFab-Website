@@ -53,7 +53,7 @@ class PostDetails(generics.RetrieveAPIView):
     
 
 class MakeUserView(generics.CreateAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerialiser
     permission_classes = [AllowAny]
 
@@ -65,13 +65,13 @@ class ShowKeywords(generics.ListAPIView):
     search_fields = ['word']
 
 class ShowUsers(generics.ListAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserNameSerialiser
     filter_backends = [filters.SearchFilter]
     search_fields = ['username']
 
 class UserDetails(generics.RetrieveAPIView):
-    queryset = User.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerialiser
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -117,7 +117,7 @@ class UserProfilePosts(generics.ListAPIView):
 
     def get_queryset(self):
         author_id = self.kwargs['pk']
-        author = get_object_or_404(User, pk=author_id)
+        author = get_object_or_404(CustomUser, pk=author_id)
         return Post.objects.filter(authors=author)
     
 class CurrentUser(generics.RetrieveAPIView):

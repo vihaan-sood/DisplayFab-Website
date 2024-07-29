@@ -1,12 +1,13 @@
-import Form from "../components/Form";
+
 import Header from "../components/Header";
+import RegisterForm from "../components/RegisterForm";
 
 function Register() {
     return (
         <>
     <Header/>
     <div>
-        <Form route = "api/register/" method = "register" />
+        <RegisterForm />
     </div></>
     );
 };
