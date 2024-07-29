@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
@@ -10,15 +10,19 @@ function ListView() {
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
 
+    const [sortOrder, setSortOrder] = useState("default");
+
     useEffect(() => {
         fetchPosts();
     }, []);
 
     useEffect(() => {
-        handleSearch(searchQuery);
+        handleSearch();
     }, [searchQuery, posts]);
 
-
+    useEffect(() => {
+        handleSort();
+    }, [sortOrder]);
 
     const fetchPosts = async () => {
         try {
@@ -30,7 +34,7 @@ function ListView() {
         }
     };
 
-    const handleSearch = () => {
+    const handleSearch = useCallback(() => {
         if (searchQuery === "") {
             setFilteredPosts(posts);
         } else {
@@ -42,24 +46,39 @@ function ListView() {
             });
             setFilteredPosts(filtered);
         }
-    };
+    }, [searchQuery, posts]);
+
+    const handleSort = useCallback(() => {
+        let sortedPosts = [...filteredPosts];
+        if (sortOrder === "asc") {
+            sortedPosts.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
+        } else if (sortOrder === "desc") {
+            sortedPosts.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
+        }
+        setFilteredPosts(sortedPosts);
+    }, [sortOrder, filteredPosts]);
 
 
-        return (
-            <>
-                <Header onSearch={setSearchQuery} />
-                <div className="list-view">
-                    <h1>ListView</h1>
-                    <div>
-
-                        <h2>Posts</h2>
-                        {filteredPosts.map((post) => (
-                            <Post key={post.id} post={post} />
-                        ))}
-                    </div>
+    return (
+        <>
+            <Header onSearch={setSearchQuery} />
+            <div className="list-view">
+                <h1>ListView</h1>
+                <div className="sort-options">
+                    <button onClick={() => setSortOrder("asc")}>Sort A-Z</button>
+                    <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
+                    <button onClick={() => setSortOrder("default")}>Default</button>
                 </div>
-            </>
-        );
-    }
+                <div>
 
-    export default ListView;
+                    <h2>Posts</h2>
+                    {filteredPosts.map((post) => (
+                        <Post key={post.id} post={post} />
+                    ))}
+                </div>
+            </div>
+        </>
+    );
+}
+
+export default ListView;

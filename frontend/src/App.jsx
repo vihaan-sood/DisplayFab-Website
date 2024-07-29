@@ -33,108 +33,109 @@ function App() {
 
   return (
 
-    <UserProvider>
-      <BrowserRouter>
 
-        <Routes>
-          {/* HOME */}
-          <Route
-            path="/"
-            element={
+    <BrowserRouter>
 
-              <Home />
+      <Routes>
+        {/* HOME */}
+        <Route
+          path="/"
+          element={
 
-            }
-          />
+            <Home />
 
-          {/* LOGIN */}
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+          }
+        />
 
-          {/* LISTVIEW */}
-          <Route
-            path="/listview"
-            element={
+        {/* LOGIN */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-              <ListView />
+        {/* LISTVIEW */}
+        <Route
+          path="/listview"
+          element={
 
-            }
-          />
+            <ListView />
 
-          {/* ABOUT */}
-          <Route
-            path="/about"
-            element={<About />}
-          />
+          }
+        />
 
-          {/* REGISTER */}
-          <Route
-            path="/register"
-            element={<Register_user />}
-          />
+        {/* ABOUT */}
+        <Route
+          path="/about"
+          element={<About />}
+        />
 
-          {/* LOGOUT */}
-          <Route
-            path="/logout"
-            element={<Logout />}
-          />
-          {/* User Profile */}
-          <Route
-            path="/myprofile"
-            element={
+        {/* REGISTER */}
+        <Route
+          path="/register"
+          element={<Register_user />}
+        />
 
+        {/* LOGOUT */}
+        <Route
+          path="/logout"
+          element={<Logout />}
+        />
+        {/* User Profile */}
+
+        <Route
+          path="/myprofile"
+          element={
+            <UserProvider>
               <ProtectedRoute>
                 <UserProfile />
               </ProtectedRoute>
-              
+            </UserProvider>
 
 
-            }
-          />
+          }
+        />
 
-          {/* Post creation */}
-          <Route
-            path="/createpost"
-            element={
-              <ProtectedRoute>
+        {/* Post creation */}
+        <Route
+          path="/createpost"
+          element={
+            <UserProvider>
+            <ProtectedRoute>
+              <CreatePostPage />
+            </ProtectedRoute>
+            </UserProvider>
+          }
+        />
 
-                <CreatePostPage />
+        {/* Markdown */}
+        <Route
+          path="/markdowntext/:pk"
+          element={
 
-              </ProtectedRoute>
-            }
-          />
+            <MarkdownPage />
 
-          {/* Markdown */}
-          <Route
-            path="/markdowntext/:pk"
-            element={
+          }
+        />
 
-              <MarkdownPage />
+        {/* Expanded Post*/}
+        <Route
+          path="/post/:id"
+          element={
+            <ExpandedPostPage />
+          }
 
-            }
-          />
+        />
 
-          {/* Expanded Post*/}
-          <Route
-            path="/post/:id"
-            element={
-              <ExpandedPostPage />
-            }
+        {/* NOTFOUND */}
+        <Route
+          path="*"
+          element={<NotFound />}
+        />
 
-          />
+      </Routes>
 
-          {/* NOTFOUND */}
-          <Route
-            path="*"
-            element={<NotFound />}
-          />
+    </BrowserRouter>
 
-        </Routes>
-
-      </BrowserRouter>
-    </UserProvider>
   )
 }
 
