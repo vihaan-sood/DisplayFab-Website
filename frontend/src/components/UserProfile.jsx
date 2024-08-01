@@ -3,33 +3,24 @@ import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
 import "../styles/UserProfile.css";
-import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../UserContext";
+import { Link, useParams } from "react-router-dom";
 
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 
 function UserProfile() {
     const [userDetails, setUserDetails] = useState({});
     const [posts, setPosts] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
-
-    const user = useContext(UserContext);
-    const navigate = useNavigate();
-
-
+    const { id } = useParams();
 
     useEffect(() => {
-        if (user) {
-            getUserDetails(user.id);
-            getUserPosts(user.id);
-            getUserBookmarks(user.id);
+        if (id) {
+            getUserDetails(id);
+            getUserPosts(id);
+            getUserBookmarks(id);
         }
-    }, [user]);
-
-    useEffect(() => {
-        if (user) {
-            navigate(`/myprofile`, { replace: true });
-        }
-    }, []);
+    }, [id]);
 
     const getUserDetails = (userId) => {
         api.get(`/api/user/myprofile/${userId}/`)
@@ -60,7 +51,6 @@ function UserProfile() {
             .catch((err) => console.error(err));
     };
 
-
     const deletePost = (id) => {
         api.delete(`/api/posts/delete/${id}/`)
             .then((res) => {
@@ -74,33 +64,39 @@ function UserProfile() {
             .catch((err) => console.error(err));
     };
 
-
-
     return (
         <>
             <Header />
             <div className="user-profile">
-                <h1>User Profile</h1>
+                <h1>User Profile: {userDetails.username}</h1>
+
                 <div className="user-details">
                     <h2>Details</h2>
-                    <p>Name: {userDetails.username}</p>
-                    <p>Email: {userDetails.email}</p>
+                    <p>Name: {userDetails.first_name} {userDetails.last_name}</p>
+                    <h3>About me</h3>
+                    <div> <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown></div>
                 </div>
+
+
                 <div className="posts-section">
-                    <h2>Your Posts</h2>
+                    <h2>User Posts</h2>
                     {posts.map((post) => (
                         <Post key={post.id} post={post} onDelete={() => deletePost(post.id)} />
                     ))}
+
+                    
                     <Link to="/createpost">Create New Post</Link>
+
+
                     <div className="bookmarks-section">
-                    <h2>Your Bookmarks</h2>
-                    {bookmarks.map((bookmark) => (
-                        <div key={bookmark.id}>
-                            <p>Bookmark ID: {bookmark.id}</p>
-                            <Post post={bookmark.post} />
-                        </div>
-                    ))}
-                </div>
+                        <h2>User Bookmarks</h2>
+                        {bookmarks.map((bookmark) => (
+                            <div key={bookmark.id}>
+                                <p>Bookmark ID: {bookmark.id}</p>
+                                <Post post={bookmark.post} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>
@@ -108,5 +104,4 @@ function UserProfile() {
 }
 
 export default UserProfile;
-
 

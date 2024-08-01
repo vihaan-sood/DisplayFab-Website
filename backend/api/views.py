@@ -78,6 +78,12 @@ class UserDetails(generics.RetrieveAPIView):
     def get_object(self):
         return self.queryset.get(pk=self.kwargs['pk'])
     
+class ReadOnlyUserDetails(generics.ListAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerialiser
+    permission_classes = [AllowAny]
+
+    
 
 class MarkdownPageCreate(generics.CreateAPIView):
     queryset = MarkdownText.objects.all()

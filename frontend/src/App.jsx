@@ -9,10 +9,11 @@ import Login from "./pages/Login"
 import NotFound from "./pages/NotFound"
 import Register from "./pages/Register"
 import ProtectedRoute from "./components/ProtectedRoute"
-import UserProfile from "./pages/UserProfile"
+import UserProfile from "./components/UserProfile"
 import MarkdownPage from "./components/Markdownpage"
 import CreatePostPage from "./pages/CreatePost"
 import ExpandedPostPage from "./pages/ExpandedPost"
+import UserList from "./pages/UserList";
 
 
 
@@ -33,108 +34,119 @@ function App() {
 
   return (
 
+    <UserProvider>
+      <BrowserRouter>
 
-    <BrowserRouter>
+        <Routes>
+          {/* HOME */}
+          <Route path="/" element={<Home />} />
 
-      <Routes>
-        {/* HOME */}
-        <Route
-          path="/"
-          element={
+          {/* LOGIN */}
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-            <Home />
+          {/* LISTVIEW */}
+          <Route
+            path="/listview"
+            element={
 
-          }
-        />
+              <ListView />
 
-        {/* LOGIN */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+            }
+          />
 
-        {/* LISTVIEW */}
-        <Route
-          path="/listview"
-          element={
+          {/* ABOUT */}
+          <Route
+            path="/about"
+            element={<About />}
+          />
 
-            <ListView />
+          {/* REGISTER */}
+          <Route
+            path="/register"
+            element={<Register_user />}
+          />
 
-          }
-        />
+          {/* LOGOUT */}
+          <Route
+            path="/logout"
+            element={<Logout />}
+          />
+          {/* User Profile */}
 
-        {/* ABOUT */}
-        <Route
-          path="/about"
-          element={<About />}
-        />
+          <Route
+            path="/userprofile/:id"
+            element={
+              <UserProfile />
 
-        {/* REGISTER */}
-        <Route
-          path="/register"
-          element={<Register_user />}
-        />
+            }
+          />
 
-        {/* LOGOUT */}
-        <Route
-          path="/logout"
-          element={<Logout />}
-        />
-        {/* User Profile */}
+          <Route
+            path="/users"
+            element={
+              <UserList />
 
-        <Route
-          path="/myprofile"
-          element={
-            <UserProvider>
+            }
+          />
+
+
+          {/* <Route
+            path="/myprofile"
+            element={
+
               <ProtectedRoute>
                 <UserProfile />
               </ProtectedRoute>
-            </UserProvider>
 
 
-          }
-        />
 
-        {/* Post creation */}
-        <Route
-          path="/createpost"
-          element={
-            <UserProvider>
-            <ProtectedRoute>
-              <CreatePostPage />
-            </ProtectedRoute>
-            </UserProvider>
-          }
-        />
+            }
+          /> */}
 
-        {/* Markdown */}
-        <Route
-          path="/markdowntext/:pk"
-          element={
+          {/* Post creation */}
+          <Route
+            path="/createpost"
+            element={
 
-            <MarkdownPage />
+              <ProtectedRoute>
+                <CreatePostPage />
+              </ProtectedRoute>
 
-          }
-        />
+            }
+          />
 
-        {/* Expanded Post*/}
-        <Route
-          path="/post/:id"
-          element={
-            <ExpandedPostPage />
-          }
+          {/* Markdown */}
+          <Route
+            path="/markdowntext/:pk"
+            element={
 
-        />
+              <MarkdownPage />
 
-        {/* NOTFOUND */}
-        <Route
-          path="*"
-          element={<NotFound />}
-        />
+            }
+          />
 
-      </Routes>
+          {/* Expanded Post*/}
+          <Route
+            path="/post/:id"
+            element={
+              <ExpandedPostPage />
+            }
 
-    </BrowserRouter>
+          />
+
+          {/* NOTFOUND */}
+          <Route
+            path="*"
+            element={<NotFound />}
+          />
+
+        </Routes>
+
+      </BrowserRouter>
+    </UserProvider>
 
   )
 }

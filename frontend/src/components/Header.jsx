@@ -6,11 +6,10 @@ import logo from "../assets/Untitled.png"
 import SearchBar from "./Searchbar"
 
 
-import { FaRegUserCircle, FaSignOutAlt } from "react-icons/fa";
-import { CiViewList } from "react-icons/ci";
+import { FaRegUserCircle, FaSignOutAlt, FaUsers  } from "react-icons/fa";
 import { BsQuestionCircleFill } from "react-icons/bs";
-import { SiBookstack } from "react-icons/si";
 import { ImBooks } from "react-icons/im";
+import { AiOutlinePlus } from "react-icons/ai";
 
 function Header( { onSearch }) {
     return (
@@ -33,7 +32,9 @@ function Header( { onSearch }) {
                     <li><Link to="/about" title="About Us" alt="About Us"><BsQuestionCircleFill /></Link></li>
                     <li><Link to="/listview"  title="All Posts" alt="All Posts"><ImBooks/></Link></li>
                     <li><Link to="/logout" title="Log Out" alt="Log Out"> <FaSignOutAlt /></Link></li>
-                    <li><Link to="/myprofile" alt="My Profile" title="My Profile"><FaRegUserCircle /></Link></li>
+                    <li><Link to="/users" title="Users" alt="Users"> <FaUsers /></Link></li>
+                    <li> <Link to="/createpost"><AiOutlinePlus /></Link></li>
+                    {/* <li><Link to="/myprofile" alt="My Profile" title="My Profile"><FaRegUserCircle /></Link></li> */}
                 </ul>
 
             </nav>

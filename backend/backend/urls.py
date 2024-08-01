@@ -37,6 +37,9 @@ urlpatterns = [
 
     path("api/user/myprofile/<int:pk>/",UserDetails.as_view(),name="user_details"),
     path("api/user/currentuser/",CurrentUser.as_view(),name="user_details"),
+
+    path("api/users/",ReadOnlyUserDetails.as_view(),name="all_users"),
+
     path("api/posts/create/",PostCreate.as_view(),name="post_create"),
     path('api/markdowntext/create/', MarkdownPageCreate.as_view(), name='markdowntext-create'),
 
