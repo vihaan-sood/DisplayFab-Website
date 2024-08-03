@@ -35,6 +35,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True)
     about_me = models.TextField(blank=True, null=True)
+
+    
     
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

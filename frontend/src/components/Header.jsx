@@ -28,13 +28,12 @@ function Header( { onSearch }) {
                     <li><Link to="/login">Login</Link></li>
                     <li><Link to="/register">Register</Link></li>
                     <li>< SearchBar onSearch={onSearch}/></li>
-                    {/* <li>< SearchBar/></li> */}
                     <li><Link to="/about" title="About Us" alt="About Us"><BsQuestionCircleFill /></Link></li>
                     <li><Link to="/listview"  title="All Posts" alt="All Posts"><ImBooks/></Link></li>
                     <li><Link to="/logout" title="Log Out" alt="Log Out"> <FaSignOutAlt /></Link></li>
                     <li><Link to="/users" title="Users" alt="Users"> <FaUsers /></Link></li>
                     <li> <Link to="/createpost"><AiOutlinePlus /></Link></li>
-                    {/* <li><Link to="/myprofile" alt="My Profile" title="My Profile"><FaRegUserCircle /></Link></li> */}
+                    <li><Link to="/myprofile" alt="My Profile" title="My Profile"><FaRegUserCircle /></Link></li>
                 </ul>
 
             </nav>

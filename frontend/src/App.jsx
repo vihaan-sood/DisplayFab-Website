@@ -13,6 +13,7 @@ import MarkdownPage from "./components/Markdownpage";
 import CreatePostPage from "./pages/CreatePost";
 import ExpandedPostPage from "./pages/ExpandedPost";
 import UserList from "./pages/UserList";
+import MyProfile from "./pages/MyProfile";
 
 function Logout() {
   localStorage.clear();
@@ -36,6 +37,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/userprofile/:id" element={<UserProfile />} />
         <Route path="/users" element={<UserList />} />
+
         <Route path="/createpost" element={
           <UserProvider>
             <ProtectedRoute>
@@ -43,6 +45,15 @@ function App() {
             </ProtectedRoute>
           </UserProvider>
         } />
+
+        <Route path="/myprofile" element={
+          <UserProvider>
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          </UserProvider>
+        } />
+
         <Route path="/markdowntext/:pk" element={<MarkdownPage />} />
         <Route path="/post/:id" element={<ExpandedPostPage />} />
         <Route path="*" element={<NotFound />} />
