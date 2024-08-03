@@ -2,6 +2,9 @@ import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
+import Carousel from "../components/Carousel"
+
+
 import "../styles/UserProfile.css";
 import { Link, useParams } from "react-router-dom";
 
@@ -96,6 +99,7 @@ function UserProfile() {
                                 <Post post={bookmark.post} />
                             </div>
                         ))}
+                        <Carousel></Carousel>
                     </div>
                 </div>
             </div>

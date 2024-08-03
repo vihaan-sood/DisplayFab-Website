@@ -25,16 +25,26 @@ function PostCreateForm({ onPostCreated }) {
 
     const fetchKeywords = async (searchTerm = "") => {
         try {
-            const res = await api.get(`/api/keywords/?search=${searchTerm}`);
+            const res = await api.get(`/api/keywords/?search=${searchTerm}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                requiresAuth: true,
+            });
             setKeywords(res.data);
         } catch (err) {
             console.error("Error fetching keywords:", err);
         }
     };
-
+    
     const fetchAuthors = async (searchTerm = "") => {
         try {
-            const res = await api.get(`/api/authors/?search=${searchTerm}`);
+            const res = await api.get(`/api/authors/?search=${searchTerm}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                requiresAuth: true,
+            });
             setAuthors(res.data);
         } catch (err) {
             console.error("Error fetching authors:", err);
@@ -71,7 +81,7 @@ function PostCreateForm({ onPostCreated }) {
             const postRes = await api.post("/api/posts/create/", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                },
+                },requiresAuth: true
             });
 
             if (postRes.status === 201) {
@@ -98,7 +108,7 @@ function PostCreateForm({ onPostCreated }) {
 
     const addKeyword = async () => {
         try {
-            const res = await api.post("/api/keywords/create/", { word: newKeyword });
+            const res = await api.post("/api/keywords/create/", { word: newKeyword }, { requiresAuth: true });
             if (res.status === 201) {
                 setNewKeyword("");
                 fetchKeywords();

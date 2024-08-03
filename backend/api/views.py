@@ -111,7 +111,7 @@ class UserBookmarksCreateView(generics.CreateAPIView):
 
 class UserBookmarksListView(generics.ListAPIView):
     serializer_class = BookmarkSerialiser
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         user_id = self.kwargs['pk']

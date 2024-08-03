@@ -34,7 +34,7 @@ function App() {
 
   return (
 
-    <UserProvider>
+
       <BrowserRouter>
 
         <Routes>
@@ -110,11 +110,11 @@ function App() {
           <Route
             path="/createpost"
             element={
-
+              <UserProvider>
               <ProtectedRoute>
                 <CreatePostPage />
               </ProtectedRoute>
-
+              </UserProvider>
             }
           />
 
@@ -146,7 +146,7 @@ function App() {
         </Routes>
 
       </BrowserRouter>
-    </UserProvider>
+  
 
   )
 }
