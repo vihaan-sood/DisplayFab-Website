@@ -1,30 +1,48 @@
+import React, { useState } from "react";
 import Header from "../components/Header";
-import Grid from "../components/Grid";
+import MyGrid from "../components/MyGrid";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 function Home() {
+    const [items, setItems] = useState(Array.from({ length: 25 }, (_, i) => `Item ${i + 1}`));
+    const [hasMore, setHasMore] = useState(true);
 
-    const rows = 5;
-    const columns = 5;
-    const items = Array.from({ length: rows * columns }, (_, i) => `Item ${i + 1}`);
+    const fetchMoreData = () => {
+        if (items.length >= 100) {
+            setHasMore(false);
+            return;
+        }
+        setTimeout(() => {
+            setItems(prevItems => [
+                ...prevItems,
+                ...Array.from({ length: 25 }, (_, i) => `Item ${prevItems.length + i + 1}`)
+            ]);
+        }, 1500);
+    };
 
-
-
-
-
-
-    return (<>
-        <Header />
-        <div>
-            <h1>
-                Home
-            </h1>
-        </div>
-        <div>
-            <Grid items={items} rows={rows} columns={columns} />
-        </div>
-        
-    </>
+    return (
+        <>
+            <Header />
+            <div>
+                <h1>Home</h1>
+            </div>
+            <div>
+                <InfiniteScroll
+                    dataLength={items.length}
+                    next={fetchMoreData}
+                    hasMore={hasMore}
+                    loader={<h4>Loading...</h4>}
+                    endMessage={
+                        <p style={{ textAlign: 'center' }}>
+                            <b>Yay! You have seen it all</b>
+                        </p>
+                    }
+                >
+                    <MyGrid items={items} rows={5} columns={5} />
+                </InfiniteScroll>
+            </div>
+        </>
     );
-};
+}
 
 export default Home;
