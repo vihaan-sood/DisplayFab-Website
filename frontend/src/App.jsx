@@ -15,6 +15,7 @@ import ExpandedPostPage from "./pages/ExpandedPost";
 import UserList from "./pages/UserList";
 import MyProfile from "./pages/MyProfile";
 
+
 function Logout() {
   localStorage.clear();
   return <Navigate to="/login" />;
@@ -27,6 +28,7 @@ function Register_user() {
 
 function App() {
   return (
+  
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -47,11 +49,13 @@ function App() {
         } />
 
         <Route path="/myprofile" element={
-          <UserProvider>
+          
             <ProtectedRoute>
+              <UserProvider>
               <MyProfile />
+              </UserProvider>
             </ProtectedRoute>
-          </UserProvider>
+          
         } />
 
         <Route path="/markdowntext/:pk" element={<MarkdownPage />} />
@@ -59,6 +63,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
+
   );
 }
 
