@@ -26,6 +26,8 @@ function Register_user() {
   return <Register />;
 }
 
+
+
 function App() {
   return (
   
@@ -33,7 +35,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/listview" element={<ListView />} />
+        <Route path="/listview" element={<ListView/>} />
         <Route path="/about" element={<About />} />
         <Route path="/register" element={<Register_user />} />
         <Route path="/logout" element={<Logout />} />

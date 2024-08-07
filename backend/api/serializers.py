@@ -2,9 +2,16 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from .models import *
 
+
+class KeywordSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = Keywords
+        fields = '__all__'
+
 class UserSerialiser(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
+    user_keywords = KeywordSerialiser(many=True, read_only=True)
 
     class Meta:
         model = CustomUser
@@ -21,11 +28,6 @@ class UserSerialiser(serializers.ModelSerializer):
         return user
     
 
-
-class KeywordSerialiser(serializers.ModelSerializer):
-    class Meta:
-        model = Keywords
-        fields = '__all__'
 
 class UserNameSerialiser(serializers.ModelSerializer):
     class Meta:

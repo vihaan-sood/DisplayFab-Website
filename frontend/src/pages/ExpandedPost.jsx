@@ -49,7 +49,7 @@ function ExpandedPostPage() {
                     <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
                 </div>
                 <div className="post-keywords">
-                    <strong>Keywords:</strong> {post.keywords.join(", ")}
+                    Keywords: {post.keywords.map(keywords => keywords.word).join(", ")}
                 </div>
                 <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
                     Link to Paper

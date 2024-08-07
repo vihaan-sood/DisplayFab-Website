@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import api from "../api";
-import Post from "../components/Post";
-import Header from "../components/Header";
-import Carousel from "../components/Carousel"
-
+import Post from "./Post";
+import Header from "./Header";
+import Carousel from "./Carousel"
+import ClickableTag from "./ClickableTag";
 
 import "../styles/UserProfile.css";
 import { Link, useParams } from "react-router-dom";
@@ -11,12 +11,13 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 
-import { Avatar, Box, Button, Card, CardContent, Grid, Typography, Link as MuiLink } from "@mui/material";
+import { Avatar, Box, Button, Grid, Typography, Link as MuiLink } from "@mui/material";
 
 function UserProfile() {
     const [userDetails, setUserDetails] = useState({});
     const [posts, setPosts] = useState([]);
     const [bookmarks, setBookmarks] = useState([]);
+    const [user_keywords, setUserKeywords] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
@@ -31,6 +32,7 @@ function UserProfile() {
         api.get(`/api/user/myprofile/${userId}/`)
             .then((res) => {
                 setUserDetails(res.data);
+                console.log(res.data)
             })
             .catch((err) => console.error(err));
     };
@@ -52,23 +54,10 @@ function UserProfile() {
                 );
                 const postsDetails = await Promise.all(postDetailsPromises);
                 setBookmarks(bookmarksData.map((bookmark, index) => ({ ...bookmark, post: postsDetails[index] })));
-                console.log(bookmarksData)
             })
             .catch((err) => console.error(err));
     };
 
-    const deletePost = (id) => {
-        api.delete(`/api/posts/delete/${id}/`)
-            .then((res) => {
-                if (res.status === 204) {
-                    alert("Post Deleted");
-                    setPosts((prevPosts) => prevPosts.filter(post => post.id !== id));
-                } else {
-                    alert("Post Deletion Was Not Successful");
-                }
-            })
-            .catch((err) => console.error(err));
-    };
 
     return (
         <>
@@ -80,8 +69,15 @@ function UserProfile() {
                 <Box sx={{ marginY: 2 }}>
                     <Typography variant="h6">Details</Typography>
                     <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
+                    <Typography variant="body1">
+                        Keywords:{" "} 
+                        {userDetails.user_keywords && userDetails.user_keywords.map((keyword) => (
+                            <Button variant="outlined"><ClickableTag key={keyword} keyword={keyword.word} onSearch={() => {}} /></Button> 
+                        ))}
+                    </Typography>
                     <Typography variant="h6" sx={{ marginTop: 2 }}>About me</Typography>
                     <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
+
                 </Box>
 
                 <Box sx={{ marginY: 2 }}>
@@ -100,13 +96,6 @@ function UserProfile() {
 
                 <Box sx={{ marginY: 2 }}>
                     <Typography variant="h6">User Bookmarks</Typography>
-                    <Grid container spacing={2}>
-                        {bookmarks.map((bookmark) => (
-                            <Grid item key={bookmark.id} xs={12}>
-                                <Post post={bookmark.post} />
-                            </Grid>
-                        ))}
-                    </Grid>
                     <Box sx={{ marginTop: 2 }}>
                         {bookmarks.length > 0 && (
                             <Carousel items={bookmarks.map(bookmark => bookmark.post)} />

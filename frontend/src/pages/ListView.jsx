@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
@@ -6,11 +7,17 @@ import "../styles/ListView.css";
 
 function ListView() {
     const [posts, setPosts] = useState([]);
-
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-
     const [sortOrder, setSortOrder] = useState("default");
+
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state && location.state.query) {
+            setSearchQuery(location.state.query);
+        }
+    }, [location.state]);
 
     useEffect(() => {
         fetchPosts();
@@ -58,7 +65,6 @@ function ListView() {
         setFilteredPosts(sortedPosts);
     }, [sortOrder, filteredPosts]);
 
-
     return (
         <>
             <Header onSearch={setSearchQuery} />
@@ -67,10 +73,9 @@ function ListView() {
                 <div className="sort-options">
                     <button onClick={() => setSortOrder("asc")}>Sort A-Z</button>
                     <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
-                    <button onClick={() => setSortOrder("default")}>Default</button>
+                    <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
                 <div>
-
                     <h2>Posts</h2>
                     {filteredPosts.map((post) => (
                         <Post key={post.id} post={post} />
