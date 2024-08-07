@@ -4,7 +4,12 @@ import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import api from "../api";
 import Header from "../components/Header";
+import ClickableTag from "../components/ClickableTag";
+import { Typography, Box } from "@mui/material";
+
+
 import "../styles/ExpandedPost.css";
+
 
 
 function ExpandedPostPage() {
@@ -48,9 +53,14 @@ function ExpandedPostPage() {
                 <div className="post-authors">
                     <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
                 </div>
-                <div className="post-keywords">
-                    Keywords: {post.keywords.map(keywords => keywords.word).join(", ")}
-                </div>
+                <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
+                <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                    {post.keywords && post.keywords.map((keyword) => (
+                        <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
+                    ))}
+                </Box>
+            </Typography>
                 <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
                     Link to Paper
                 </a>

@@ -2,9 +2,11 @@ import React from "react";
 import "../styles/Post.css";
 import { Link } from "react-router-dom";
 import Bookmark from "./BookmarkButton"
+import { Typography, Box } from "@mui/material";
+import ClickableTag from "./ClickableTag";
 
 
-function Post({ post}) {
+function Post({ post }) {
     // const date = new Date(post.created_at).toLocaleDateString("en-GB");
 
     return (
@@ -15,10 +17,15 @@ function Post({ post}) {
             {post.content && post.content.id && (
                 <Link to={`/post/${post.id}`} className="post-content-link">Expand</Link>
             )}
-           <p className="post-keywords">
-                Keywords: {post.keywords.map(keywords => keywords.word).join(", ")}
-            </p>
-            <p className="post-authors">Authors:{post.authors.map(authors => authors.username).join(", ")}</p> 
+            <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
+                <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                    {post.keywords && post.keywords.map((keyword) => (
+                        <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
+                    ))}
+                </Box>
+            </Typography>
+            <p className="post-authors">Authors:{post.authors.map(authors => authors.username).join(", ")}</p>
             <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
                 Link to Paper
             </a>

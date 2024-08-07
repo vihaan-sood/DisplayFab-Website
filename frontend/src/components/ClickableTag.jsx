@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { Button } from "@mui/material";
 
 
 function ClickableTag({ keyword, onSearch }) {
@@ -14,7 +15,8 @@ function ClickableTag({ keyword, onSearch }) {
 
     return (
         <div className="clickable-tag" onClick={handleClick}>
-            {keyword}
+             <Button variant="outlined">{keyword}</Button>
+          
         </div>
     );
 }

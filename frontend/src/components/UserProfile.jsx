@@ -69,11 +69,13 @@ function UserProfile() {
                 <Box sx={{ marginY: 2 }}>
                     <Typography variant="h6">Details</Typography>
                     <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
-                    <Typography variant="body1">
-                        Keywords:{" "} 
-                        {userDetails.user_keywords && userDetails.user_keywords.map((keyword) => (
-                            <Button variant="outlined"><ClickableTag key={keyword} keyword={keyword.word} onSearch={() => {}} /></Button> 
-                        ))}
+                    <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
+                        <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                            {userDetails.user_keywords && userDetails.user_keywords.map((keyword) => (
+                                <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => {}} />
+                            ))}
+                        </Box>
                     </Typography>
                     <Typography variant="h6" sx={{ marginTop: 2 }}>About me</Typography>
                     <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
