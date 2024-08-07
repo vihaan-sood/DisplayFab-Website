@@ -41,11 +41,13 @@ function App() {
         <Route path="/users" element={<UserList />} />
 
         <Route path="/createpost" element={
-          <UserProvider>
+          
             <ProtectedRoute>
+              <UserProvider>
               <CreatePostPage />
+              </UserProvider>
             </ProtectedRoute>
-          </UserProvider>
+
         } />
 
         <Route path="/myprofile" element={

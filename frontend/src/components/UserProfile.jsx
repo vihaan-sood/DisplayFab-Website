@@ -11,6 +11,8 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 
+import { Avatar, Box, Button, Card, CardContent, Grid, Typography, Link as MuiLink } from "@mui/material";
+
 function UserProfile() {
     const [userDetails, setUserDetails] = useState({});
     const [posts, setPosts] = useState([]);
@@ -50,6 +52,7 @@ function UserProfile() {
                 );
                 const postsDetails = await Promise.all(postDetailsPromises);
                 setBookmarks(bookmarksData.map((bookmark, index) => ({ ...bookmark, post: postsDetails[index] })));
+                console.log(bookmarksData)
             })
             .catch((err) => console.error(err));
     };
@@ -70,42 +73,49 @@ function UserProfile() {
     return (
         <>
             <Header />
-            <div className="user-profile">
-                <h1>User Profile: {userDetails.username}</h1>
+            <Box sx={{ padding: 2 }}>
+                <Typography variant="h4" gutterBottom>User Profile: {userDetails.username}</Typography>
+                <Avatar alt={userDetails.username} src={userDetails.image} sx={{ width: 100, height: 100 }} />
 
-                <div className="user-details">
-                    <h2>Details</h2>
-                    <p>Name: {userDetails.first_name} {userDetails.last_name}</p>
-                    <h3>About me</h3>
-                    <div> <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown></div>
-                </div>
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h6">Details</Typography>
+                    <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
+                    <Typography variant="h6" sx={{ marginTop: 2 }}>About me</Typography>
+                    <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
+                </Box>
 
-
-                <div className="posts-section">
-                    <h2>User Posts</h2>
-                    {posts.map((post) => (
-                        <Post key={post.id} post={post} onDelete={() => deletePost(post.id)} />
-                    ))}
-
-                    
-                    <Link to="/createpost">Create New Post</Link>
-
-
-                    <div className="bookmarks-section">
-                        <h2>User Bookmarks</h2>
-                        {bookmarks.map((bookmark) => (
-                            <div key={bookmark.id}>
-                                <p>Bookmark ID: {bookmark.id}</p>
-                                <Post post={bookmark.post} />
-                            </div>
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h6">User Posts</Typography>
+                    <Grid container spacing={2}>
+                        {posts.map((post) => (
+                            <Grid item key={post.id} xs={12}>
+                                <Post post={post} onDelete={() => deletePost(post.id)} />
+                            </Grid>
                         ))}
-                        <Carousel></Carousel>
-                    </div>
-                </div>
-            </div>
+                    </Grid>
+                    <Button component={MuiLink} to="/createpost" variant="contained" sx={{ marginTop: 2 }}>
+                        Create New Post
+                    </Button>
+                </Box>
+
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h6">User Bookmarks</Typography>
+                    <Grid container spacing={2}>
+                        {bookmarks.map((bookmark) => (
+                            <Grid item key={bookmark.id} xs={12}>
+                                <Post post={bookmark.post} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                    <Box sx={{ marginTop: 2 }}>
+                        {bookmarks.length > 0 && (
+                            <Carousel items={bookmarks.map(bookmark => bookmark.post)} />
+                        )}
+                    </Box>
+                </Box>
+            </Box>
         </>
     );
 }
 
 export default UserProfile;
-

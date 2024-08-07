@@ -30,7 +30,7 @@ function Home() {
             setHasMore(false);
         }
     };
-
+// use grid block
     return (
         <>
             <Header />
