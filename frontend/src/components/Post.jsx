@@ -4,14 +4,21 @@ import { Link } from "react-router-dom";
 import Bookmark from "./BookmarkButton"
 import { Typography, Box } from "@mui/material";
 import ClickableTag from "./ClickableTag";
+import ToLocalDate from "./ToLocalDate";
 
 
 function Post({ post }) {
     // const date = new Date(post.created_at).toLocaleDateString("en-GB");
 
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
     return (
         <div className="post-container">
             <p className="post-title">Title :{post.title}</p>
+            <ToLocalDate dateString={post.date_created} />
             <p className="post-subheading">Subheading:{post.subheading}</p>
             <p className="post-subheading">Subheading: {post.subheading}</p>
             {post.content && post.content.id && (

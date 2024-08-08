@@ -14,10 +14,12 @@ function ClickableTag({ keyword, onSearch }) {
     };
 
     return (
-        <div className="clickable-tag" onClick={handleClick}>
-             <Button variant="outlined">{keyword}</Button>
-          
-        </div>
+        <>
+            <div className="clickable-tag" onClick={handleClick}>
+                <Button variant="outlined">{keyword}</Button>
+
+            </div>
+        </>
     );
 }
 

@@ -94,13 +94,7 @@ class UserBookmark(models.Model):
     class Meta:
         unique_together = ('user', 'post')
 
-# class UserBookmarks(models.Model):
-#     id = models.AutoField(primary_key=True)
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     posts = models.ManyToManyField(Post)
 
-#     def __str__(self):
-#         return f"{self.user_id.username}'s bookmarks"
 
 
 

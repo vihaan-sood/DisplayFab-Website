@@ -6,6 +6,7 @@ import api from "../api";
 import Header from "../components/Header";
 import ClickableTag from "../components/ClickableTag";
 import { Typography, Box } from "@mui/material";
+import ToLocalDate from "../components/ToLocalDate";
 
 
 import "../styles/ExpandedPost.css";
@@ -49,6 +50,7 @@ function ExpandedPostPage() {
             <Header />
             <div className="expanded-post-container">
                 <h1>{post.title}</h1>
+                <ToLocalDate dateString={post.date_created}/>
                 <h2>{post.subheading}</h2>
                 <div className="post-authors">
                     <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
