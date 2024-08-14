@@ -60,6 +60,8 @@ urlpatterns = [
 
     path('api/user/bookmarks/create/', UserBookmarksCreateView.as_view(), name='user_bookmarks_create'),
     path('api/user/bookmarks/<int:pk>/', UserBookmarksListView.as_view(), name='bookmark_detail'),
+
+    path('api/posts/linked/<int:pk>/', LinkedPostListView.as_view(), name='linked_posts'),
     
 
     

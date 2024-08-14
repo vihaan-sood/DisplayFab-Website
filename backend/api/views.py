@@ -155,3 +155,11 @@ class CurrentUser(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+    
+class LinkedPostListView(generics.ListAPIView):
+    serializer_class = LinkedPostSerialiser
+    permission_classes = [AllowAny]
+
+    def get_queryset(self):
+        post_id  = self.kwargs['pk']
+        return LinkedPost.objects.filter(post1=post_id)

@@ -9,6 +9,7 @@ import { Typography, Box, Button } from "@mui/material";
 import ToLocalDate from "../components/ToLocalDate";
 import { FaRegCircleCheck  } from "react-icons/fa6";
 import { RxCrossCircled } from "react-icons/rx";
+import Carousel from "../components/Carousel";
 
 import "../styles/ExpandedPost.css";
 
@@ -16,6 +17,7 @@ function ExpandedPostPage() {
     const { id } = useParams();
     const [post, setPost] = useState(null);
     const [markdown, setMarkdown] = useState("");
+    const [linkedPosts, setLinkedPosts] = useState([]);
 
     useEffect(() => {
         api.get(`/api/posts/${id}/`)
@@ -24,6 +26,7 @@ function ExpandedPostPage() {
                 if (response.data.content && response.data.content.id) {
                     fetchMarkdownContent(response.data.content.id);
                 }
+                fetchLinkedPosts(response.data.id);
             })
             .catch((error) => {
                 console.error('Error fetching post details:', error);
@@ -38,6 +41,20 @@ function ExpandedPostPage() {
             .catch((error) => {
                 console.error('Error fetching markdown content:', error);
             });
+    };
+
+    const fetchLinkedPosts = (postId) => {
+        api.get(`/api/posts/linked/${postId}/`)
+            .then(async (res) => {
+                const linkedPostsData = res.data;
+                const postDetailsPromises = linkedPostsData.map(linkedPost =>
+                    api.get(`/api/posts/${linkedPost.post2}/`).then(res => res.data)
+                );
+                const postsDetails = await Promise.all(postDetailsPromises);
+                setLinkedPosts(postsDetails);
+                console.log(postsDetails);
+            })
+            .catch((err) => console.error('Error fetching linked posts:', err));
     };
 
     if (!post) {
@@ -87,6 +104,16 @@ function ExpandedPostPage() {
                 <Button component={Link} to={`/report/${id}`} variant="contained" color="secondary" sx={{ marginTop: 2 }}>
                     Report Post
                 </Button>
+
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h6">Linked Posts</Typography>
+                    <Box sx={{ marginTop: 2 }}>
+                        {linkedPosts.length > 0 && (
+                            <Carousel items={linkedPosts} />
+                        )}
+                    </Box>
+                </Box>
+
             </div>
         </>
     );

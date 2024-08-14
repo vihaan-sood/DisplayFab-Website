@@ -105,6 +105,13 @@ class Report(models.Model):
     class Meta:
         unique_together = ('user', 'post')
 
+class LinkedPost(models.Model):
+    post1 = models.ForeignKey(Post,on_delete=models.CASCADE,related_name='linked_posts_as_post1')
+    post2 = models.ForeignKey(Post,on_delete=models.CASCADE, related_name='linked_posts_as_post2')
+
+    class Meta:
+        unique_together = ('post1', 'post2')
+
 
 
 

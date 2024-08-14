@@ -90,4 +90,20 @@ class BookmarkSerialiser(serializers.ModelSerializer):
         user_bookmark = UserBookmark.objects.create(user=user, post=post)
         return user_bookmark
 
+class LinkedPostSerialiser(serializers.ModelSerializer):
+
+    post1 = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+
+    post2 = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+
+    class Meta:
+        model = LinkedPost
+        fields = ['id','post1', 'post2']
+
+    def create(self, validated_data):
+        post1 = validated_data['post1']
+        post2 = validated_data['post2']
+        linked_post = LinkedPost.objects.create(post1=post1, post2=post2)
+        return linked_post
+
 
