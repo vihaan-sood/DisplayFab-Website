@@ -49,7 +49,7 @@ class PostSerialiser(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image', 'creation_user']
+        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image','date_created','my_work','report_count']
 
     def create(self, validated_data):
         keywords_data = validated_data.pop('keywords')
@@ -61,6 +61,8 @@ class PostSerialiser(serializers.ModelSerializer):
         post.keywords.set(keywords_data)
         post.authors.set(authors_data)
         return post
+    
+
 
 class ReadOnlyPostSerialiser(serializers.ModelSerializer):
     keywords = KeywordSerialiser(many=True, read_only=True)
@@ -69,7 +71,7 @@ class ReadOnlyPostSerialiser(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image','date_created']
+        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image','date_created','my_work','report_count']
         read_only_fields = fields
 
 

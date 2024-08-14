@@ -2,6 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+
 #Creating custom user model
 class Keywords(models.Model): 
     key_id = models.AutoField(primary_key=True)
@@ -81,6 +82,8 @@ class Post(models.Model):
     image = models.ImageField(null=True,blank=True,upload_to="images/")
     creation_user = models.ForeignKey(CustomUser,null=True,on_delete=models.SET_NULL)
     date_created = models.DateTimeField(auto_now_add=True)
+    my_work = models.BooleanField(default=False)
+    report_count = models.IntegerField(default=0)
 
 
 
@@ -90,6 +93,14 @@ class Post(models.Model):
 class UserBookmark(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'post')
+
+class Report(models.Model):
+    user = models.ForeignKey(CustomUser , on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'post')

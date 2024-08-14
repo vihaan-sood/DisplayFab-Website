@@ -46,6 +46,7 @@ urlpatterns = [
     path("api/posts/",PostListView.as_view(),name="posts_list"),
     path("api/posts/<int:pk>/",PostDetails.as_view(),name="posts_expanded"),
     path("api/posts/userspecific/<int:pk>/",UserProfilePosts.as_view(),name="user_profile_posts"),
+    path("api/posts/<int:pk>/report/",ReportPostView.as_view(),name='report_post'),
 
     path('api/markdowntext/<int:pk>/', MarkdownPageDetails.as_view(), name='markdown-page'),
     path("api/posts/delete/<int:pk>/", PostDelete.as_view(),name="post_delete"),

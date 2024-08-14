@@ -25,14 +25,14 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'subheading', 'link_to_paper', 'date_created', 'creation_user')
+    list_display = ('title', 'subheading', 'link_to_paper', 'date_created', 'creation_user', 'my_work', 'report_count')
     list_filter = ('date_created', 'keywords', 'authors')
     search_fields = ('title', 'subheading', 'keywords__word', 'authors__username')
     readonly_fields = ('date_created',)
     
     fieldsets = (
         (None, {
-            'fields': ('title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image', 'creation_user')
+            'fields': ('title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image', 'creation_user', 'my_work', 'report_count')
         }),
         ('Important dates', {
             'fields': ('date_created',)
@@ -44,3 +44,4 @@ admin.site.register(Post,PostAdmin)
 admin.site.register(Keywords)
 admin.site.register(MarkdownText)
 admin.site.register(UserBookmark)
+admin.site.register(Report)

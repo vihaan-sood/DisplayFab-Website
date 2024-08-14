@@ -14,6 +14,7 @@ import CreatePostPage from "./pages/CreatePost";
 import ExpandedPostPage from "./pages/ExpandedPost";
 import UserList from "./pages/UserList";
 import MyProfile from "./pages/MyProfile";
+import ReportPage from "./components/ReportPage";
 
 
 function Logout() {
@@ -60,6 +61,14 @@ function App() {
               </UserProvider>
             </ProtectedRoute>
           
+        } />
+
+        <Route path="/report/:id" element={
+            <ProtectedRoute>
+              <UserProvider>
+              <ReportPage />
+              </UserProvider>
+            </ProtectedRoute>
         } />
 
         <Route path="/markdowntext/:pk" element={<MarkdownPage />} />

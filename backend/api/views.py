@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from rest_framework import generics, filters
+from rest_framework import generics, filters, views, response, status
 
 from .serializers import *
 from rest_framework.permissions import *
@@ -10,6 +10,8 @@ from .models import *
 from django.db.models import F
 
 from django.shortcuts import get_object_or_404
+
+
 
 
 
@@ -48,7 +50,28 @@ class PostDetails(generics.RetrieveAPIView):
         
         return super().get(request, *args, **kwargs)
 
+class ReportPostView(generics.UpdateAPIView):
+    queryset = Post.objects.all()
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerialiser
 
+    def update(self, request, *args, **kwargs):
+        try:
+            post = self.get_object()
+            user = request.user
+
+            if Report.objects.filter(user=user, post=post).exists():
+                return response.Response({"error": "You have already reported this post."}, status=status.HTTP_400_BAD_REQUEST)
+  
+            Report.objects.create(user=user, post=post)
+
+            post.report_count += 1
+            post.save()
+
+            return response.Response({"message": "Report submitted successfully!"}, status=status.HTTP_200_OK)
+
+        except Post.DoesNotExist:
+            return response.Response({"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
 
     
 
