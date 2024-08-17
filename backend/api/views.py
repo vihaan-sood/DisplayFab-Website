@@ -15,6 +15,7 @@ from django.shortcuts import get_object_or_404
 
 
 
+
 # Create your views here.
 
 
@@ -130,7 +131,15 @@ class UserBookmarksCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        user = self.request.user
+        post = serializer.validated_data['post']
+        
+   
+        if UserBookmark.objects.filter(user=user, post=post).exists():
+            return response.Response({"error": "Bookmark already exists!"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+        serializer.save(user=user)
 
 class UserBookmarksListView(generics.ListAPIView):
     serializer_class = BookmarkSerialiser

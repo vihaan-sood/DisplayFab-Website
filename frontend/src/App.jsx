@@ -16,6 +16,8 @@ import UserList from "./pages/UserList";
 import MyProfile from "./pages/MyProfile";
 import ReportPage from "./components/ReportPage";
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 
 function Logout() {
   localStorage.clear();
@@ -27,56 +29,61 @@ function Register_user() {
   return <Register />;
 }
 
+const theme = createTheme({
+  typography: {
+    fontFamily: 'Aldrich, Arial, sans-serif',
+  },
+});
 
 
 function App() {
   return (
-  
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/listview" element={<ListView/>} />
-        <Route path="/about" element={<About />} />
-        <Route path="/register" element={<Register_user />} />
-        <Route path="/logout" element={<Logout />} />
-        <Route path="/userprofile/:id" element={<UserProfile />} />
-        <Route path="/users" element={<UserList />} />
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/listview" element={<ListView />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/register" element={<Register_user />} />
+          <Route path="/logout" element={<Logout />} />
+          <Route path="/userprofile/:id" element={<UserProfile />} />
+          <Route path="/users" element={<UserList />} />
 
-        <Route path="/createpost" element={
-          
+          <Route path="/createpost" element={
+
             <ProtectedRoute>
               <UserProvider>
-              <CreatePostPage />
+                <CreatePostPage />
               </UserProvider>
             </ProtectedRoute>
 
-        } />
+          } />
 
-        <Route path="/myprofile" element={
-          
+          <Route path="/myprofile" element={
+
             <ProtectedRoute>
               <UserProvider>
-              <MyProfile />
+                <MyProfile />
               </UserProvider>
             </ProtectedRoute>
-          
-        } />
 
-        <Route path="/report/:id" element={
+          } />
+
+          <Route path="/report/:id" element={
             <ProtectedRoute>
               <UserProvider>
-              <ReportPage />
+                <ReportPage />
               </UserProvider>
             </ProtectedRoute>
-        } />
+          } />
 
-        <Route path="/markdowntext/:pk" element={<MarkdownPage />} />
-        <Route path="/post/:id" element={<ExpandedPostPage />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
-
+          <Route path="/markdowntext/:pk" element={<MarkdownPage />} />
+          <Route path="/post/:id" element={<ExpandedPostPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

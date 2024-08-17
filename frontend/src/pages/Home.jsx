@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
 import Header from "../components/Header";
-import MyGrid from "../components/MyGrid";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "../components/PostCard";
+import { Grid, Box, Typography } from "@mui/material";
+import Centering from "../components/Centering";
 
 function Home() {
     const [posts, setPosts] = useState([]);
@@ -16,7 +17,7 @@ function Home() {
 
     const fetchMoreData = async () => {
         try {
-            const res = await api.get(`/api/posts/`);
+            const res = await api.get(`/api/posts/?page=${page}`);
             const newPosts = res.data;
 
             setPosts((prevPosts) => [...prevPosts, ...newPosts]);
@@ -30,28 +31,40 @@ function Home() {
             setHasMore(false);
         }
     };
-// use grid block
+
     return (
         <>
             <Header />
-            <div>
-                <h1>Home</h1>
-            </div>
-            <div>
-                <InfiniteScroll
-                    dataLength={posts.length}
-                    next={fetchMoreData}
-                    hasMore={hasMore}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={
-                        <p style={{ textAlign: 'center' }}>
-                            <b>Yay! You have seen it all</b>
-                        </p>
-                    }
-                >
-                    <MyGrid items={posts.map(post => <PostCard key={post.id} post={post} />)} columns={5} />
-                </InfiniteScroll>
-            </div>
+            <Box sx={{ padding: 2, display: 'flex', justifyContent: 'center' }}>
+                <Typography variant="h4" sx={{ mb: 4 }}>Home</Typography>
+            </Box>
+            <Centering>
+                <Box >
+
+
+                    <InfiniteScroll
+                        dataLength={posts.length}
+                        next={fetchMoreData}
+                        hasMore={hasMore}
+                        loader={<Typography align="center">Loading...</Typography>}
+                        endMessage={
+                            <Typography align="center" sx={{ mt: 2 }}>
+                                <b>Yay! You have seen it all</b>
+                            </Typography>
+                        }
+                    >
+                        <Box sx={{ maxWidth: '1200px', width: '100%', margin: 'auto' }}>
+                            <Grid container spacing={2}>
+                                {posts.map((post) => (
+                                    <Grid item xs={12} sm={6} md={4} lg={3} key={post.id}>
+                                        <PostCard post={post} />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box>
+                    </InfiniteScroll>
+                </Box>
+            </Centering>
         </>
     );
 }
