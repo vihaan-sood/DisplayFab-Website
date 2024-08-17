@@ -61,6 +61,10 @@ function ListView() {
             sortedPosts.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
         } else if (sortOrder === "desc") {
             sortedPosts.sort((a, b) => b.title.toLowerCase().localeCompare(a.title.toLowerCase()));
+        } else if (sortOrder === "newest") {
+            sortedPosts.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
+        } else if (sortOrder === "oldest") {
+            sortedPosts.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
         }
         setFilteredPosts(sortedPosts);
     }, [sortOrder, filteredPosts]);
@@ -73,6 +77,8 @@ function ListView() {
                 <div className="sort-options">
                     <button onClick={() => setSortOrder("asc")}>Sort A-Z</button>
                     <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
+                    <button onClick={() => setSortOrder("newest")}>Newest First</button>
+                    <button onClick={() => setSortOrder("oldest")}>Oldest First</button>
                     <button onClick={() => window.location.reload()}>Reset</button>
                 </div>
                 <div>
@@ -87,3 +93,4 @@ function ListView() {
 }
 
 export default ListView;
+

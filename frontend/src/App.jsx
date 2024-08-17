@@ -31,7 +31,7 @@ function Register_user() {
 
 const theme = createTheme({
   typography: {
-    fontFamily: 'Aldrich, Arial, sans-serif',
+    fontFamily: 'Aldrich',
   },
 });
 
