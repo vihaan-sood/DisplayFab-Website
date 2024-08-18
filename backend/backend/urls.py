@@ -40,9 +40,9 @@ urlpatterns = [
 
     path("api/users/",ReadOnlyUserDetails.as_view(),name="all_users"),
 
-    path("api/posts/create/",PostCreate.as_view(),name="post_create"),
     path('api/markdowntext/create/', MarkdownPageCreate.as_view(), name='markdowntext-create'),
 
+    path("api/posts/create/",PostCreate.as_view(),name="post_create"),
     path("api/posts/",PostListView.as_view(),name="posts_list"),
     path("api/posts/<int:pk>/",PostDetails.as_view(),name="posts_expanded"),
     path("api/posts/userspecific/<int:pk>/",UserProfilePosts.as_view(),name="user_profile_posts"),

@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-import "../styles/PostCreateForm.css"; 
+import {
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    FormHelperText,
+    Box,
+    Typography,
+    Modal,
+    Checkbox,
+    FormControlLabel,
+    Chip,
+} from "@mui/material";
 
 function PostCreateForm({ onPostCreated }) {
     const [title, setTitle] = useState("");
     const [subheading, setSubheading] = useState("");
-    const [content, setContent] = useState("");
+    const [content, setContent] = useState(""); 
     const [selectedKeywords, setSelectedKeywords] = useState([]);
     const [linkToPaper, setLinkToPaper] = useState("");
-    const [authors, setAuthors] = useState([]);
+    const [authors, setAuthors] = useState([]); 
     const [selectedAuthors, setSelectedAuthors] = useState([]);
     const [keywords, setKeywords] = useState([]);
     const [image, setImage] = useState(null);
@@ -16,7 +30,7 @@ function PostCreateForm({ onPostCreated }) {
     const [newKeyword, setNewKeyword] = useState("");
     const [keywordSearch, setKeywordSearch] = useState("");
     const [authorSearch, setAuthorSearch] = useState("");
-    const [modalContent, setModalContent] = useState("");
+    const [myWork, setMyWork] = useState(false);
 
     useEffect(() => {
         fetchKeywords();
@@ -36,7 +50,7 @@ function PostCreateForm({ onPostCreated }) {
             console.error("Error fetching keywords:", err);
         }
     };
-    
+
     const fetchAuthors = async (searchTerm = "") => {
         try {
             const res = await api.get(`/api/authors/?search=${searchTerm}`, {
@@ -52,14 +66,11 @@ function PostCreateForm({ onPostCreated }) {
     };
 
     const handleKeywordChange = (e) => {
-        const options = e.target.options;
-        const selected = Array.from(options).filter(option => option.selected).map(option => parseInt(option.value));
-        setSelectedKeywords(selected);
+        setSelectedKeywords(e.target.value);
     };
 
     const handleAuthorChange = (e) => {
-        const options = e.target.options;
-        const selected = Array.from(options).filter(option => option.selected).map(option => parseInt(option.value));
+        const selected = e.target.value;
         setSelectedAuthors(selected);
     };
 
@@ -70,10 +81,12 @@ function PostCreateForm({ onPostCreated }) {
             const formData = new FormData();
             formData.append("title", title);
             formData.append("subheading", subheading);
-            formData.append("content", JSON.stringify({ content: modalContent }));
+            formData.append("content", JSON.stringify({ content }));
             selectedKeywords.forEach(keyword => formData.append("keywords", keyword));
             selectedAuthors.forEach(author => formData.append("authors", author));
             formData.append("link_to_paper", linkToPaper);
+            formData.append("my_work", myWork);
+
             if (image) {
                 formData.append("image", image);
             }
@@ -81,19 +94,14 @@ function PostCreateForm({ onPostCreated }) {
             const postRes = await api.post("/api/posts/create/", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
-                },requiresAuth: true
+                },
+                requiresAuth: true,
             });
 
             if (postRes.status === 201) {
                 alert("Post Created");
                 onPostCreated(postRes.data);
-                setTitle("");
-                setSubheading("");
-                setContent("");
-                setSelectedKeywords([]);
-                setLinkToPaper("");
-                setSelectedAuthors([]);
-                setImage(null);
+                resetForm();
             } else {
                 alert("Post Creation Was Not Successful");
             }
@@ -104,6 +112,17 @@ function PostCreateForm({ onPostCreated }) {
                 alert(`Error: ${JSON.stringify(err.response.data)}`);
             }
         }
+    };
+
+    const resetForm = () => {
+        setTitle("");
+        setSubheading("");
+        setContent("");
+        setSelectedKeywords([]);
+        setLinkToPaper("");
+        setSelectedAuthors([]);
+        setImage(null);
+        setMyWork(false);
     };
 
     const addKeyword = async () => {
@@ -130,76 +149,178 @@ function PostCreateForm({ onPostCreated }) {
     };
 
     const openModal = () => {
-        setModalContent(content);
         setIsModalOpen(true);
     };
 
-    const saveModalContent = () => {
-        setContent(modalContent);
+    const closeModal = () => {
         setIsModalOpen(false);
     };
 
     return (
-        <div className="create-post-section">
-            <h2>Create a Post</h2>
+        <Box sx={{ maxWidth: 800, margin: '0 auto', padding: 2 }}>
+            <Typography variant="h4" gutterBottom>
+                Create a Post
+            </Typography>
             <form onSubmit={createPost}>
-                <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" required />
-                <input type="text" value={subheading} onChange={(e) => setSubheading(e.target.value)} placeholder="Subheading" />
-                <div className="content-section">
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Content (accepts markdown)" required></textarea>
-                    <button type="button" onClick={openModal}>Enlarge</button>
-                </div>
-                <button type="button" onClick={saveModalContent}>Save Content</button>
-                <p>Keywords (hold Ctrl for multiple select) </p>
-                <input type="text" value={keywordSearch} onChange={handleKeywordSearch} placeholder="Search Keywords" />
-                <select multiple={true} value={selectedKeywords} onChange={handleKeywordChange}>
-                    {keywords.length > 0 ? (
-                        keywords.map((keyword) => (
-                            <option key={keyword.key_id} value={keyword.key_id}>
+                <TextField
+                    label="Title"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                />
+                <TextField
+                    label="Subheading"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    value={subheading}
+                    onChange={(e) => setSubheading(e.target.value)}
+                />
+                <Button variant="outlined" color="primary" onClick={openModal} sx={{ mb: 2 }}>
+                    Enlarge Content Editor
+                </Button>
+                <TextField
+                    label="Content"
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    rows={4}
+                    sx={{ mb: 2 }}
+                    value={content} // The content will remain here even after editing in the modal
+                    onChange={(e) => setContent(e.target.value)}
+                    required
+                />
+                <TextField
+                    label="Search Keywords"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    value={keywordSearch}
+                    onChange={handleKeywordSearch}
+                />
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel id="keyword-select-label">Keywords</InputLabel>
+                    <Select
+                        labelId="keyword-select-label"
+                        multiple
+                        value={selectedKeywords}
+                        onChange={handleKeywordChange}
+                        renderValue={(selected) => selected.map((id) => {
+                            const keyword = keywords.find(k => k.key_id === id);
+                            return keyword ? keyword.word : "";
+                        }).join(', ')}
+                    >
+                        {keywords.map((keyword) => (
+                            <MenuItem key={keyword.key_id} value={keyword.key_id}>
                                 {keyword.word}
-                            </option>
-                        ))
-                    ) : (
-                        <option disabled>No results</option>
-                    )}
-                </select>
-                <input type="text" value={newKeyword} onChange={(e) => setNewKeyword(e.target.value)} placeholder="Add Keyword" />
-                <button type="button" onClick={addKeyword}>Add Keyword</button>
-                <p>Authors (hold Ctrl for multiple select)</p>
-                <input type="text" value={authorSearch} onChange={handleAuthorSearch} placeholder="Search Authors" />
-                <select multiple={true} value={selectedAuthors} onChange={handleAuthorChange}>
-                    {authors.length > 0 ? (
-                        authors.map((author) => (
-                            <option key={author.id} value={author.id}>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <FormHelperText>Hold Ctrl to select multiple keywords</FormHelperText>
+                </FormControl>
+                {selectedKeywords.length > 0 && (
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="subtitle1">Selected Keywords:</Typography>
+                        {selectedKeywords.map((keywordId) => {
+                            const keyword = keywords.find(k => k.key_id === keywordId);
+                            return keyword ? (
+                                <Chip key={keyword.key_id} label={keyword.word} sx={{ margin: 0.5 }} />
+                            ) : null;
+                        })}
+                    </Box>
+                )}
+                
+                <Button variant="contained" color="secondary" onClick={addKeyword} sx={{ mb: 2 }}>
+                    Add New Keyword
+                </Button>
+                <TextField
+                    label="Search Authors"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    value={authorSearch}
+                    onChange={handleAuthorSearch}
+                />
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel id="author-select-label">Authors</InputLabel>
+                    <Select
+                        labelId="author-select-label"
+                        multiple
+                        value={selectedAuthors} // This is the selected authors state
+                        onChange={handleAuthorChange}
+                        renderValue={(selected) => selected.map((id) => {
+                            const author = authors.find(a => a.id === id);
+                            return author ? author.username : "";
+                        }).join(', ')}
+                    >
+                        {authors.map((author) => (
+                            <MenuItem key={author.id} value={author.id}>
                                 {author.username}
-                            </option>
-                        ))
-                    ) : (
-                        <option disabled>No results</option>
-                    )}
-                </select>
-                <input type="url" value={linkToPaper} onChange={(e) => setLinkToPaper(e.target.value)} placeholder="Link to Paper" />
-                <p>Upload an image</p>
-                <input type="file" onChange={(e) => setImage(e.target.files[0])} />
-                <button type="submit">Create Post</button>
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <FormHelperText>Hold Ctrl to select multiple authors</FormHelperText>
+                </FormControl>
+                {selectedAuthors.length > 0 && (
+                    <Box sx={{ mb: 2 }}>
+                        <Typography variant="subtitle1">Selected Authors:</Typography>
+                        {selectedAuthors.map((authorId) => {
+                            const author = authors.find(a => a.id === authorId);
+                            return author ? (
+                                <Chip key={author.id} label={author.username} sx={{ margin: 0.5 }} />
+                            ) : null;
+                        })}
+                    </Box>
+                )}
+                <TextField
+                    label="Link to Paper"
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                    value={linkToPaper}
+                    onChange={(e) => setLinkToPaper(e.target.value)}
+                />
+                <Button variant="contained" component="label" sx={{ mb: 2 }}>
+                    Upload Image
+                    <input type="file" hidden onChange={(e) => setImage(e.target.files[0])} />
+                </Button>
+                <Box className="checkbox-section">
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={myWork}
+                                onChange={(e) => setMyWork(e.target.checked)}
+                                color="primary"
+                            />
+                        }
+                        label="This is my work"
+                    />
+                </Box>
+                <Button type="submit" variant="contained" color="primary">
+                    Create Post
+                </Button>
             </form>
 
-            {isModalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <textarea
-                            value={modalContent}
-                            onChange={(e) => setModalContent(e.target.value)}
-                            placeholder="Content"
-                            style={{ height: "80vh", width: "100%" }}
-                            required
-                        ></textarea>
-                        <button type="button" onClick={saveModalContent}>Save</button>
-                        <button type="button" onClick={() => setIsModalOpen(false)}>Close</button>
-                    </div>
-                </div>
-            )}
-        </div>
+            <Modal open={isModalOpen} onClose={closeModal}>
+                <Box sx={{ width: '80%', height: '80vh', margin: 'auto', mt: 5, p: 2, backgroundColor: '#fff', boxShadow: 24 }}>
+                    <TextField
+                        label="Content"
+                        multiline
+                        rows={10}
+                        fullWidth
+                        value={content} // Directly bind the main content state
+                        onChange={(e) => setContent(e.target.value)}
+                        variant="outlined"
+                    />
+                    <Button variant="contained" color="primary" sx={{ mt: 2, mr: 2 }} onClick={closeModal}>
+                        Close
+                    </Button>
+                </Box>
+            </Modal>
+        </Box>
     );
 }
 

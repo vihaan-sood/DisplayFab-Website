@@ -3,7 +3,8 @@ import { useLocation, Link } from "react-router-dom";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
-import "../styles/ListView.css";
+import Centering from "../components/Centering"
+
 
 function ListView() {
     const [posts, setPosts] = useState([]);
@@ -77,27 +78,33 @@ function ListView() {
     return (
         <>
             <Header onSearch={setSearchQuery} />
-            <div className="list-view">
-                <h1>ListView</h1>
-                <div className="sort-options">
-                    <button onClick={() => setSortOrder("asc")}>Sort A-Z</button>
-                    <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
-                    <button onClick={() => setSortOrder("newest")}>Newest First</button>
-                    <button onClick={() => setSortOrder("oldest")}>Oldest First</button>
-                    <Link to="/listview" onClick={handleReset}>
-                        <button>Reset</button>
-                    </Link>
-                    <div>
-                        <h2>Posts</h2>
-                        {filteredPosts.map((post) => (
-                            <Post key={post.id} post={post} />
-                        ))}
+            <Centering>
+                <div className="list-view">
+                    <h1>ListView</h1>
+                    <div className="sort-options">
+                        <button onClick={() => setSortOrder("asc")}>Sort A-Z</button>
+                        <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
+                        <button onClick={() => setSortOrder("newest")}>Newest First</button>
+                        <button onClick={() => setSortOrder("oldest")}>Oldest First</button>
+                        <Link to="/listview" onClick={handleReset}>
+                            <button>Reset</button>
+                        </Link>
+
                     </div>
                 </div>
+            </Centering>
+
+            <Centering>
+                <div>
+                    <h2>Posts</h2>
+                    {filteredPosts.map((post) => (
+                        <Post key={post.id} post={post} />
+                    ))}
                 </div>
-            </>
-            );
+            </Centering>
+        </>
+    );
 }
 
-            export default ListView;
+export default ListView;
 
