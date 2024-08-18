@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
@@ -69,6 +69,11 @@ function ListView() {
         setFilteredPosts(sortedPosts);
     }, [sortOrder, filteredPosts]);
 
+    const handleReset = () => {
+        setSearchQuery("");  // Reset the search query
+    };
+
+
     return (
         <>
             <Header onSearch={setSearchQuery} />
@@ -79,18 +84,20 @@ function ListView() {
                     <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
                     <button onClick={() => setSortOrder("newest")}>Newest First</button>
                     <button onClick={() => setSortOrder("oldest")}>Oldest First</button>
-                    <button onClick={() => window.location.reload()}>Reset</button>
+                    <Link to="/listview" onClick={handleReset}>
+                        <button>Reset</button>
+                    </Link>
+                    <div>
+                        <h2>Posts</h2>
+                        {filteredPosts.map((post) => (
+                            <Post key={post.id} post={post} />
+                        ))}
+                    </div>
                 </div>
-                <div>
-                    <h2>Posts</h2>
-                    {filteredPosts.map((post) => (
-                        <Post key={post.id} post={post} />
-                    ))}
                 </div>
-            </div>
-        </>
-    );
+            </>
+            );
 }
 
-export default ListView;
+            export default ListView;
 

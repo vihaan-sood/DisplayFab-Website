@@ -1,11 +1,12 @@
 import "../styles/Header.css"
+
 import React from "react"
 import { Link } from "react-router-dom"
 import logo from "../assets/Untitled.png"
 
 import SearchBar from "./Searchbar"
 
-import { AppBar, Toolbar, Box, Typography } from "@mui/material";
+import { AppBar, Toolbar, Box, Typography, List, ListItem, ListItemText, Divider } from "@mui/material";
 
 import { FaRegUserCircle, FaSignOutAlt, FaUsers } from "react-icons/fa";
 import { BsQuestionCircleFill } from "react-icons/bs";
@@ -44,24 +45,61 @@ function Header({ onSearch }) {
                     >
                         Active Materials Library
                     </Typography>
-                    <Box sx={{ width: "60px" }} /> 
+                    <Box sx={{ width: "60px" }} />
                 </Toolbar>
             </AppBar>
-            <nav className="navbar">
-                <ul>
-                    <li><Link to="/login">Login</Link></li>
-                    <li><Link to="/register">Register</Link></li>
-                    <li>< SearchBar onSearch={onSearch} /></li>
-                    <li><Link to="/about" title="About Us" alt="About Us"><BsQuestionCircleFill /></Link></li>
-                    <li><Link to="/listview" title="All Posts" alt="All Posts"><ImBooks /></Link></li>
-                    <li><Link to="/logout" title="Log Out" alt="Log Out"> <FaSignOutAlt /></Link></li>
-                    <li><Link to="/users" title="Users" alt="Users"> <FaUsers /></Link></li>
-                    <li> <Link to="/createpost"><AiOutlinePlus /></Link></li>
-                    <li><Link to="/myprofile" alt="My Profile" title="My Profile"><FaRegUserCircle /></Link></li>
-                </ul>
+            <nav className="navbar" >
+           
+                    <List sx={{ display: "flex", alignItems: "center", padding: 0, width: "100%" }}>
+                        {/* Left side: Login and Register */}
+                        <Box className="oval-box">
+                            <ListItem className= "login_register" component={Link} to="/login">
+                                <ListItemText  primary="Login" />
+                            </ListItem>
+                            <Divider orientation="vertical" flexItem />
+                            <ListItem  className= "login_register" component={Link} to="/register">
+                                <ListItemText  primary="Register" />
+                            </ListItem>
+                        </Box>
+                
 
-            </nav>
-        </div>
+                {/* Center: Search Bar */}
+                <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", paddingX: 2 }}>
+                    <SearchBar onSearch={onSearch} />
+                </Box>
+
+                {/* Right side: Other Buttons */}
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/about">
+                        <BsQuestionCircleFill className="list-item" title="About Us" alt="About Us" />
+                    </ListItem>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/listview">
+                        <ImBooks className="list-item" title="All Posts" alt="All Posts" />
+                    </ListItem>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/logout">
+                        <FaSignOutAlt className="list-item" title="Log Out" alt="Log Out" />
+                    </ListItem>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/users">
+                        <FaUsers className="list-item" title="Users" alt="Users" />
+                    </ListItem>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/createpost">
+                        <AiOutlinePlus className="list-item" />
+                    </ListItem>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/myprofile">
+                        <FaRegUserCircle className="list-item" title="My Profile" alt="My Profile" />
+                    </ListItem>
+                </Box>
+            </List>
+        </nav>
+
+
+        </div >
     );
 };
 

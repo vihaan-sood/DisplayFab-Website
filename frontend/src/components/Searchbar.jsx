@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Searchbar.css"; 
+import { TextField, Button, Box } from "@mui/material";
 
 function SearchBar({ onSearch, initialQuery = "" }) {
     const [query, setQuery] = useState(initialQuery);
@@ -20,18 +20,35 @@ function SearchBar({ onSearch, initialQuery = "" }) {
     };
 
     return (
-        <form onSubmit={handleSearch} className="search-bar">
-            <input
-                type="text"
+        <Box
+            component="form"
+            onSubmit={handleSearch}
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1, // Adds space between the TextField and Button
+            }}
+        >
+            <TextField
+                variant="filled"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by keyword or title..."
+                size="small"
+                sx={{ flex: 1 }} // Makes the TextField take up available space
             />
-            <button type="submit">Search</button>
-        </form>
+            <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+            >
+                Search
+            </Button>
+        </Box>
     );
 }
 
 export default SearchBar;
+
 
 
