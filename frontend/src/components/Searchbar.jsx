@@ -26,24 +26,41 @@ function SearchBar({ onSearch, initialQuery = "" }) {
             sx={{
                 display: 'flex',
                 alignItems: 'center',
+                borderColor: "#ffffff",
                 gap: 1, // Adds space between the TextField and Button
+                width:'100%',
             }}
         >
             <TextField
-                variant="filled"
+                variant="outlined"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by keyword or title..."
-                size="small"
-                sx={{ flex: 1 }} // Makes the TextField take up available space
+                size="large"
+                sx={{
+                    flex: 1,
+                    backgroundColor: '#ffffff',
+                    color: '#FFFFFF',
+                    alignItems: 'center',
+                    borderRadius: '50px',
+                    borderColor: "#ffffff",
+                    padding: '0 10px',
+                    '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: 'transparent', // Removes the border
+                        }, '&:hover fieldset': {
+                            borderColor: 'transparent', // Removes the border on hover
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: 'transparent', // Removes the border when focused
+                        },
+
+
+                    }
+                }
+                }
             />
-            <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-            >
-                Search
-            </Button>
+
         </Box>
     );
 }

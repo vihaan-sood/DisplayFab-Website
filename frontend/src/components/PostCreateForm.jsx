@@ -19,10 +19,10 @@ import {
 function PostCreateForm({ onPostCreated }) {
     const [title, setTitle] = useState("");
     const [subheading, setSubheading] = useState("");
-    const [content, setContent] = useState(""); 
+    const [content, setContent] = useState("");
     const [selectedKeywords, setSelectedKeywords] = useState([]);
     const [linkToPaper, setLinkToPaper] = useState("");
-    const [authors, setAuthors] = useState([]); 
+    const [authors, setAuthors] = useState([]);
     const [selectedAuthors, setSelectedAuthors] = useState([]);
     const [keywords, setKeywords] = useState([]);
     const [image, setImage] = useState(null);
@@ -31,6 +31,7 @@ function PostCreateForm({ onPostCreated }) {
     const [keywordSearch, setKeywordSearch] = useState("");
     const [authorSearch, setAuthorSearch] = useState("");
     const [myWork, setMyWork] = useState(false);
+    const [imageName, setImageName] = useState("");
 
     useEffect(() => {
         fetchKeywords();
@@ -125,18 +126,26 @@ function PostCreateForm({ onPostCreated }) {
         setMyWork(false);
     };
 
-    const addKeyword = async () => {
+    const addKeyword = async (keyword) => {
         try {
-            const res = await api.post("/api/keywords/create/", { word: newKeyword }, { requiresAuth: true });
+            const res = await api.post("/api/keywords/create/", { word: keyword }, { requiresAuth: true });
             if (res.status === 201) {
                 setNewKeyword("");
                 fetchKeywords();
                 alert("Keyword Added");
+            } else {
+                console.error("Keyword creation returned unexpected status:", res.status);
             }
         } catch (err) {
             console.error("Error adding keyword:", err);
+            if (err.response) {
+                console.error("Server response:", err.response.data);
+                alert(`Error: ${JSON.stringify(err.response.data)}`);
+            }
         }
     };
+
+
 
     const handleKeywordSearch = (e) => {
         setKeywordSearch(e.target.value);
@@ -156,9 +165,17 @@ function PostCreateForm({ onPostCreated }) {
         setIsModalOpen(false);
     };
 
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImage(file);
+            setImageName(file.name);
+        }
+    };
+
     return (
         <Box sx={{ maxWidth: 800, margin: '0 auto', padding: 2 }}>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom >
                 Create a Post
             </Typography>
             <form onSubmit={createPost}>
@@ -219,7 +236,7 @@ function PostCreateForm({ onPostCreated }) {
                             </MenuItem>
                         ))}
                     </Select>
-                    <FormHelperText>Hold Ctrl to select multiple keywords</FormHelperText>
+
                 </FormControl>
                 {selectedKeywords.length > 0 && (
                     <Box sx={{ mb: 2 }}>
@@ -232,8 +249,18 @@ function PostCreateForm({ onPostCreated }) {
                         })}
                     </Box>
                 )}
-                
-                <Button variant="contained" color="secondary" onClick={addKeyword} sx={{ mb: 2 }}>
+
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => {
+                        const keyword = window.prompt("Enter a new keyword:");
+                        if (keyword) {
+                            addKeyword(keyword);
+                        }
+                    }}
+                    sx={{ mb: 2 }}
+                >
                     Add New Keyword
                 </Button>
                 <TextField
@@ -262,7 +289,7 @@ function PostCreateForm({ onPostCreated }) {
                             </MenuItem>
                         ))}
                     </Select>
-                    <FormHelperText>Hold Ctrl to select multiple authors</FormHelperText>
+
                 </FormControl>
                 {selectedAuthors.length > 0 && (
                     <Box sx={{ mb: 2 }}>
@@ -285,8 +312,13 @@ function PostCreateForm({ onPostCreated }) {
                 />
                 <Button variant="contained" component="label" sx={{ mb: 2 }}>
                     Upload Image
-                    <input type="file" hidden onChange={(e) => setImage(e.target.files[0])} />
+                    <input type="file" hidden onChange={handleImageUpload} />
                 </Button>
+                {imageName && (
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                        Uploaded file: {imageName}
+                    </Typography>
+                )}
                 <Box className="checkbox-section">
                     <FormControlLabel
                         control={
@@ -296,7 +328,7 @@ function PostCreateForm({ onPostCreated }) {
                                 color="primary"
                             />
                         }
-                        label="This is my work"
+                        label="This is my/our original work"
                     />
                 </Box>
                 <Button type="submit" variant="contained" color="primary">
@@ -305,21 +337,45 @@ function PostCreateForm({ onPostCreated }) {
             </form>
 
             <Modal open={isModalOpen} onClose={closeModal}>
-                <Box sx={{ width: '80%', height: '80vh', margin: 'auto', mt: 5, p: 2, backgroundColor: '#fff', boxShadow: 24 }}>
+                <Box
+                    sx={{
+                        width: '80%',
+                        height: '80%',
+                        margin: 'auto',
+                        mt: 5,
+                        p: 2,
+                        backgroundColor: '#fff',
+                        boxShadow: 24,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between' // To push the button down
+                    }}
+                >
                     <TextField
                         label="Content"
                         multiline
-                        rows={10}
+                        rows={30}
                         fullWidth
-                        value={content} // Directly bind the main content state
+                        value={content}
                         onChange={(e) => setContent(e.target.value)}
                         variant="outlined"
+                        sx={{
+                            flexGrow: 1,
+                            width: '100%',
+                            height: '80%'
+                        }}
                     />
-                    <Button variant="contained" color="primary" sx={{ mt: 2, mr: 2 }} onClick={closeModal}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{ mt: 2, alignSelf: 'flex-end' }}
+                        onClick={closeModal}
+                    >
                         Close
                     </Button>
                 </Box>
             </Modal>
+
         </Box>
     );
 }
