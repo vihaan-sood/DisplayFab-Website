@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { Button, Box, Typography, Grid } from "@mui/material";
 import api from "../api";
 import Post from "../components/Post";
 import Header from "../components/Header";
-import Centering from "../components/Centering"
-
 
 function ListView() {
     const [posts, setPosts] = useState([]);
@@ -71,40 +70,52 @@ function ListView() {
     }, [sortOrder, filteredPosts]);
 
     const handleReset = () => {
-        setSearchQuery("");  // Reset the search query
+        setSearchQuery(""); // Reset the search query
     };
-
 
     return (
         <>
             <Header onSearch={setSearchQuery} />
-            <Centering>
-                <div className="list-view">
-                    <h1>ListView</h1>
-                    <div className="sort-options">
-                        <button onClick={() => setSortOrder("asc")}>Sort A-Z</button>
-                        <button onClick={() => setSortOrder("desc")}>Sort Z-A</button>
-                        <button onClick={() => setSortOrder("newest")}>Newest First</button>
-                        <button onClick={() => setSortOrder("oldest")}>Oldest First</button>
-                        <Link to="/listview" onClick={handleReset}>
-                            <button>Reset</button>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Box sx={{ maxWidth: 800, width: "100%", textAlign: "center" }}>
+                    <Typography variant="h4" gutterBottom>
+                        The Shelves
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 4 }}>
+                        <Button variant="outlined" onClick={() => setSortOrder("asc")}>
+                            Sort A-Z
+                        </Button>
+                        <Button variant="outlined" onClick={() => setSortOrder("desc")}>
+                            Sort Z-A
+                        </Button>
+                        <Button variant="outlined" onClick={() => setSortOrder("newest")}>
+                            Newest First
+                        </Button>
+                        <Button variant="outlined" onClick={() => setSortOrder("oldest")}>
+                            Oldest First
+                        </Button>
+                        <Link to="/listview" onClick={handleReset} style={{ textDecoration: "none" }}>
+                            <Button variant="outlined">Reset</Button>
                         </Link>
+                    </Box>
+                </Box>
+            </Box>
 
-                    </div>
-                </div>
-            </Centering>
-
-            <Centering>
-                <div>
-                    <h2>Posts</h2>
-                    {filteredPosts.map((post) => (
-                        <Post key={post.id} post={post} />
-                    ))}
-                </div>
-            </Centering>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ maxWidth: 1200, width: "100%" }}>
+                    <Grid container spacing={2}>
+                        {filteredPosts.map((post) => (
+                            <Grid item xs={12} key={post.id}>
+                                <Post post={post} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            </Box>
         </>
     );
 }
 
 export default ListView;
+
 

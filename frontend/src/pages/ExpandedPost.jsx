@@ -5,11 +5,11 @@ import gfm from 'remark-gfm';
 import api from "../api";
 import Header from "../components/Header";
 import ClickableTag from "../components/ClickableTag";
-import { Typography, Box, Button } from "@mui/material";
-import ToLocalDate from "../components/ToLocalDate";
-import { FaRegCircleCheck  } from "react-icons/fa6";
+import ToLocalDate from "../utils/ToLocalDate";
+import { FaRegCircleCheck } from "react-icons/fa6";
 import { RxCrossCircled } from "react-icons/rx";
 import Carousel from "../components/Carousel";
+import { Typography, Box, Button, Paper, Divider } from "@mui/material";
 
 import "../styles/ExpandedPost.css";
 
@@ -64,57 +64,82 @@ function ExpandedPostPage() {
     return (
         <>
             <Header />
-            <div className="expanded-post-container">
-                <h1>{post.title}</h1>
-                <ToLocalDate dateString={post.date_created} />
-                <h2>{post.subheading}</h2>
-                <div className="post-authors">
-                    <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
-                </div>
-                <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
-                    <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
-                        {post.keywords && post.keywords.map((keyword) => (
-                            <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
-                        ))}
+            <Box sx={{ maxWidth: '800px', margin: 'auto', padding: 3 }}>
+                <Paper elevation={3} sx={{ padding: 3 }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <Typography variant="h4" gutterBottom>
+                            {post.title}
+                        </Typography>
+                        <ToLocalDate dateString={post.date_created} />
+                        <Typography variant="h6" sx={{ marginTop: 2 }}>
+                            {post.subheading}
+                        </Typography>
                     </Box>
-                </Typography>
-                <a className="post-link" href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
-                    Link to Paper
-                </a>
-                {post.image && (
-                    <img className="post-image" src={post.image} alt={post.title} onError={(e) => e.target.style.display = 'none'} />
-                )}
-                <div className="markdown-content">
-                    <ReactMarkdown remarkPlugins={[gfm]}>{markdown}</ReactMarkdown>
-                </div>
-                <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
-                    <Box component="span" sx={{ fontWeight: 'bold' }}>My Work:{" "}</Box>
-                    <Box component="span" sx={{ display: 'flex', alignItems: 'center', marginLeft: 1 }}>
-                        {post.my_work ? (
-                            <FaRegCircleCheck/>
-                        ) : (
-                            <RxCrossCircled/>
-                        )}
-                        <Box component="span" sx={{ marginLeft: 1 }}>
-                            {post.my_work ? "The contents of this post are original" : "This is not my work"}
+                    <Divider sx={{ marginY: 2 }} />
+                    <Typography variant="body1" sx={{ textAlign: 'center', marginBottom: 2 }}>
+                        <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
+                    </Typography>
+                    <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
+                        <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                            {post.keywords && post.keywords.map((keyword) => (
+                                <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
+                            ))}
+                        </Box>
+                    </Typography>
+                    <Box sx={{ textAlign: 'center' }}>
+                        <a href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
+                            <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
+                                Link to Paper
+                            </Button>
+                        </a>
+                    </Box>
+                    {post.image && (
+                        <Box sx={{ textAlign: 'center', marginY: 3 }}>
+                            <img
+                                src={post.image}
+                                alt={post.title}
+                                style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: 8 }}
+                            />
+                        </Box>
+                    )}
+                    <Divider sx={{ marginY: 2 }} />
+                    <Box className="markdown-content" sx={{ marginBottom: 3 }}>
+                        <ReactMarkdown remarkPlugins={[gfm]}>{markdown}</ReactMarkdown>
+                    </Box>
+                    <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+                        <Box component="span" sx={{ display: 'flex', alignItems: 'center', marginLeft: 1 }}>
+                            {post.my_work ? (
+                                <FaRegCircleCheck />
+                            ) : (
+                                <RxCrossCircled />
+                            )}
+                            <Box component="span" sx={{ marginLeft: 1 }}>
+                                {post.my_work ? "The contents of this post are original" : "This is not my work"}
+                            </Box>
+                        </Box>
+                    </Typography>
+                    <Box sx={{ textAlign: 'center', marginTop: 3 }}>
+                        <Button
+                            component={Link}
+                            to={`/report/${id}`}
+                            variant="outlined"
+                            color="error"
+                        >
+                            Report Post
+                        </Button>
+                    </Box>
+                    <Box sx={{ marginY: 4 }}>
+                        <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>Linked Posts</Typography>
+                        <Box sx={{ width: '100%', marginX: 'auto' }}>
+                            {linkedPosts.length > 0 && (
+                                <Carousel items={linkedPosts} sx={{ width: '100%', height: '500px' }} />
+                            )}
                         </Box>
                     </Box>
-                </Typography>
-                <Button component={Link} to={`/report/${id}`} variant="contained" color="secondary" sx={{ marginTop: 2 }}>
-                    Report Post
-                </Button>
-
-                <Box sx={{ marginY: 2 }}>
-                    <Typography variant="h6">Linked Posts</Typography>
-                    <Box sx={{ marginTop: 2 }}>
-                        {linkedPosts.length > 0 && (
-                            <Carousel items={linkedPosts} />
-                        )}
-                    </Box>
-                </Box>
-
-            </div>
+                </Paper>
+            </Box>
         </>
     );
 }
