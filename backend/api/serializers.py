@@ -53,18 +53,28 @@ class PostSerialiser(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'subheading', 'content', 
             'keywords', 'link_to_paper', 'authors', 
-            'image', 'date_created', 'my_work', 'report_count'
+            'image', 'date_created', 'my_work', 'report_count', 'creation_user'
         ]
 
     def create(self, validated_data):
+ 
         keywords_data = validated_data.pop('keywords')
         authors_data = validated_data.pop('authors')
-        content_data = validated_data.pop('content')
+        content_data = validated_data.pop('content', None)
 
         content = MarkdownText.objects.create(**content_data)
-        
+ 
+   
 
-        post = Post.objects.create(content=content, **validated_data)
+        request = self.context.get('request')
+        creation_user = request.user
+
+        post = Post.objects.create(
+            content=content, 
+            creation_user=creation_user, 
+            **validated_data
+        )
+
         
 
         post.keywords.set(keywords_data)

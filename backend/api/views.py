@@ -172,3 +172,11 @@ class LinkedPostListView(generics.ListAPIView):
     def get_queryset(self):
         post_id  = self.kwargs['pk']
         return LinkedPost.objects.filter(post1=post_id)
+    
+class LinkedPostCreateView(generics.CreateAPIView):
+    serializer_class = LinkedPostSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save()
+

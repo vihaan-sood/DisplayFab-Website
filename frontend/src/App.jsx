@@ -15,6 +15,7 @@ import ExpandedPostPage from "./pages/ExpandedPost";
 import UserList from "./pages/UserList";
 import MyProfile from "./pages/MyProfile";
 import ReportPage from "./components/ReportPage";
+import PostLinking from "./pages/PostLinking";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -74,6 +75,14 @@ function App() {
             <ProtectedRoute>
               <UserProvider>
                 <ReportPage />
+              </UserProvider>
+            </ProtectedRoute>
+          } />
+          
+          <Route path="/postlinking" element={
+            <ProtectedRoute>
+              <UserProvider>
+                <PostLinking  />
               </UserProvider>
             </ProtectedRoute>
           } />

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../api";
 import {
     TextField,
@@ -7,14 +8,17 @@ import {
     MenuItem,
     InputLabel,
     FormControl,
-    FormHelperText,
     Box,
     Typography,
     Modal,
     Checkbox,
     FormControlLabel,
     Chip,
+    Slider,
 } from "@mui/material";
+
+import Cropper from "react-easy-crop";
+import { getCroppedImg } from "../utils/getCroppedImg";
 
 function PostCreateForm({ onPostCreated }) {
     const [title, setTitle] = useState("");
@@ -32,6 +36,13 @@ function PostCreateForm({ onPostCreated }) {
     const [authorSearch, setAuthorSearch] = useState("");
     const [myWork, setMyWork] = useState(false);
     const [imageName, setImageName] = useState("");
+    const navigate = useNavigate();
+
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+    const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+    const [croppingImage, setCroppingImage] = useState(null);
 
     useEffect(() => {
         fetchKeywords();
@@ -82,14 +93,19 @@ function PostCreateForm({ onPostCreated }) {
             const formData = new FormData();
             formData.append("title", title);
             formData.append("subheading", subheading);
-            formData.append("content", JSON.stringify({ content }));
+            formData.append("content",content ); 
+            console.log(content)
             selectedKeywords.forEach(keyword => formData.append("keywords", keyword));
             selectedAuthors.forEach(author => formData.append("authors", author));
             formData.append("link_to_paper", linkToPaper);
             formData.append("my_work", myWork);
 
             if (image) {
-                formData.append("image", image);
+                formData.append("image", image, imageName); // Attach image with its name
+            }
+
+            for (let [key, value] of formData.entries()) {
+                console.log(`${key}: ${value}`);
             }
 
             const postRes = await api.post("/api/posts/create/", formData, {
@@ -99,10 +115,14 @@ function PostCreateForm({ onPostCreated }) {
                 requiresAuth: true,
             });
 
+            
+
             if (postRes.status === 201) {
                 alert("Post Created");
                 onPostCreated(postRes.data);
+                const createdPostId = postRes.data.id;
                 resetForm();
+                navigate(`/postlinking`, { state: { postId: createdPostId } });
             } else {
                 alert("Post Creation Was Not Successful");
             }
@@ -123,6 +143,7 @@ function PostCreateForm({ onPostCreated }) {
         setLinkToPaper("");
         setSelectedAuthors([]);
         setImage(null);
+        setImageName("");
         setMyWork(false);
     };
 
@@ -145,8 +166,6 @@ function PostCreateForm({ onPostCreated }) {
         }
     };
 
-
-
     const handleKeywordSearch = (e) => {
         setKeywordSearch(e.target.value);
         fetchKeywords(e.target.value);
@@ -161,16 +180,38 @@ function PostCreateForm({ onPostCreated }) {
         setIsModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
     const handleImageUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setImage(file);
+            const reader = new FileReader();
+            reader.onload = () => {
+                setCroppingImage(reader.result);
+                setIsCropModalOpen(true);
+            };
+            reader.readAsDataURL(file);
             setImageName(file.name);
         }
+    };
+
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    }, []);
+
+    const handleCropSave = async () => {
+        try {
+            const croppedImageBlob = await getCroppedImg(croppingImage, croppedAreaPixels);
+            setImage(croppedImageBlob);
+            setIsCropModalOpen(false);
+            alert("Cropped image saved successfully!");
+        } catch (err) {
+            console.error("Error cropping image:", err);
+            alert("Failed to crop image.");
+        }
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setIsCropModalOpen(false);
     };
 
     return (
@@ -206,7 +247,7 @@ function PostCreateForm({ onPostCreated }) {
                     multiline
                     rows={4}
                     sx={{ mb: 2 }}
-                    value={content} // The content will remain here even after editing in the modal
+                    value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
                 />
@@ -236,7 +277,6 @@ function PostCreateForm({ onPostCreated }) {
                             </MenuItem>
                         ))}
                     </Select>
-
                 </FormControl>
                 {selectedKeywords.length > 0 && (
                     <Box sx={{ mb: 2 }}>
@@ -249,7 +289,6 @@ function PostCreateForm({ onPostCreated }) {
                         })}
                     </Box>
                 )}
-
                 <Button
                     variant="contained"
                     color="secondary"
@@ -276,7 +315,7 @@ function PostCreateForm({ onPostCreated }) {
                     <Select
                         labelId="author-select-label"
                         multiple
-                        value={selectedAuthors} // This is the selected authors state
+                        value={selectedAuthors}
                         onChange={handleAuthorChange}
                         renderValue={(selected) => selected.map((id) => {
                             const author = authors.find(a => a.id === id);
@@ -289,7 +328,6 @@ function PostCreateForm({ onPostCreated }) {
                             </MenuItem>
                         ))}
                     </Select>
-
                 </FormControl>
                 {selectedAuthors.length > 0 && (
                     <Box sx={{ mb: 2 }}>
@@ -314,6 +352,51 @@ function PostCreateForm({ onPostCreated }) {
                     Upload Image
                     <input type="file" hidden onChange={handleImageUpload} />
                 </Button>
+                <Modal open={isCropModalOpen} onClose={closeModal}>
+                    <Box
+                        sx={{
+                            width: '80%',
+                            height: '80%',
+                            margin: 'auto',
+                            mt: 5,
+                            p: 2,
+                            backgroundColor: 'grey',
+                            boxShadow: 24,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            position: 'relative',
+                        }}
+                    >
+                        {croppingImage && (
+                            <Cropper
+                                image={croppingImage}
+                                crop={crop}
+                                zoom={zoom}
+                                aspect={4 / 3}
+                                onCropChange={setCrop}
+                                onCropComplete={onCropComplete}
+                                onZoomChange={setZoom}
+                            />
+                        )}
+                        <Slider
+                            value={zoom}
+                            min={1}
+                            max={3}
+                            step={0.1}
+                            onChange={(e, zoom) => setZoom(zoom)}
+                            sx={{ mt: 2 }}
+                        />
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            sx={{ mt: 2, alignSelf: 'flex-end' }}
+                            onClick={handleCropSave}
+                        >
+                            Save Cropped Image
+                        </Button>
+                    </Box>
+                </Modal>
                 {imageName && (
                     <Typography variant="body2" sx={{ mb: 2 }}>
                         Uploaded file: {imageName}
@@ -348,7 +431,7 @@ function PostCreateForm({ onPostCreated }) {
                         boxShadow: 24,
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'space-between' // To push the button down
+                        justifyContent: 'space-between'
                     }}
                 >
                     <TextField
@@ -375,10 +458,10 @@ function PostCreateForm({ onPostCreated }) {
                     </Button>
                 </Box>
             </Modal>
-
         </Box>
     );
 }
 
 export default PostCreateForm;
+
 
