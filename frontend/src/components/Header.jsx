@@ -22,17 +22,17 @@ function Header({ onSearch }) {
                 sx={{
                     backgroundColor: "transparent",
                     boxShadow: "none",
-                    padding: "30px 0", // Increase vertical padding for height
+                    padding: "30px 20px",
                 }}
             >
                 <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Link to="/">
-                            <img src={logo} alt="logo" style={{ height: "60px", marginRight: "15px" }} /> {/* Increase logo height */}
+                            <img src={logo} alt="logo" style={{ height: "100px", marginRight: "0px" }} /> 
                         </Link>
                     </Box>
                     <Typography
-                        variant="h4"
+                        variant="h2"
                         component={Link}
                         to="/"
                         sx={{
@@ -65,6 +65,7 @@ function Header({ onSearch }) {
 
                 {/* Center: Search Bar */}
                 <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", paddingX: 2 }}>
+
                     <SearchBar onSearch={onSearch} />
                 </Box>
 
@@ -72,27 +73,27 @@ function Header({ onSearch }) {
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/about">
-                        <BsQuestionCircleFill className="list-item" title="About Us" alt="About Us" />
+                        <BsQuestionCircleFill size = {30} className="list-item" title="About Us" alt="About Us" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/listview">
-                        <ImBooks className="list-item" title="All Posts" alt="All Posts" />
+                        <ImBooks size = {30}  className="list-item" title="All Posts" alt="All Posts" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/logout">
-                        <FaSignOutAlt className="list-item" title="Log Out" alt="Log Out" />
+                        <FaSignOutAlt size = {30}   className="list-item" title="Log Out" alt="Log Out" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/users">
-                        <FaUsers className="list-item" title="Users" alt="Users" />
+                        <FaUsers size = {30}  className="list-item" title="Users" alt="Users" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/createpost">
-                        <AiOutlinePlus className="list-item" />
+                        <AiOutlinePlus size = {30}  className="list-item" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/myprofile">
-                        <FaRegUserCircle className="list-item" title="My Profile" alt="My Profile" />
+                        <FaRegUserCircle size = {30}  className="list-item" title="My Profile" alt="My Profile" />
                     </ListItem>
                 </Box>
             </List>

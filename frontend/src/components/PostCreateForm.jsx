@@ -90,20 +90,25 @@ function PostCreateForm({ onPostCreated }) {
         e.preventDefault();
 
         try {
+            // Step 1: Create the MarkdownText
+            const markdownRes = await api.post("/api/markdowntext/create/", { content });
+            const markdownTextId = markdownRes.data.id;
+
+            // Step 2: Create the Post using the markdownTextId
             const formData = new FormData();
             formData.append("title", title);
             formData.append("subheading", subheading);
-            formData.append("content",content ); 
-            console.log(content)
-            selectedKeywords.forEach(keyword => formData.append("keywords", keyword));
-            selectedAuthors.forEach(author => formData.append("authors", author));
+            formData.append("content", markdownTextId); // Use the ID of the created MarkdownText
+            selectedKeywords.forEach((keyword) => formData.append("keywords", keyword));
+            selectedAuthors.forEach((author) => formData.append("authors", author));
             formData.append("link_to_paper", linkToPaper);
             formData.append("my_work", myWork);
 
             if (image) {
-                formData.append("image", image, imageName); // Attach image with its name
+                formData.append("image", image, imageName);
             }
 
+            console.log("FormData content:");
             for (let [key, value] of formData.entries()) {
                 console.log(`${key}: ${value}`);
             }
@@ -114,8 +119,6 @@ function PostCreateForm({ onPostCreated }) {
                 },
                 requiresAuth: true,
             });
-
-            
 
             if (postRes.status === 201) {
                 alert("Post Created");
@@ -134,7 +137,6 @@ function PostCreateForm({ onPostCreated }) {
             }
         }
     };
-
     const resetForm = () => {
         setTitle("");
         setSubheading("");

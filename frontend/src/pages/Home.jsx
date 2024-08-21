@@ -53,7 +53,8 @@ function Home() {
                             </Typography>
                         }
                     >
-                        <Box sx={{ maxWidth: '1200px', width: '100%', margin: 'auto' }}>
+                        <Box sx={{ maxWidth: '1200px', width: '100%', margin: 'auto', padding: "10px" }}>
+
                             <Grid container spacing={2}>
                                 {posts.map((post) => (
                                     <Grid item xs={12} sm={6} md={4} lg={3} key={post.id}>

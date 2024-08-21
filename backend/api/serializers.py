@@ -45,7 +45,7 @@ class MarkdownTextSerializer(serializers.ModelSerializer):
 class PostSerialiser(serializers.ModelSerializer):
     keywords = serializers.PrimaryKeyRelatedField(queryset=Keywords.objects.all(), many=True)
     authors = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), many=True)
-    content = MarkdownTextSerializer()
+    content = serializers.PrimaryKeyRelatedField(queryset=MarkdownText.objects.all())
     creation_user = UserSerialiser(read_only=True)
 
     class Meta:
@@ -60,17 +60,13 @@ class PostSerialiser(serializers.ModelSerializer):
  
         keywords_data = validated_data.pop('keywords')
         authors_data = validated_data.pop('authors')
-        content_data = validated_data.pop('content', None)
-
-        content = MarkdownText.objects.create(**content_data)
- 
+        validated_data.pop('creation_user', None)
    
 
         request = self.context.get('request')
         creation_user = request.user
 
         post = Post.objects.create(
-            content=content, 
             creation_user=creation_user, 
             **validated_data
         )
@@ -81,7 +77,7 @@ class PostSerialiser(serializers.ModelSerializer):
         post.authors.set(authors_data)
 
         for keyword in keywords_data:
-            Keywords.objects.filter(pk=keyword.pk).update(occurrences=F('occurrences') + 1)
+            Keywords.objects.filter(pk=keyword.pk).update(occurances=F('occurances') + 1)
 
         return post
     

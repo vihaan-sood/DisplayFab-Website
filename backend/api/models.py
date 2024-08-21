@@ -8,7 +8,7 @@ class Keywords(models.Model):
     key_id = models.AutoField(primary_key=True)
     word = models.CharField(max_length=15)
     IsRegistered = models.BooleanField(null= True)
-    occurances = models.IntegerField(default=0)
+    occurances = models.IntegerField(default=0) #typo in spelling, too late to change
 
     def __str__(self):
         return self.word

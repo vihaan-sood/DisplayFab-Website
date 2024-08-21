@@ -38,10 +38,8 @@ class PostCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        post = serializer.save(creation_user=self.request.user)
-        for keyword in post.keywords.all():
-            Keywords.objects.filter(key_id=keyword.key_id).update(occurances=F('occurances') + 1)
-
+        serializer.save(creation_user=self.request.user)
+        
 class PostDetails(generics.RetrieveAPIView):
     queryset = Post.objects.all()
     serializer_class = ReadOnlyPostSerialiser
