@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import api from "../api";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
-// import "../styles/UserList.css";
+import { Box, Typography, List, ListItem, Divider, TextField } from "@mui/material";
+import ClickableTag from "../components/ClickableTag";
 
 function UserList() {
     const [users, setUsers] = useState([]);
@@ -35,26 +36,49 @@ function UserList() {
     };
 
     return (
-        <div className="user-list">
-            <Header />
-            <h1>User List</h1>
-            <input
-                type="text"
-                value={searchQuery}
-                onChange={handleSearch}
-                placeholder="Search users by username"
-            />
-            <ul>
-                {users.map((user) => (
-                    <li key={user.id}>
-                        <Link to={`/userprofile/${user.id}`}>
-                          
-                            {user.username}
-                        </Link>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <Header onSearch={setSearchQuery} />
+            <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
+
+                <Typography variant="h4" gutterBottom>
+                    User List
+                </Typography>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    value={searchQuery}
+                    onChange={handleSearch}
+                    placeholder="Search users by username"
+                    sx={{ marginBottom: 2 }}
+                />
+                <List>
+                    {users.map((user) => (
+                        <React.Fragment key={user.id}>
+                            <ListItem alignItems="flex-start">
+                                <Box sx={{ width: "100%" }}>
+                                    <Typography variant="h6" component={Link} to={`/userprofile/${user.id}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
+                                        {user.username}
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
+                                        <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                                            {user.user_keywords && user.user_keywords.length > 0 ? (
+                                                user.user_keywords.map((keyword) => (
+                                                    <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
+                                                ))
+                                            ) : (
+                                                <Typography variant="body2" color="textSecondary">No keywords available</Typography>
+                                            )}
+                                        </Box>
+                                    </Typography>
+                                </Box>
+                            </ListItem>
+                            <Divider component="li" />
+                        </React.Fragment>
+                    ))}
+                </List>
+            </Box>
+        </>
     );
 }
 

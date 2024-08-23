@@ -27,7 +27,6 @@ function SearchBar({ onSearch, initialQuery = "" }) {
                 display: 'flex',
                 alignItems: 'center',
                 borderColor: "#ffffff",
-                gap: 1, // Adds space between the TextField and Button
                 width:'100%',
             }}
         >
@@ -36,6 +35,7 @@ function SearchBar({ onSearch, initialQuery = "" }) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by keyword or title..."
+                fullWidth 
                 size="large"
                 sx={{
                     flex: 1,

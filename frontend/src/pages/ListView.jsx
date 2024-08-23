@@ -65,7 +65,7 @@ function ListView() {
             sortedPosts.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
         } else if (sortOrder === "oldest") {
             sortedPosts.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
-        }
+        } 
         setFilteredPosts(sortedPosts);
     }, [sortOrder, filteredPosts]);
 
@@ -82,20 +82,32 @@ function ListView() {
                         The Shelves
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 4 }}>
-                        <Button variant="outlined" onClick={() => setSortOrder("asc")}>
+                    <Button 
+                            variant={sortOrder === "asc" ? "contained" : "outlined"} 
+                            onClick={() => setSortOrder("asc")}
+                        >
                             Sort A-Z
                         </Button>
-                        <Button variant="outlined" onClick={() => setSortOrder("desc")}>
+                        <Button 
+                            variant={sortOrder === "desc" ? "contained" : "outlined"} 
+                            onClick={() => setSortOrder("desc")}
+                        >
                             Sort Z-A
                         </Button>
-                        <Button variant="outlined" onClick={() => setSortOrder("newest")}>
+                        <Button 
+                            variant={sortOrder === "newest" ? "contained" : "outlined"} 
+                            onClick={() => setSortOrder("newest")}
+                        >
                             Newest First
                         </Button>
-                        <Button variant="outlined" onClick={() => setSortOrder("oldest")}>
+                        <Button 
+                            variant={sortOrder === "oldest" ? "contained" : "outlined"} 
+                            onClick={() => setSortOrder("oldest")}
+                        >
                             Oldest First
                         </Button>
                         <Link to="/listview" onClick={handleReset} style={{ textDecoration: "none" }}>
-                            <Button variant="outlined">Reset</Button>
+                            <Button variant="outlined">Reset </Button>
                         </Link>
                     </Box>
                 </Box>
