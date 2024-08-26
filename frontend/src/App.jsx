@@ -16,6 +16,7 @@ import UserList from "./pages/UserList";
 import MyProfile from "./pages/MyProfile";
 import ReportPage from "./components/ReportPage";
 import PostLinking from "./pages/PostLinking";
+import EmailVerification from "./pages/EmailVerification";
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -78,15 +79,16 @@ function App() {
               </UserProvider>
             </ProtectedRoute>
           } />
-          
+
           <Route path="/postlinking" element={
             <ProtectedRoute>
               <UserProvider>
-                <PostLinking  />
+                <PostLinking />
               </UserProvider>
             </ProtectedRoute>
           } />
 
+          <Route path="/verifyemail" element={<EmailVerification />} />
           <Route path="/markdowntext/:pk" element={<MarkdownPage />} />
           <Route path="/post/:id" element={<ExpandedPostPage />} />
           <Route path="*" element={<NotFound />} />

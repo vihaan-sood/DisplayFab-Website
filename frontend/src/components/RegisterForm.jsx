@@ -37,7 +37,7 @@ function RegisterForm() {
                     "Content-Type": "application/json",
                 },
             });
-            navigate("/login");
+            navigate("/verifyemail", { state: { email: email } });
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 400) {

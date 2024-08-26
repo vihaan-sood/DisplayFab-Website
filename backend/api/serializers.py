@@ -3,6 +3,8 @@ from rest_framework import serializers
 from .models import *
 from django.db.models import F
 
+from .emails import send_email_code
+
 
 class KeywordSerialiser(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +28,7 @@ class UserSerialiser(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('password2')
         user = CustomUser.objects.create_user(**validated_data)
+        send_email_code(user.email)
         return user
     
 
@@ -126,3 +129,17 @@ class LinkedPostSerialiser(serializers.ModelSerializer):
         return linked_post
 
 
+class EmailVerificationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    verification_code = serializers.IntegerField()
+
+    def validate(self, data):
+        try:
+            user = CustomUser.objects.get(email=data['email'])
+        except CustomUser.DoesNotExist:
+            raise serializers.ValidationError("User with this email does not exist.")
+
+        if user.verification_code != data['verification_code']:
+            raise serializers.ValidationError("Invalid verification code.")
+
+        return data

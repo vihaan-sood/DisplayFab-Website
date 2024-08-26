@@ -14,24 +14,33 @@ function Form({ route, method }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         setLoading(true);
         try {
-           
+
             const res = await api.post(route, { username, password });
-            
+
             if (method === "login") {
-               
+
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
                 navigate("/");
             } else {
-                
+
                 navigate("/login");
             }
         } catch (error) {
-            
-            alert(error);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    alert("Credentials not recognised (Please make sure your email is verified)")
+                }
+
+                else {
+                    alert(error);
+                }
+            } else {
+                alert("An unexpected error occurred.");
+            }
         } finally {
             setLoading(false);
         }
