@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import *
 from django.db.models import F
 
-from .emails import send_email_code
+from .emails import *
 
 
 class KeywordSerialiser(serializers.ModelSerializer):
@@ -81,6 +81,8 @@ class PostSerialiser(serializers.ModelSerializer):
 
         for keyword in keywords_data:
             Keywords.objects.filter(pk=keyword.pk).update(occurances=F('occurances') + 1)
+
+        new_post_email(post.id)
 
         return post
     
