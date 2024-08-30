@@ -16,6 +16,7 @@ function Post({ post }) {
         <div className="post-container">
             <Link to={`/post/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
             <Paper
+            
                 elevation={3}
                 sx={{
                     display: "flex",
@@ -29,6 +30,7 @@ function Post({ post }) {
                         transform: "scale(1.02)"
                     }
                 }}
+                
             >
                 <Box
                     component="img"

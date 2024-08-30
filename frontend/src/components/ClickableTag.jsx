@@ -10,15 +10,16 @@ function ClickableTag({ keyword, onSearch }) {
     const handleClick = () => {
         navigate("/listview", { state: { query: keyword } });
         onSearch(keyword);
+        
 
     };
 
     return (
         <>
-            <div className="clickable-tag" onClick={handleClick}>
-                <Button variant="outlined">{keyword}</Button>
+       
+                <Button onClick={handleClick} variant="outlined">{keyword}</Button>
 
-            </div>
+           
         </>
     );
 }

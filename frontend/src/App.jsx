@@ -17,8 +17,8 @@ import MyProfile from "./pages/MyProfile";
 import ReportPage from "./components/ReportPage";
 import PostLinking from "./pages/PostLinking";
 import EmailVerification from "./pages/EmailVerification";
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import EditAboutMe from "./pages/EditAboutMe";
 
 
 function Logout() {
@@ -89,6 +89,15 @@ function App() {
           } />
 
           <Route path="/verifyemail" element={<EmailVerification />} />
+          
+          <Route path="/edit-about-me" element={
+            <ProtectedRoute>
+              <UserProvider>
+                <EditAboutMe />
+              </UserProvider>
+            </ProtectedRoute>
+          } />
+
           <Route path="/markdowntext/:pk" element={<MarkdownPage />} />
           <Route path="/post/:id" element={<ExpandedPostPage />} />
           <Route path="*" element={<NotFound />} />

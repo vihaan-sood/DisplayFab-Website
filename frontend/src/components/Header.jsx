@@ -72,28 +72,29 @@ function Header({ onSearch }) {
                 {/* Right side: Other Buttons */}
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Divider orientation="vertical" flexItem />
-                    <ListItem component={Link} to="/about">
-                        <BsQuestionCircleFill size = {30} className="list-item" title="About Us" alt="About Us" />
+                    <ListItem component={Link} to="/createpost">
+                        <AiOutlinePlus size = {30}  className="list-item" title="Create New Post" alt="Create New Post"  />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/listview">
                         <ImBooks size = {30}  className="list-item" title="All Posts" alt="All Posts" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
-                    <ListItem component={Link} to="/logout">
-                        <FaSignOutAlt size = {30}   className="list-item" title="Log Out" alt="Log Out" />
-                    </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/users">
                         <FaUsers size = {30}  className="list-item" title="Users" alt="Users" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
-                    <ListItem component={Link} to="/createpost">
-                        <AiOutlinePlus size = {30}  className="list-item" />
+                    <ListItem component={Link} to="/about">
+                        <BsQuestionCircleFill size = {30} className="list-item" title="About Us" alt="About Us" />
                     </ListItem>
                     <Divider orientation="vertical" flexItem />
                     <ListItem component={Link} to="/myprofile">
                         <FaRegUserCircle size = {30}  className="list-item" title="My Profile" alt="My Profile" />
+                    </ListItem>
+                    <Divider orientation="vertical" flexItem />
+                    <ListItem component={Link} to="/logout">
+                        <FaSignOutAlt size = {30}   className="list-item" title="Log Out" alt="Log Out" />
                     </ListItem>
                 </Box>
             </List>

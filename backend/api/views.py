@@ -203,3 +203,14 @@ class VerifyEmailView(views.APIView):
                 return response.Response({"error": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
             
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UpdateAboutMeView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        serializer = UpdateAboutMeSerialiser(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

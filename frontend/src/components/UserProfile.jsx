@@ -11,7 +11,7 @@ import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 
-import { Avatar, Box, Button, Grid, Typography, Link as MuiLink } from "@mui/material";
+import { Avatar, Box, Paper, Grid, Typography} from "@mui/material";
 
 function UserProfile() {
     const [userDetails, setUserDetails] = useState({});
@@ -62,47 +62,67 @@ function UserProfile() {
     return (
         <>
             <Header />
-            <Box sx={{ padding: 2 }}>
-                <Typography variant="h4" gutterBottom>User Profile: {userDetails.username}</Typography>
-                <Avatar alt={userDetails.username} src={userDetails.image} sx={{ width: 100, height: 100 }} />
-
-                <Box sx={{ marginY: 2 }}>
-                    <Typography variant="h6">Details</Typography>
-                    <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
-                    <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
-                        <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
-                            {userDetails.user_keywords && userDetails.user_keywords.map((keyword) => (
-                                <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => {}} />
-                            ))}
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+                <Box sx={{ maxWidth: 800, width: "100%", textAlign: "center" }}>
+                    <Paper elevation={3} sx={{ padding: 3, marginY: 2, textAlign: "left" }}>
+                        <Avatar alt={userDetails.username} src={userDetails.image} sx={{ width: 100, height: 100, mx: "auto" }} />
+                        <Box sx={{ marginY: 2 }}>
+                            <Typography variant="h6">Details</Typography>
+                            <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
+                            <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Box component="span" sx={{ fontWeight: 'bold' }}>Interested In:{" "}</Box>
+                                <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                                    {userDetails.user_keywords && userDetails.user_keywords.map((keyword) => (
+                                        <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => {}} />
+                                    ))}
+                                </Box>
+                            </Typography>
                         </Box>
-                    </Typography>
-                    <Typography variant="h6" sx={{ marginTop: 2 }}>About me</Typography>
-                    <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
+                    </Paper>
 
-                </Box>
-
-                <Box sx={{ marginY: 2 }}>
-                    <Typography variant="h6">User Posts</Typography>
-                    <Grid container spacing={2}>
-                        {posts.map((post) => (
-                            <Grid item key={post.id} xs={12}>
-                                <Post post={post} onDelete={() => deletePost(post.id)} />
-                            </Grid>
-                        ))}
-                    </Grid>
-                    <Button component={MuiLink} to="/createpost" variant="contained" sx={{ marginTop: 2 }}>
-                        Create New Post
-                    </Button>
-                </Box>
-
-                <Box sx={{ marginY: 2 }}>
-                    <Typography variant="h6">User Bookmarks</Typography>
-                    <Box sx={{ marginTop: 2 }}>
-                        {bookmarks.length > 0 && (
-                            <Carousel items={bookmarks.map(bookmark => bookmark.post)} />
+                    <Paper elevation={3} sx={{ padding: 3, marginY: 2, textAlign: "left" }}>
+                        <Typography variant="h6" sx={{ textAlign: "center" }}>About</Typography>
+                        {userDetails.about_me ? (
+                            <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
+                        ) : (
+                            <Typography variant="body1" color="textSecondary" sx={{ textAlign: "center" }}>
+                                About section is empty
+                            </Typography>
                         )}
-                    </Box>
+                    </Paper>
+
+                    <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
+                        <Typography variant="h6">User Posts</Typography>
+                        {posts.length > 0? (
+                        <Box sx={{ maxHeight: 300, overflowY: 'scroll', border: '1px solid #ddd', padding: 2, borderRadius: 2 }}>
+                            <Grid container spacing={2}>
+                                {posts.map((post) => (
+                                    <Grid item key={post.id} xs={12}>
+                                        <Post post={post} />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </Box> ) : (
+                            <Typography variant="body1" color="textSecondary" sx={{ textAlign: "center", marginTop: 2 }}>
+                                No posts yet
+                            </Typography>
+                        )}
+                    </Paper>
+
+                    <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
+                        <Typography variant="h6">User Bookmarks</Typography>
+                        { bookmarks.length > 0 ? (
+                        
+                        <Box sx={{ marginTop: 2 }}>
+                            {bookmarks.length > 0 && (
+                                <Carousel items={bookmarks.map(bookmark => bookmark.post)} />
+                            )}
+                        </Box> ) : (
+                            <Typography variant="body1" color="textSecondary" sx={{ textAlign: "center", marginTop: 2 }}>
+                                User has not bookmarked any posts.
+                            </Typography>
+                        )}
+                    </Paper>
                 </Box>
             </Box>
         </>

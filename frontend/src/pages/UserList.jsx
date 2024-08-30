@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../api";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
-import { Box, Typography, List, ListItem, Divider, TextField } from "@mui/material";
+import { Box, Typography, List, ListItem, Divider, TextField, Paper, Avatar } from "@mui/material";
 import ClickableTag from "../components/ClickableTag";
 
 function UserList() {
@@ -39,7 +39,6 @@ function UserList() {
         <>
             <Header onSearch={setSearchQuery} />
             <Box sx={{ maxWidth: 800, margin: "auto", padding: 2 }}>
-
                 <Typography variant="h4" gutterBottom>
                     User List
                 </Typography>
@@ -54,13 +53,30 @@ function UserList() {
                 <List>
                     {users.map((user) => (
                         <React.Fragment key={user.id}>
-                            <ListItem alignItems="flex-start">
+                            <Paper 
+                                component={Link} 
+                                to={`/userprofile/${user.id}`} 
+                                sx={{ 
+                                    padding: 2, 
+                                    marginBottom: 2, 
+                                    display: 'flex', 
+                                    alignItems: 'center', 
+                                    textDecoration: 'none', 
+                                    color: 'inherit',
+                                    transition: 'transform 0.2s ease-in-out',
+                                    '&:hover': {
+                                        transform: 'scale(1.05)',
+                                    }
+                                }}
+                                elevation={3}
+                            >
+                                <Avatar alt={user.username} src={user.image} sx={{ marginRight: 2 }} />
                                 <Box sx={{ width: "100%" }}>
-                                    <Typography variant="h6" component={Link} to={`/userprofile/${user.id}`} sx={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <Typography variant="h6">
                                         {user.username}
                                     </Typography>
                                     <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
+                                        <Box component="span" sx={{ fontWeight: 'bold' }}>Interested In:{" "}</Box>
                                         <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
                                             {user.user_keywords && user.user_keywords.length > 0 ? (
                                                 user.user_keywords.map((keyword) => (
@@ -72,7 +88,7 @@ function UserList() {
                                         </Box>
                                     </Typography>
                                 </Box>
-                            </ListItem>
+                            </Paper>
                             <Divider component="li" />
                         </React.Fragment>
                     ))}
@@ -83,3 +99,4 @@ function UserList() {
 }
 
 export default UserList;
+

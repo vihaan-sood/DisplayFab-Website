@@ -37,6 +37,7 @@ function EmailVerification() {
         <form onSubmit={handleSubmit} className="form-container">
             <h1>Verify Email</h1>
             <p>Please enter the verification code sent to your email: {email}</p>
+            <p>Be sure to check the spam folder!</p>
             <input
                 className="form-input"
                 type="text"

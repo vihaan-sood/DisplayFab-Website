@@ -65,6 +65,7 @@ urlpatterns = [
     path('api/posts/linked/create/',LinkedPostCreateView.as_view(),name='linked_post_create'),
     
     path('api/verifyemail/', VerifyEmailView.as_view(), name='verify_email'),
+    path('api/user/update-about-me/', UpdateAboutMeView.as_view(), name='update_about_me'),
 
     
 

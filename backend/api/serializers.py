@@ -145,3 +145,8 @@ class EmailVerificationSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid verification code.")
 
         return data
+    
+class UpdateAboutMeSerialiser(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['about_me']
