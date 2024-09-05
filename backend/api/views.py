@@ -32,7 +32,7 @@ class PostDelete(generics.DestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.filter(author=user)
+        return Post.objects.filter(creation_user=user)
     
 class PostCreate(generics.CreateAPIView):
     serializer_class = PostSerialiser
@@ -214,3 +214,10 @@ class UpdateAboutMeView(views.APIView):
             serializer.save()
             return response.Response(serializer.data, status=status.HTTP_200_OK)
         return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class MyPosts(generics.ListAPIView):
+    serializer_class = ReadOnlyPostSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Post.objects.filter(creation_user=self.request.user)

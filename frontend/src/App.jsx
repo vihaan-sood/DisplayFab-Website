@@ -19,6 +19,7 @@ import PostLinking from "./pages/PostLinking";
 import EmailVerification from "./pages/EmailVerification";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import EditAboutMe from "./pages/EditAboutMe";
+import PostMngr from "./pages/PostMngr";
 
 
 function Logout() {
@@ -89,11 +90,19 @@ function App() {
           } />
 
           <Route path="/verifyemail" element={<EmailVerification />} />
-          
+
           <Route path="/edit-about-me" element={
             <ProtectedRoute>
               <UserProvider>
                 <EditAboutMe />
+              </UserProvider>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/manage-posts/:pk"  element={
+            <ProtectedRoute>
+              <UserProvider>
+                <PostMngr />
               </UserProvider>
             </ProtectedRoute>
           } />

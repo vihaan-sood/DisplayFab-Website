@@ -50,6 +50,7 @@ urlpatterns = [
 
     path('api/markdowntext/<int:pk>/', MarkdownPageDetails.as_view(), name='markdown-page'),
     path("api/posts/delete/<int:pk>/", PostDelete.as_view(),name="post_delete"),
+    path('api/posts/myposts/',MyPosts.as_view(),name="my_posts"),
     
 
     path("api/keywords/",ShowKeywords.as_view(),name='show_keywords'),
@@ -66,6 +67,7 @@ urlpatterns = [
     
     path('api/verifyemail/', VerifyEmailView.as_view(), name='verify_email'),
     path('api/user/update-about-me/', UpdateAboutMeView.as_view(), name='update_about_me'),
+
 
     
 

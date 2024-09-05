@@ -95,7 +95,7 @@ function MyProfile() {
                     <Box sx={{ maxHeight: 300, overflowY: 'scroll', border: '1px solid #ddd', padding: 2, borderRadius: 2 }}>
                         <Button 
                             component={RouterLink} 
-                            to="/manage-posts" 
+                            to={`/manage-posts/${user.id}`} 
                             variant="contained" 
                             sx={{ marginTop: 2 }}
                         >
@@ -131,7 +131,7 @@ function MyProfile() {
                     </Paper>
                 </Box>
             </Box>
-            
+                            `   `
         </>
     );
 }
