@@ -221,3 +221,17 @@ class MyPosts(generics.ListAPIView):
 
     def get_queryset(self):
         return Post.objects.filter(creation_user=self.request.user)
+    
+class MarkdownPageUpdate(generics.UpdateAPIView):
+    queryset = MarkdownText.objects.all()
+    serializer_class = MarkdownTextSerializer
+    permission_classes = [IsAuthenticated]
+
+class PostUpdate(generics.UpdateAPIView):
+    queryset = Post.objects.all() 
+    serializer_class = PostSerialiser  
+    permission_classes = [IsAuthenticated] 
+
+    def get_queryset(self):
+        user = self.request.user
+        return Post.objects.filter(creation_user=user)

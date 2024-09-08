@@ -20,6 +20,7 @@ import EmailVerification from "./pages/EmailVerification";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import EditAboutMe from "./pages/EditAboutMe";
 import PostMngr from "./pages/PostMngr";
+import EditPost from "./pages/EditPost";
 
 
 function Logout() {
@@ -99,10 +100,18 @@ function App() {
             </ProtectedRoute>
           } />
 
-          <Route path="/manage-posts/:pk"  element={
+          <Route path="/manage-posts/:pk" element={
             <ProtectedRoute>
               <UserProvider>
                 <PostMngr />
+              </UserProvider>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/edit-post/:id" element={
+            <ProtectedRoute>
+              <UserProvider>
+                <EditPost />
               </UserProvider>
             </ProtectedRoute>
           } />

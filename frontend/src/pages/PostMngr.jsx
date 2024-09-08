@@ -43,7 +43,7 @@ function PostMngr({ }) {
     };
 
     const handleUpdate = (postId) => {
-        navigate(`/updatepost/${postId}`); 
+        navigate(`/edit-post/${postId}`); 
     };
 
     const filteredPosts = posts.filter(post =>
