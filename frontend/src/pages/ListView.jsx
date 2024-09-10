@@ -9,7 +9,7 @@ function ListView() {
     const [posts, setPosts] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
-    const [sortOrder, setSortOrder] = useState("default");
+    const [sortOrder, setSortOrder] = useState("newest");
 
     const location = useLocation();
 
@@ -25,11 +25,7 @@ function ListView() {
 
     useEffect(() => {
         handleSearch();
-    }, [searchQuery, posts]);
-
-    useEffect(() => {
-        handleSort();
-    }, [sortOrder]);
+    }, [searchQuery, posts, sortOrder]);
 
     const fetchPosts = async () => {
         try {
@@ -42,21 +38,19 @@ function ListView() {
     };
 
     const handleSearch = useCallback(() => {
-        if (searchQuery === "") {
-            setFilteredPosts(posts);
-        } else {
+        let filtered = posts;
+
+        if (searchQuery !== "") {
             const lowercasedQuery = searchQuery.toLowerCase();
-            const filtered = posts.filter((post) => {
+            filtered = posts.filter((post) => {
                 const titleMatch = post.title && post.title.toString().toLowerCase().includes(lowercasedQuery);
-                const keywordMatch = post.keywords && post.keywords.some((keyword) => keyword && keyword.word && keyword.word.toLowerCase().includes(lowercasedQuery));
+                const keywordMatch = post.keywords && post.keywords.some((keyword) => keyword.word && keyword.word.toLowerCase().includes(lowercasedQuery));
                 return titleMatch || keywordMatch;
             });
-            setFilteredPosts(filtered);
         }
-    }, [searchQuery, posts]);
 
-    const handleSort = useCallback(() => {
-        let sortedPosts = [...filteredPosts];
+        // Sort after filtering
+        let sortedPosts = [...filtered];
         if (sortOrder === "asc") {
             sortedPosts.sort((a, b) => a.title.toLowerCase().localeCompare(b.title.toLowerCase()));
         } else if (sortOrder === "desc") {
@@ -65,12 +59,14 @@ function ListView() {
             sortedPosts.sort((a, b) => new Date(b.date_created) - new Date(a.date_created));
         } else if (sortOrder === "oldest") {
             sortedPosts.sort((a, b) => new Date(a.date_created) - new Date(b.date_created));
-        } 
+        }
+
         setFilteredPosts(sortedPosts);
-    }, [sortOrder, filteredPosts]);
+    }, [searchQuery, posts, sortOrder]);
 
     const handleReset = () => {
         setSearchQuery(""); // Reset the search query
+        window.location.reload();
     };
 
     return (
@@ -82,26 +78,26 @@ function ListView() {
                         The Shelves
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 4 }}>
-                    <Button 
-                            variant={sortOrder === "asc" ? "contained" : "outlined"} 
+                        <Button
+                            variant={sortOrder === "asc" ? "contained" : "outlined"}
                             onClick={() => setSortOrder("asc")}
                         >
                             Sort A-Z
                         </Button>
-                        <Button 
-                            variant={sortOrder === "desc" ? "contained" : "outlined"} 
+                        <Button
+                            variant={sortOrder === "desc" ? "contained" : "outlined"}
                             onClick={() => setSortOrder("desc")}
                         >
                             Sort Z-A
                         </Button>
-                        <Button 
-                            variant={sortOrder === "newest" ? "contained" : "outlined"} 
+                        <Button
+                            variant={sortOrder === "newest" ? "contained" : "outlined"}
                             onClick={() => setSortOrder("newest")}
                         >
                             Newest First
                         </Button>
-                        <Button 
-                            variant={sortOrder === "oldest" ? "contained" : "outlined"} 
+                        <Button
+                            variant={sortOrder === "oldest" ? "contained" : "outlined"}
                             onClick={() => setSortOrder("oldest")}
                         >
                             Oldest First
@@ -129,5 +125,4 @@ function ListView() {
 }
 
 export default ListView;
-
 

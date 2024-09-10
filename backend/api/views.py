@@ -235,3 +235,21 @@ class PostUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Post.objects.filter(creation_user=user)
+
+class UserBookmarksDeleteView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # Only allow users to delete their own bookmarks
+        user = self.request.user
+        return UserBookmark.objects.filter(user=user)
+
+    def delete(self,request, *args, **kwargs):
+        bookmark_id = self.kwargs.get('pk')
+        try:
+            bookmark = self.get_queryset().get(id=bookmark_id)
+            bookmark.delete()
+            return response.Response({'message': 'Bookmark deleted successfully.'})
+        except UserBookmark.DoesNotExist:
+            raise response.Response({'message': 'Bookmark deletion unsuccesful: permission denied'})
+        

@@ -7,7 +7,6 @@ import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import { Button, Box, Typography, Grid, Paper } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import Post from "../components/Post";
 import Carousel from "../components/Carousel";
 
 function MyProfile() {
@@ -79,85 +78,102 @@ function MyProfile() {
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
 
                 <Box sx={{ maxWidth: 800, width: "100%", textAlign: "center" }}>
+
                     <Paper elevation={3} sx={{ padding: 3, marginY: 2, textAlign: "left" }}>
+
                         <Avatar alt={userDetails.username} src={userDetails.image} sx={{ width: 100, height: 100, mx: "auto" }} />
 
                         <Box sx={{ marginY: 2 }}>
 
-                            <Typography variant="h6">Details</Typography>
+
                             <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
                             <Typography>Registered email: {userDetails.email}</Typography>
+                            <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', marginBottom: 2 }}>
+                        <Box component="span" sx={{ fontWeight: 'bold' }}>Interests:{" "}</Box>
+                        <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
+                            {userDetails.keywords && userDetails.keywords.length > 0 ? (
+                                userDetails.keywords.map((keyword) => (
+                                    <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
+                                ))
+                            ) : (
+                                <span>No keywords registered.</span>
+                            )}
                         </Box>
-                    </Paper>
-
-                    <Paper elevation={3} sx={{ padding: 3, marginY: 2, textAlign: "left" }}>
-                        <Typography variant="h6" sx={{ textAlign: "center" }}>About</Typography>
-                        <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
-                        <Button
-                            component={RouterLink}
-                            to="/edit-about-me"
-                            variant="contained"
-                            sx={{ marginTop: 2 }}
-                        >
-                            Edit
-                        </Button>
-                    </Paper>
-                    <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
-                        <Box sx={{ maxHeight: 300, overflowY: 'scroll', border: '1px solid #ddd', padding: 2, borderRadius: 2 }}>
-                            <Button
-                                component={RouterLink}
-                                to={`/manage-posts/${user.id}`}
-                                variant="contained"
-                                sx={{ marginTop: 2 }}
-                            >
-                                Manage Your Posts
-                            </Button>
-                            <Grid container spacing={2}>
-                                {posts.map((post) => (
-                                    <Grid item key={post.id} xs={12}>
-                                        <Post post={post} />
-                                    </Grid>
-                                ))}
-                            </Grid>
-
-                        </Box>
-                    </Paper>
-                    <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
-                        <Box sx={{ maxHeight: 300, overflowY: 'scroll', border: '1px solid #ddd', padding: 2, borderRadius: 2 }}>
-                            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                                Posts You're Featured In
-                            </Typography>
-                            <Grid container spacing={2}>
-                                {otherPosts.map((post) => (
-                                    <Grid item key={post.id} xs={12}>
-                                        <Post post={post} />
-                                    </Grid>
-                                ))}
-                            </Grid>
-
-                        </Box>
-                    </Paper>
-                    <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
-                        <Box sx={{ marginY: 2 }}>
-                            <Button
-                                component={RouterLink}
-                                to="/manage-bookmarks"
-                                variant="contained"
-                                sx={{ marginTop: 2 }}
-                            >
-                                Manage Your Bookmarks
-                            </Button>
-                            <Box sx={{ marginTop: 2 }}>
-                                {bookmarks.length > 0 && (
-                                    <Carousel items={bookmarks.map(bookmark => bookmark.post)} />
-                                )}
-                            </Box>
-
-                        </Box>
-                    </Paper>
+                    </Typography>
+                        
                 </Box>
-            </Box>
-            `   `
+            </Paper>
+
+            <Paper elevation={3} sx={{ padding: 3, marginY: 2, textAlign: "left" }}>
+                <Typography variant="h4" sx={{ textAlign: "center" }}>About</Typography>
+                <ReactMarkdown remarkPlugins={[gfm]}>{userDetails.about_me}</ReactMarkdown>
+                <Button
+                    component={RouterLink}
+                    to="/edit-about-me"
+                    variant="contained"
+                    sx={{ marginTop: 2 }}
+                >
+                    Edit
+                </Button>
+            </Paper>
+
+
+            <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h4">Your Posts</Typography>
+
+
+                    <Box sx={{ marginTop: 2 }}>
+                        {posts.length > 0 && (
+                            <Carousel items={posts} />
+                        )}
+                    </Box>
+                    <Button
+                        component={RouterLink}
+                        to={`/manage-posts/${user.id}`}
+                        variant="contained"
+                        sx={{ marginTop: 2 }}
+                    >
+                        Manage
+                    </Button>
+                </Box>
+            </Paper>
+            <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h4">Bookmarks</Typography>
+
+                    <Box sx={{ marginTop: 2 }}>
+                        {bookmarks.length > 0 && (
+                            <Carousel items={bookmarks.map(bookmark => bookmark.post)} />
+                        )}
+                    </Box>
+                    <Button
+                        component={RouterLink}
+                        to="/manage-bookmarks"
+                        variant="contained"
+                        sx={{ marginTop: 2 }}
+                    >
+                        Manage
+                    </Button>
+
+                </Box>
+            </Paper>
+            <Paper elevation={3} sx={{ padding: 3, marginY: 2 }}>
+                <Box sx={{ marginY: 2 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                        Posts You're Featured In
+                    </Typography>
+                    <Box sx={{ marginTop: 2 }}>
+                        {otherPosts.length > 0 && (
+                            <Carousel items={otherPosts} />
+                        )}
+                    </Box>
+
+                </Box>
+            </Paper>
+        </Box >
+            </Box >
+        `   `
         </>
     );
 }

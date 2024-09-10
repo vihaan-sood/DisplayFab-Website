@@ -21,6 +21,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import EditAboutMe from "./pages/EditAboutMe";
 import PostMngr from "./pages/PostMngr";
 import EditPost from "./pages/EditPost";
+import EditBookmarks from "./pages/EditBookmarks";
 
 
 function Logout() {
@@ -112,6 +113,14 @@ function App() {
             <ProtectedRoute>
               <UserProvider>
                 <EditPost />
+              </UserProvider>
+            </ProtectedRoute>
+          } />
+
+<Route path="/manage-bookmarks" element={
+            <ProtectedRoute>
+              <UserProvider>
+                <EditBookmarks />
               </UserProvider>
             </ProtectedRoute>
           } />

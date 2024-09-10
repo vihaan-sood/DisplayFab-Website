@@ -54,8 +54,10 @@ urlpatterns = [
     path("api/posts/userspecific/<int:pk>/", UserProfilePosts.as_view(), name="user_profile_posts"),
     path('api/posts/<int:pk>/edit/', PostUpdate.as_view(), name='post_edit'),
 
+
     path('api/user/bookmarks/create/', UserBookmarksCreateView.as_view(), name='user_bookmarks_create'),
     path('api/user/bookmarks/<int:pk>/', UserBookmarksListView.as_view(), name='bookmark_detail'),
+    path('api/user/bookmarks/<int:pk>/delete/',UserBookmarksDeleteView.as_view(),name='bookmark_delete'),
     path("api/user/currentuser/", CurrentUser.as_view(), name="user_details"),
     path('api/user/update-about-me/', UpdateAboutMeView.as_view(), name='update_about_me'),
     path("api/user/myprofile/<int:pk>/", UserDetails.as_view(), name="user_details"),

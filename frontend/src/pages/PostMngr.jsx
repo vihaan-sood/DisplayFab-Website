@@ -4,6 +4,7 @@ import api from '../api';
 import { TextField, Button, Box, Typography, Grid, Paper } from '@mui/material';
 import { UserContext } from "../UserContext";
 import Header from '../components/Header';
+import Post from '../components/Post';
 
 function PostMngr({ }) {
     const { user } = useContext(UserContext);
@@ -74,7 +75,7 @@ function PostMngr({ }) {
                         <Grid item xs={12} key={post.id}>
                             <Paper elevation={3} sx={{ padding: 2 }}>
                                 <Typography variant="h6" gutterBottom>
-                                    {post.title}
+                                <Post post={post} />
                                 </Typography>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                     <Button

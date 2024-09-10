@@ -66,35 +66,53 @@ function ExpandedPostPage() {
             <Header />
             <Box sx={{ maxWidth: '800px', margin: 'auto', padding: 3 }}>
                 <Paper elevation={3} sx={{ padding: 3 }}>
+                    
+                    {/* Post ID and Date */}
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body1" sx={{ color: 'gray', opacity: 0.7 }}>{post.id}</Typography>
+                        <Typography variant="body1" sx={{ color: 'gray', opacity: 0.7 }}>
+                            <ToLocalDate dateString={post.date_created} />
+                        </Typography>
+                    </Box>
+    
+                    {/* Title and Subheading */}
                     <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h4" gutterBottom>
                             {post.title}
                         </Typography>
-                        <ToLocalDate dateString={post.date_created} />
-                        <Typography variant="h6" sx={{ marginTop: 2 }}>
-                            {post.subheading}
+                        <Typography variant="h6" sx={{ color: 'gray' }}>
+                            {post.subheading || "No subheading provided."}
                         </Typography>
                     </Box>
+    
                     <Divider sx={{ marginY: 2 }} />
-                    <Typography variant="body1" sx={{ textAlign: 'center', marginBottom: 2 }}>
-                        <strong>Authors:</strong> {post.authors.map(author => author.username).join(", ")}
+    
+                    {/* Authors and Keywords */}
+                    <Typography variant="body1" sx={{ marginBottom: 2 }}>
+                        <strong>Authors:</strong> {post.authors.length > 0 ? post.authors.map(author => author.username).join(", ") : "No authors registered."}
                     </Typography>
-                    <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', marginBottom: 2 }}>
                         <Box component="span" sx={{ fontWeight: 'bold' }}>Keywords:{" "}</Box>
                         <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
-                            {post.keywords && post.keywords.map((keyword) => (
-                                <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
-                            ))}
+                            {post.keywords && post.keywords.length > 0 ? (
+                                post.keywords.map((keyword) => (
+                                    <ClickableTag key={keyword} keyword={keyword.word} onSearch={() => { }} />
+                                ))
+                            ) : (
+                                <span>No keywords registered.</span>
+                            )}
                         </Box>
                     </Typography>
-                    <Box sx={{ textAlign: 'center' }}>
-                        <a href={post.link_to_paper} target="_blank" rel="noopener noreferrer">
-                            <Button variant="contained" color="primary" sx={{ marginTop: 2 }}>
-                                Link to Paper
-                            </Button>
-                        </a>
+    
+                    {/* Markdown Content */}
+                    <Box className="markdown-content" sx={{ marginBottom: 3 }}>
+                        <ReactMarkdown remarkPlugins={[gfm]}>{markdown || "No content available."}</ReactMarkdown>
                     </Box>
-                    {post.image && (
+    
+                    <Divider sx={{ marginY: 2 }} />
+    
+                    {/* Image Section */}
+                    {post.image ? (
                         <Box sx={{ textAlign: 'center', marginY: 3 }}>
                             <img
                                 src={post.image}
@@ -102,24 +120,54 @@ function ExpandedPostPage() {
                                 style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: 8 }}
                             />
                         </Box>
+                    ) : (
+                        <Typography variant="body1" sx={{ textAlign: 'center', marginY: 2 }}>
+                            No image registered.
+                        </Typography>
                     )}
+    
                     <Divider sx={{ marginY: 2 }} />
-                    <Box className="markdown-content" sx={{ marginBottom: 3 }}>
-                        <ReactMarkdown remarkPlugins={[gfm]}>{markdown}</ReactMarkdown>
+    
+                    {/* External Link Section */}
+                    <Box sx={{ textAlign: 'center', marginY: 2 }}>
+                        {post.link_to_paper ? (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => {
+                                    const confirmExternalLink = window.confirm('WARNING!\nYou may be redirected to another website. Please proceed with caution.');
+                                    if (confirmExternalLink) {
+                                        window.open(post.link_to_paper, '_blank', 'noopener noreferrer');
+                                    }
+                                }}
+                            >
+                                External Link
+                            </Button>
+                        ) : (
+                            <Typography variant="body1" sx={{ textAlign: 'center' }}>
+                                No external link provided.
+                            </Typography>
+                        )}
                     </Box>
-                    <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-
-                        <Box component="span" sx={{ display: 'flex', alignItems: 'center', marginLeft: 1 }}>
-                            {post.my_work ? (
-                                <FaRegCircleCheck />
-                            ) : (
-                                <RxCrossCircled />
-                            )}
-                            <Box component="span" sx={{ marginLeft: 1 }}>
-                                {post.my_work ? "The contents of this post are original" : "This is not my work"}
-                            </Box>
-                        </Box>
+    
+                    <Divider sx={{ marginY: 2 }} />
+    
+                    {/* My Work Indicator */}
+                    <Typography variant="body1" sx={{ textAlign: 'center', marginBottom: 2 }}>
+                        {post.my_work ? (
+                            <>
+                                <FaRegCircleCheck color="green" />
+                                <span> This is my original work.</span>
+                            </>
+                        ) : (
+                            <>
+                                <RxCrossCircled color="red" />
+                                <span> This is not my original work.</span>
+                            </>
+                        )}
                     </Typography>
+    
+                    {/* Report Post Button */}
                     <Box sx={{ textAlign: 'center', marginTop: 3 }}>
                         <Button
                             component={Link}
@@ -130,18 +178,27 @@ function ExpandedPostPage() {
                             Report Post
                         </Button>
                     </Box>
-                    <Box sx={{ marginY: 4 }}>
-                        <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>Linked Posts</Typography>
-                        <Box sx={{ width: '100%', marginX: 'auto' }}>
-                            {linkedPosts.length > 0 && (
+    
+                    {/* Linked Posts Section */}
+                    {linkedPosts.length > 0 ? (
+                        <Box sx={{ marginY: 4 }}>
+                            <Typography variant="h4" sx={{ textAlign: "center", marginBottom: 2 }}>
+                                Linked Posts
+                            </Typography>
+                            <Box sx={{ width: '100%', marginX: 'auto' }}>
                                 <Carousel items={linkedPosts} sx={{ width: '100%', height: '500px' }} />
-                            )}
+                            </Box>
                         </Box>
-                    </Box>
+                    ) : (
+                        <Typography variant="body1" sx={{ textAlign: 'center', marginY: 2 }}>
+                            No linked posts available.
+                        </Typography>
+                    )}
                 </Paper>
             </Box>
         </>
     );
+    
 }
 
 export default ExpandedPostPage;

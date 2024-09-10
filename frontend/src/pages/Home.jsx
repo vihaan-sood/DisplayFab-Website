@@ -19,8 +19,10 @@ function Home() {
         try {
             const res = await api.get(`/api/posts/?page=${page}`);
             const newPosts = res.data;
+    
+            const postsWithImages = newPosts.filter(post => post.image !== null);
 
-            setPosts((prevPosts) => [...prevPosts, ...newPosts]);
+            setPosts((prevPosts) => [...prevPosts, ...postsWithImages]);
             setPage((prevPage) => prevPage + 1);
 
             if (newPosts.length === 0) {
