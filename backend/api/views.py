@@ -11,7 +11,7 @@ from django.db.models import F
 
 from django.shortcuts import get_object_or_404
 
-
+from rest_framework.exceptions import ValidationError
 
 
 
@@ -124,6 +124,19 @@ class KeywordCreate(generics.CreateAPIView):
     queryset = Keywords.objects.all()
     serializer_class = KeywordSerialiser
 
+    def create(self, request, *args, **kwargs):
+        # Extract the 'word' field from the request data
+        word = request.data.get('word', '').strip()
+
+        # Check if the keyword already exists
+        if Keywords.objects.filter(word__iexact=word).exists():
+            return response.Response(
+                {'message': 'Keyword already exists.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # If the keyword does not exist, proceed with the creation
+        return super().create(request, *args, **kwargs)
 
 
 class UserBookmarksCreateView(generics.CreateAPIView):
@@ -179,6 +192,24 @@ class LinkedPostCreateView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+
+class LinkedPostDeleteView(generics.DestroyAPIView):
+    """
+    DELETE: Delete a linked post by its ID.
+    """
+    def delete(self, request, post1_id, post2_id):
+        
+        try:
+            # Find the linked post and delete it
+            linked_post = LinkedPost.objects.filter(post1_id=post1_id, post2_id=post2_id).first()
+
+            if linked_post:
+                linked_post.delete()
+                return response.Response({"message": "Link deleted successfully!"}, status=status.HTTP_204_NO_CONTENT)
+            else:
+                return response.Response({"error": "Linked post not found"}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return response.Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class VerifyEmailView(views.APIView):
     permission_classes = [AllowAny]  

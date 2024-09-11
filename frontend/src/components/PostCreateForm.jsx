@@ -163,7 +163,7 @@ function PostCreateForm({ onPostCreated }) {
             console.error("Error adding keyword:", err);
             if (err.response) {
                 console.error("Server response:", err.response.data);
-                alert(`Error: ${JSON.stringify(err.response.data)}`);
+                alert(`Error adding keyword - it may already exist.`);
             }
         }
     };
@@ -254,7 +254,7 @@ function PostCreateForm({ onPostCreated }) {
                     required
                 />
                 <TextField
-                    label="Search Keywords"
+                    label="Search Tags"
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 2 }}
@@ -262,7 +262,7 @@ function PostCreateForm({ onPostCreated }) {
                     onChange={handleKeywordSearch}
                 />
                 <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel id="keyword-select-label">Keywords</InputLabel>
+                    <InputLabel id="keyword-select-label">List of Tags</InputLabel>
                     <Select
                         labelId="keyword-select-label"
                         multiple
@@ -282,7 +282,7 @@ function PostCreateForm({ onPostCreated }) {
                 </FormControl>
                 {selectedKeywords.length > 0 && (
                     <Box sx={{ mb: 2 }}>
-                        <Typography variant="subtitle1">Selected Keywords:</Typography>
+                        <Typography variant="subtitle1">Selected Tags:</Typography>
                         {selectedKeywords.map((keywordId) => {
                             const keyword = keywords.find(k => k.key_id === keywordId);
                             return keyword ? (
@@ -302,7 +302,7 @@ function PostCreateForm({ onPostCreated }) {
                     }}
                     sx={{ mb: 2 }}
                 >
-                    Add New Keyword
+                    Add New Tag
                 </Button>
                 <TextField
                     label="Search Authors"
@@ -313,7 +313,7 @@ function PostCreateForm({ onPostCreated }) {
                     onChange={handleAuthorSearch}
                 />
                 <FormControl fullWidth sx={{ mb: 2 }}>
-                    <InputLabel id="author-select-label">Authors</InputLabel>
+                    <InputLabel id="author-select-label">List of Authors</InputLabel>
                     <Select
                         labelId="author-select-label"
                         multiple

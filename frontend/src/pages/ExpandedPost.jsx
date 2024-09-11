@@ -47,6 +47,7 @@ function ExpandedPostPage() {
         api.get(`/api/posts/linked/${postId}/`)
             .then(async (res) => {
                 const linkedPostsData = res.data;
+                console.log(linkedPostsData)
                 const postDetailsPromises = linkedPostsData.map(linkedPost =>
                     api.get(`/api/posts/${linkedPost.post2}/`).then(res => res.data)
                 );

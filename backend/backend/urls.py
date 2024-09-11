@@ -50,6 +50,7 @@ urlpatterns = [
     path("api/posts/delete/<int:pk>/", PostDelete.as_view(), name="post_delete"),
     path('api/posts/linked/<int:pk>/', LinkedPostListView.as_view(), name='linked_posts'),
     path('api/posts/linked/create/', LinkedPostCreateView.as_view(), name='linked_post_create'),
+    path('api/posts/linked/delete/<int:post1_id>/<int:post2_id>/', LinkedPostDeleteView.as_view(), name='linked_post_delete'),
     path('api/posts/myposts/', MyPosts.as_view(), name="my_posts"),
     path("api/posts/userspecific/<int:pk>/", UserProfilePosts.as_view(), name="user_profile_posts"),
     path('api/posts/<int:pk>/edit/', PostUpdate.as_view(), name='post_edit'),

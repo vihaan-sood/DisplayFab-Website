@@ -13,7 +13,6 @@ import {
     Modal,
     Checkbox,
     FormControlLabel,
-    Chip,
     Slider,
 } from "@mui/material";
 
@@ -152,7 +151,7 @@ function PostEditForm() {
 
             if (postRes.status === 200) {
                 alert("Post Updated");
-                navigate(`/post/${id}`); // Navigate to post view page
+                navigate(`/postlinking`, { state: { postId: id} }); 
             } else {
                 alert("Post Update Was Not Successful");
             }
@@ -407,7 +406,7 @@ function PostEditForm() {
                     />
                 </Box>
                 <Button type="submit" variant="contained" color="primary">
-                    Update Post
+                    Save and Next
                 </Button>
             </form>
 
