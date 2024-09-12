@@ -88,6 +88,7 @@ class Post(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     my_work = models.BooleanField(default=False)
     report_count = models.IntegerField(default=0)
+    is_moderated = models.BooleanField(default=False)
 
 
 

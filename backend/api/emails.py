@@ -10,7 +10,7 @@ def send_email_code(email):
         user_obj = CustomUser.objects.get(email = email)
         username = user_obj.username
         message = f'Hi {username} \n\nYour verification code is {code} \nWe\'re glad to have you here at the Active Materials Library! \n\n-The AML Team'
-        email_from = settings.EMAIL_HOST
+        email_from = settings.EMAIL_HOST_USER
         send_mail (subject, message, email_from, [email])
         
         user_obj.verification_code = code
@@ -26,10 +26,10 @@ def new_post_email(postid):
         
         post_obj = Post.objects.get(id = postid)
         username = post_obj.creation_user.username
-        email = settings.EMAIL_HOST
-        subject = 'New Post!'
+        email = settings.EMAIL_HOST_USER
+        subject = 'New Post! | Moderation Requested'
         message = f'{username} just posted! \n\nPost ID: {postid} \n\nTitle: {post_obj.title} \n\nCreated at: {post_obj.date_created}'
-        email_from = settings.EMAIL_HOST
+        email_from = settings.EMAIL_HOST_USER
         send_mail (subject, message, email_from, [email])
         
 

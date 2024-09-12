@@ -26,6 +26,10 @@ class PostListView(generics.ListAPIView):
     permission_classes = [AllowAny]   
     search_fields = ['title'] 
 
+    def get_queryset(self):
+        # Return only posts where is_moderated is True
+        return Post.objects.filter(is_moderated=True)
+
 class PostDelete(generics.DestroyAPIView):
     serializer_class = PostSerialiser
     permission_classes = [IsAuthenticated]
@@ -42,13 +46,12 @@ class PostCreate(generics.CreateAPIView):
         serializer.save(creation_user=self.request.user)
         
 class PostDetails(generics.RetrieveAPIView):
-    queryset = Post.objects.all()
     serializer_class = ReadOnlyPostSerialiser
     permission_classes = [AllowAny]    
 
-    def get(self, request, *args, **kwargs):
-        
-        return super().get(request, *args, **kwargs)
+    def get_queryset(self):
+        return Post.objects.filter(is_moderated=True)
+    
 
 class ReportPostView(generics.UpdateAPIView):
     queryset = Post.objects.all()
@@ -160,7 +163,7 @@ class UserBookmarksListView(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs['pk']
-        return UserBookmark.objects.filter(user=user_id)
+        return UserBookmark.objects.filter(user=user_id, post__is_moderated=True)
 
 class UserProfilePosts(generics.ListAPIView):
     serializer_class = ReadOnlyPostSerialiser
@@ -169,7 +172,7 @@ class UserProfilePosts(generics.ListAPIView):
     def get_queryset(self):
         author_id = self.kwargs['pk']
         author = get_object_or_404(CustomUser, pk=author_id)
-        return Post.objects.filter(authors=author)
+        return Post.objects.filter(authors=author, is_moderated=True)
     
 class CurrentUser(generics.RetrieveAPIView):
     serializer_class = UserSerialiser
@@ -184,7 +187,7 @@ class LinkedPostListView(generics.ListAPIView):
 
     def get_queryset(self):
         post_id  = self.kwargs['pk']
-        return LinkedPost.objects.filter(post1=post_id)
+        return LinkedPost.objects.filter(post1=post_id, post1__is_moderated=True)
     
 class LinkedPostCreateView(generics.CreateAPIView):
     serializer_class = LinkedPostSerialiser
@@ -251,7 +254,7 @@ class MyPosts(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Post.objects.filter(creation_user=self.request.user)
+        return Post.objects.filter(creation_user=self.request.user,is_moderated=True)
     
 class MarkdownPageUpdate(generics.UpdateAPIView):
     queryset = MarkdownText.objects.all()
@@ -265,7 +268,7 @@ class PostUpdate(generics.UpdateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return Post.objects.filter(creation_user=user)
+        return Post.objects.filter(creation_user=user, is_moderated=True)
 
 class UserBookmarksDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]

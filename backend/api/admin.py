@@ -25,20 +25,19 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'subheading', 'link_to_paper', 'date_created', 'creation_user', 'my_work', 'report_count')
-    list_filter = ('date_created', 'keywords', 'authors')
+    list_display = ('id', 'title', 'subheading', 'link_to_paper', 'date_created', 'creation_user', 'my_work', 'report_count', 'is_moderated')
+    list_filter = ('date_created', 'keywords', 'authors', 'is_moderated')
     search_fields = ('title', 'subheading', 'keywords__word', 'authors__username')
     readonly_fields = ('date_created',)
     
     fieldsets = (
         (None, {
-            'fields': ('title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image', 'creation_user', 'my_work', 'report_count')
+            'fields': ( 'is_moderated','title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image', 'creation_user', 'my_work', 'report_count')
         }),
         ('Important dates', {
             'fields': ('date_created',)
         }),
     )
-
 
 admin.site.register(CustomUser, UserAdmin)
 admin.site.register(Post,PostAdmin)

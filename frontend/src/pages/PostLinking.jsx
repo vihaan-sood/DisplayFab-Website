@@ -109,7 +109,7 @@ function PostLinking() {
             }
 
             alert("Post linking successfull!");
-            navigate(`/post/${postId}`);
+            navigate(`/`);
         } catch (err) {
             console.error("Error updating post links:", err);
             alert("Error updating post links.");

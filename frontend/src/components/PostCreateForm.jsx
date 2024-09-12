@@ -121,7 +121,7 @@ function PostCreateForm({ onPostCreated }) {
             });
 
             if (postRes.status === 201) {
-                alert("Post Created");
+                alert("Post has been created and will be moderated by our team.");
                 onPostCreated(postRes.data);
                 const createdPostId = postRes.data.id;
                 resetForm();
