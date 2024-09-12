@@ -8,7 +8,17 @@ import Button from '@mui/material/Button';
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import SwipeableViews from 'react-swipeable-views';
 import { Link } from 'react-router-dom';
-import NoImage from '../assets/no_image.webp';
+
+import pic1 from '../assets/Placeholder1.webp';
+import pic2 from '../assets/Placeholder3.webp';
+import pic3 from '../assets/Placeholder4.webp';
+import pic4 from '../assets/Placeholder5.webp';
+const placeholderImages = [pic1, pic2, pic3, pic4];
+
+function getRandomPlaceholderImage() {
+    const randomIndex = Math.floor(Math.random() * placeholderImages.length);
+    return placeholderImages[randomIndex];
+}
 
 function Carousel({ items = [] }) {
     const theme = useTheme();
@@ -76,7 +86,7 @@ function Carousel({ items = [] }) {
                                                     width: '100%',
                                                     objectFit: 'cover',
                                                 }}
-                                                src={item?.image || NoImage}
+                                                src={item?.image || getRandomPlaceholderImage()}
                                                 alt={item.title}
                                             />
                                         </Box>
