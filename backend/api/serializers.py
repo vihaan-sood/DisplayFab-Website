@@ -2,7 +2,7 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from .models import *
 from django.db.models import F
-
+import os
 from .emails import *
 
 
@@ -12,17 +12,18 @@ class KeywordSerialiser(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerialiser(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True)
-    user_keywords = KeywordSerialiser(many=True, read_only=True)
+    password = serializers.CharField(write_only=True, required=False, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=False)
+    user_keywords = KeywordSerialiser(many=True,required= False)
 
     class Meta:
         model = CustomUser
         fields = ['id','username', 'email', 'password', 'password2', 'first_name', 'last_name', 'image', 'about_me','user_keywords']
 
     def validate(self, attrs):
-        if attrs['password'] != attrs['password2']:
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
+        if 'password' in attrs and 'password2' in attrs:
+            if attrs['password'] != attrs['password2']:
+                raise serializers.ValidationError({"password": "Password fields didn't match."})
         return attrs
 
     def create(self, validated_data):
@@ -31,6 +32,34 @@ class UserSerialiser(serializers.ModelSerializer):
         send_email_code(user.email)
         return user
     
+class UserUpdateSerialiser(serializers.ModelSerializer):
+    user_keywords = serializers.PrimaryKeyRelatedField(queryset=Keywords.objects.all(), many=True, required=False)
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'email', 'image', 'about_me', 'user_keywords']
+
+    def update(self, instance, validated_data):
+        user_keywords = validated_data.pop('user_keywords', None)
+
+        image = validated_data.pop('image', None)
+        if image:
+            # Delete old image if it exists
+            if instance.image:
+                old_image_path = instance.image.path
+                if os.path.exists(old_image_path):
+                    os.remove(old_image_path)
+            instance.image = image
+
+        # Update the other fields
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+
+        # Update the user's keywords if provided
+        if user_keywords:
+            instance.user_keywords.set(user_keywords)
+
+        instance.save()
+        return instance
 
 
 class UserNameSerialiser(serializers.ModelSerializer):

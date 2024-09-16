@@ -254,7 +254,7 @@ function PostCreateForm({ onPostCreated }) {
                     required
                 />
                 <TextField
-                    label="Search Tags"
+                    label="Filter Tags"
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 2 }}
@@ -305,7 +305,7 @@ function PostCreateForm({ onPostCreated }) {
                     Add New Tag
                 </Button>
                 <TextField
-                    label="Search Authors"
+                    label="Filter Authors"
                     variant="outlined"
                     fullWidth
                     sx={{ mb: 2 }}

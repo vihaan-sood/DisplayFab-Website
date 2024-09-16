@@ -62,6 +62,8 @@ urlpatterns = [
     path("api/user/currentuser/", CurrentUser.as_view(), name="user_details"),
     path('api/user/update-about-me/', UpdateAboutMeView.as_view(), name='update_about_me'),
     path("api/user/myprofile/<int:pk>/", UserDetails.as_view(), name="user_details"),
+    path("api/user/update-details/",UpdateUserDetails.as_view(),name="user_details_update"),
+    
 
     path("api/users/", ReadOnlyUserDetails.as_view(), name="all_users"),
     path('api/verifyemail/', VerifyEmailView.as_view(), name='verify_email'),

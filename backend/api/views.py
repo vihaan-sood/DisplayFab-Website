@@ -269,6 +269,32 @@ class PostUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         user = self.request.user
         return Post.objects.filter(creation_user=user, is_moderated=True)
+    
+    def perform_update(self, serializer):
+        # Retrieve the post instance before updating
+        instance = self.get_object()
+
+        # Get the new image if provided
+        image = self.request.FILES.get('image', None)
+
+        # If a new image is provided, delete the old image from the database
+        if image:
+            # Delete the old image reference from the database
+            if instance.image:
+                instance.image.delete(save=False)  # This deletes the old image from the database
+
+            # Dynamically generate a new file name using the post ID
+            file_extension = image.name.split('.')[-1]
+            new_image_name = f'post_image_{instance.id}.{file_extension}'
+
+            # Save the image with the new name
+            image.name = new_image_name
+
+            # Update the post instance with the new image
+            instance.image = image
+
+        # Save the changes to the post
+        serializer.save()
 
 class UserBookmarksDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
@@ -287,3 +313,11 @@ class UserBookmarksDeleteView(generics.DestroyAPIView):
         except UserBookmark.DoesNotExist:
             raise response.Response({'message': 'Bookmark deletion unsuccesful: permission denied'})
         
+class UpdateUserDetails(generics.UpdateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = UserUpdateSerialiser
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+    

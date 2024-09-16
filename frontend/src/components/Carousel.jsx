@@ -13,6 +13,7 @@ import pic1 from '../assets/Placeholder1.webp';
 import pic2 from '../assets/Placeholder3.webp';
 import pic3 from '../assets/Placeholder4.webp';
 import pic4 from '../assets/Placeholder5.webp';
+
 const placeholderImages = [pic1, pic2, pic3, pic4];
 
 function getRandomPlaceholderImage() {
@@ -37,9 +38,10 @@ function Carousel({ items = [] }) {
         setActiveStep(step);
     };
 
+
     return (
         <Box sx={{ maxWidth: '100%', flexGrow: 1, bgcolor: '#f5f5f5', borderRadius: 2, p: 2, boxShadow: 3 }}>
-            {maxSteps > 0 && (
+            {maxSteps > 0 ? (
                 <>
                     <Paper
                         square
@@ -54,8 +56,9 @@ function Carousel({ items = [] }) {
                             borderBottom: `1px solid ${theme.palette.divider}`,
                         }}
                     >
+                        {/* Check if the title exists, fallback to 'No title available' */}
                         <Typography variant="h6" component="div" sx={{ textAlign: 'center', width: '100%' }}>
-                            {items[activeStep].title}
+                            {items[activeStep]?.title || 'No title available'}
                         </Typography>
                     </Paper>
                     <SwipeableViews
@@ -65,20 +68,21 @@ function Carousel({ items = [] }) {
                         enableMouseEvents
                     >
                         {items.map((item, index) => (
-                            <div key={item.id}>
+                            <div key={item?.id || index}>
                                 {Math.abs(activeStep - index) <= 2 ? (
                                     <Box sx={{ textAlign: 'center', p: 2 }}>
                                         <Box
                                             component={Link}
-                                            to={`/post/${item.id}`}
+                                            to={item?.id ? `/post/${item.id}` : '#'}
                                             sx={{
                                                 display: 'block',
                                                 width: '100%',
-                                                height: 400, // Increased height for a taller carousel
+                                                height: 400,
                                                 overflow: 'hidden',
                                                 borderRadius: 1,
                                             }}
                                         >
+                                            {/* If image doesn't exist, use a random placeholder */}
                                             <Box
                                                 component="img"
                                                 sx={{
@@ -87,7 +91,7 @@ function Carousel({ items = [] }) {
                                                     objectFit: 'cover',
                                                 }}
                                                 src={item?.image || getRandomPlaceholderImage()}
-                                                alt={item.title}
+                                                alt={item?.title || 'No title'}
                                             />
                                         </Box>
                                     </Box>
@@ -112,18 +116,26 @@ function Carousel({ items = [] }) {
                             </Button>
                         }
                         backButton={
-                            <Button size="small" onClick={handleBack} disabled={activeStep === 0} sx={{ color: theme.palette.primary.main }}>
+                            <Button
+                                size="small"
+                                onClick={handleBack}
+                                disabled={activeStep === 0}
+                                sx={{ color: theme.palette.primary.main }}
+                            >
                                 {theme.direction === 'ltr' ? <FaAngleLeft /> : <FaAngleRight />}
                                 Back
                             </Button>
                         }
                     />
                 </>
+            ) : (
+                <Typography>No items available</Typography>
             )}
         </Box>
     );
 }
 
 export default Carousel;
+
 
 

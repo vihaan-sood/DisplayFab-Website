@@ -22,6 +22,8 @@ import EditAboutMe from "./pages/EditAboutMe";
 import PostMngr from "./pages/PostMngr";
 import EditPost from "./pages/EditPost";
 import EditBookmarks from "./pages/EditBookmarks";
+import EditDetails from "./pages/EditDetails";
+
 
 
 function Logout() {
@@ -117,10 +119,18 @@ function App() {
             </ProtectedRoute>
           } />
 
-<Route path="/manage-bookmarks" element={
+          <Route path="/manage-bookmarks" element={
             <ProtectedRoute>
               <UserProvider>
                 <EditBookmarks />
+              </UserProvider>
+            </ProtectedRoute>
+          } />
+
+          <Route path="/edit-details" element={
+            <ProtectedRoute>
+              <UserProvider>
+                <EditDetails />
               </UserProvider>
             </ProtectedRoute>
           } />
