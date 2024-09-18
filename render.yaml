@@ -3,10 +3,8 @@ services:
     name: django-backend
     env: python
     buildCommand: |
-      cd backend
       pip install -r requirements.txt
     startCommand: |
-      cd backend
       python manage.py migrate
       gunicorn api.wsgi:application
     envVars:
