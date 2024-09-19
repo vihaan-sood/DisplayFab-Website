@@ -85,7 +85,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWS_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",  # Frontend origin
+    "https://library.co.uk/",  # Frontend origin
 ]
 
 MIDDLEWARE = [
@@ -193,3 +193,4 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+print(f"ALLOWED_HOSTS: {ALLOWED_HOSTS}") 
