@@ -7,6 +7,3 @@ services:
     startCommand: |
       python manage.py migrate
       gunicorn api.wsgi:application
-    envVars:
-      - key: DJANGO_SETTINGS_MODULE
-        value: backend.backend.settings
