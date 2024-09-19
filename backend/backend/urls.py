@@ -30,7 +30,8 @@ def home(request):
 
 
 urlpatterns = [
-   path('admin/', admin.site.urls),
+    path('', home),
+    path('admin/', admin.site.urls),
     path("api/authors/", ShowUsers.as_view(), name='show_users'),
     path("api/register/", MakeUserView.as_view(), name="signup"),
     path("api/token/", TokenObtainPairView.as_view(), name="obtain_token"),
