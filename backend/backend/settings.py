@@ -24,8 +24,8 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#STATIC_ROOT = os.path.join(BASE_DIR, "static/")
-#MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+STATIC_ROOT = BASE_DIR / 'static'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -136,8 +136,6 @@ DATABASES = {
 
 db_url = os.environ.get("DATABASE_URL")
 DATABASES["default"] = dj_database_url.parse(db_url)
-
-#postgresql://aml_demo_u096_user:KFj1lT6MGb1sXS2pIhciS6waLbvbAmnF@dpg-crkfic9u0jms73blakug-a.frankfurt-postgres.render.com/aml_demo_u096
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
