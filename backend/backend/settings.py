@@ -15,6 +15,9 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 import dj_database_url
+import sys
+
+sys.path.append('/opt/render/project/src/backend')
 
 load_dotenv()
 
