@@ -20,6 +20,7 @@ function Post({ post }) {
                 elevation={3}
                 sx={{
                     display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
                     alignItems: "center",
                     padding: 2,
                     marginBottom: 2,
@@ -37,10 +38,11 @@ function Post({ post }) {
                     src={imageUrl}
                     alt={post.title}
                     sx={{
-                        width: 150,
+                        width: { xs: "100%", md: 150 },
                         height: 150,
                         objectFit: "cover",
                         borderRadius: 1,
+                        marginBottom: { xs: 2, md: 0 }
                     }}
                 />
                 <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />

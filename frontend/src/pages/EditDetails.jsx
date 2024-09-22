@@ -125,12 +125,13 @@ function EditDetails() {
     const handleCropSave = async () => {
         try {
             const croppedImageBlob = await getCroppedImg(croppingImage, croppedAreaPixels);
-        
-            const fileName = `cropped_image_${user.id}.png`; 
+
+            const fileName = `cropped_image_${user.id}.png`;
             const croppedImageFile = new File([croppedImageBlob], fileName, { type: 'image/png' });
-        
-            setImage(croppedImageFile); 
-            setIsCropModalOpen(false); 
+
+            setImage(croppedImageFile);
+            setIsCropModalOpen(false);
+
         } catch (err) {
             console.error('Error cropping image:', err);
             alert('Failed to crop image.');
@@ -143,13 +144,13 @@ function EditDetails() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const token = localStorage.getItem(ACCESS_TOKEN);
             if (!token) {
                 throw new Error('Token not found. Please login again.');
             }
-    
+
             // Construct form data (with multipart for image)
             const updatedFormData = new FormData();
 
@@ -157,16 +158,16 @@ function EditDetails() {
             updatedFormData.append('last_name', formData.last_name);
             updatedFormData.append('email', formData.email);
             updatedFormData.append('username', user.username); // Ensure username is included
-    
+
             // Append selected keywords (user_keywords)
             formData.selectedKeywords.forEach((keywordId) => {
                 updatedFormData.append('user_keywords', keywordId);  // Send keyword ID as a primary key (integer)
             });
-    
+
             if (image) {
                 updatedFormData.append("image", image);  // Appending the image file
             }
-    
+
             const response = await api.put('/api/user/update-details/', updatedFormData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -174,7 +175,7 @@ function EditDetails() {
                 },
                 requiresAuth: true
             });
-    
+
             if (response.status === 200) {
                 alert('Profile updated successfully');
                 navigate('/myprofile');
@@ -199,7 +200,7 @@ function EditDetails() {
                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}>
                         {/* Conditional rendering of Avatar to handle null/undefined user or image */}
                         <Avatar
-                            src={image ? URL.createObjectURL(image) : (user && user.image ? user.image : '')}
+                            src={image ? URL.createObjectURL(image) : (user && user.image ? `${user.image}?t=${new Date().getTime()}` : '')}
                             sx={{ width: 100, height: 100 }}
                         />
                     </Box>
@@ -348,7 +349,6 @@ function EditDetails() {
 }
 
 export default EditDetails;
-
 
 
 

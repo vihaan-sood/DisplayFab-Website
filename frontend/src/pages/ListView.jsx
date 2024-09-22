@@ -72,8 +72,8 @@ function ListView() {
     return (
         <>
             <Header onSearch={setSearchQuery} />
-            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-                <Box sx={{ maxWidth: 800, width: "100%", textAlign: "center" }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 ,paddingx: {xs:2,md:0}}}>
+                <Box sx={{ maxWidth: { xs: '100%', sm: 800 }, width: "100%", textAlign: "center" }}>
                     <Typography variant="h4" gutterBottom>
                         The Shelves
                     </Typography>

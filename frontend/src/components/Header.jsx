@@ -25,8 +25,14 @@ function Header({ onSearch }) {
                     padding: "30px 20px",
                 }}
             >
-                <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Toolbar sx={{
+                        justifyContent: { xs: "center", md: "space-between" },
+                        // On mobile, center the toolbar items, on larger screens, space between them
+                        alignItems: "center",
+                        flexDirection: { xs: "column", md: "row" }, // ######## change ########
+                        // Stack items vertically on mobile, horizontally on desktop
+                    }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mb: { xs: 2, md: 0 } }}>
                         <Link to="/">
                             <img src={logo} alt="logo" style={{ height: "100px", marginRight: "0px" }} /> 
                         </Link>
@@ -41,6 +47,7 @@ function Header({ onSearch }) {
                             color: "black",
                             textDecoration: "none", // Remove underline from link
                             ":hover": { color: "gray" }, // Change color on hover
+                            mt: { xs: 2, md: 0 },
                         }}
                     >
                         Active Materials Library
@@ -50,7 +57,7 @@ function Header({ onSearch }) {
             </AppBar>
             <nav className="navbar" >
            
-                    <List sx={{ display: "flex", alignItems: "center", padding: 0, width: "100%" }}>
+                    <List sx={{ display: "flex", alignItems: "center", padding: 0, width: "100%", flexDirection: { xs: "column", md: "row" }, }}>
                         {/* Left side: Login and Register */}
                         <Box className="oval-box">
                             <ListItem className= "login_register" component={Link} to="/login">

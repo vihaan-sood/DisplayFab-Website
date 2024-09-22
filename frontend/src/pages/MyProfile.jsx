@@ -20,12 +20,12 @@ function MyProfile() {
     }, []);
 
     const getCurrentUser = async () => {
-        
+
         try {
             const res = await api.get('/api/user/currentuser/', { requiresAuth: true });
             const currentUser = res.data;
             console.log(currentUser.user_keywords)
-            
+
             // Once we have the current user, fetch all necessary details
             getUserDetails(currentUser.id);
             getOtherUserPosts(currentUser.id);
@@ -90,21 +90,25 @@ function MyProfile() {
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
                 <Box sx={{ maxWidth: 800, width: "100%", textAlign: "center" }}>
                     <Paper elevation={3} sx={{ padding: 3, marginY: 2, textAlign: "left" }}>
-                        <Avatar alt={userDetails.username} src={userDetails.image} sx={{ width: 100, height: 100, mx: "auto" }} />
+                        <Avatar
+                            alt={userDetails.username}
+                            src={userDetails.image ? `${userDetails.image}?t=${new Date().getTime()}` : ''} // Adding a timestamp to avoid caching issues
+                            sx={{ width: 100, height: 100, mx: "auto" }}
+                        />
                         <Box sx={{ marginY: 2 }}>
                             <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
                             <Typography>Registered email: {userDetails.email}</Typography>
                             <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', marginBottom: 2 }}>
                                 <Box component="span" sx={{ fontWeight: 'bold' }}>Interests:{" "}</Box>
                                 <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
-                                {userDetails.user_keywords &&
-                                userDetails.user_keywords.map((keyword) => (
-                                    <ClickableTag
-                                        key={keyword.word}
-                                        keyword={keyword.word}
-                                        onSearch={() => {}}
-                                    />
-                                ))}
+                                    {userDetails.user_keywords &&
+                                        userDetails.user_keywords.map((keyword) => (
+                                            <ClickableTag
+                                                key={keyword.word}
+                                                keyword={keyword.word}
+                                                onSearch={() => { }}
+                                            />
+                                        ))}
                                 </Box>
                             </Typography>
                             <Button
