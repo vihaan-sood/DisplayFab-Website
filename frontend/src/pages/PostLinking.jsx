@@ -68,7 +68,7 @@ function PostLinking() {
         }
     };
 
-    console.log(selectedPosts);
+
     // Handle the checkbox selection
     const handleSelectPost = (event) => {
         const selectedId = parseInt(event.target.value);

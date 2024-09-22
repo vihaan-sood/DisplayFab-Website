@@ -32,7 +32,7 @@ function UserProfile() {
         api.get(`/api/user/myprofile/${userId}/`)
             .then((res) => {
                 setUserDetails(res.data);
-                console.log(res.data)
+           
             })
             .catch((err) => console.error(err));
     };

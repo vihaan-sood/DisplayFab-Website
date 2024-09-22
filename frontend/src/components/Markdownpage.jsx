@@ -17,7 +17,7 @@ function MarkdownPage() {
             })
             .catch((error) => {
                 console.error('Error fetching markdown content:', error);
-                console.log(pk)
+   
             });
     }, [pk]);
 

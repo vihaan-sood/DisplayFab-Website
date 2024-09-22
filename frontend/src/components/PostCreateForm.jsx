@@ -108,10 +108,10 @@ function PostCreateForm({ onPostCreated }) {
                 formData.append("image", image, imageName);
             }
 
-            console.log("FormData content:");
-            for (let [key, value] of formData.entries()) {
-                console.log(`${key}: ${value}`);
-            }
+            // console.log("FormData content:");
+            // for (let [key, value] of formData.entries()) {
+            //     console.log(`${key}: ${value}`);
+            // }
 
             const postRes = await api.post("/api/posts/create/", formData, {
                 headers: {

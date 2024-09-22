@@ -24,7 +24,7 @@ function MyProfile() {
         try {
             const res = await api.get('/api/user/currentuser/', { requiresAuth: true });
             const currentUser = res.data;
-            console.log(currentUser.user_keywords)
+    
 
             // Once we have the current user, fetch all necessary details
             getUserDetails(currentUser.id);
@@ -97,7 +97,6 @@ function MyProfile() {
                         />
                         <Box sx={{ marginY: 2 }}>
                             <Typography>Name: {userDetails.first_name} {userDetails.last_name}</Typography>
-                            <Typography>Registered email: {userDetails.email}</Typography>
                             <Typography variant="body1" sx={{ display: 'flex', justifyContent: 'left', alignItems: 'center', marginBottom: 2 }}>
                                 <Box component="span" sx={{ fontWeight: 'bold' }}>Interests:{" "}</Box>
                                 <Box component="span" sx={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginLeft: '8px' }}>
