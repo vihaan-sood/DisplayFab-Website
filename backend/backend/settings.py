@@ -212,3 +212,6 @@ AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL =  None
 AWS_S3_VERIFY = True
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+print("key_id",AWS_ACCESS_KEY_ID)
+print("access key",AWS_SECRET_ACCESS_KEY)
