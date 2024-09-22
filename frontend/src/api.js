@@ -4,6 +4,7 @@ import { ACCESS_TOKEN } from "./constants";
 const api = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL
 });
+console.log("API Base URL:", process.env.REACT_APP_BASE_URL);
 
 api.interceptors.request.use(
     (config) => {
