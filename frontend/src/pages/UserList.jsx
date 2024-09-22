@@ -53,15 +53,15 @@ function UserList() {
                 <List>
                     {users.map((user) => (
                         <React.Fragment key={user.id}>
-                            <Paper 
-                                component={Link} 
-                                to={`/userprofile/${user.id}`} 
-                                sx={{ 
-                                    padding: 2, 
-                                    marginBottom: 2, 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    textDecoration: 'none', 
+                            <Paper
+                                component={Link}
+                                to={`/userprofile/${user.id}`}
+                                sx={{
+                                    padding: 2,
+                                    marginBottom: 2,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    textDecoration: 'none',
                                     color: 'inherit',
                                     transition: 'transform 0.2s ease-in-out',
                                     '&:hover': {
@@ -70,7 +70,11 @@ function UserList() {
                                 }}
                                 elevation={3}
                             >
-                                <Avatar alt={user.username} src={user.image} sx={{ marginRight: 2 }} />
+                                <Avatar
+                                    alt={user.username}
+                                    src={user.image ? `${user.image}?t=${new Date().getTime()}` : ''} // Append timestamp to avoid caching issues
+                                    sx={{ marginRight: 2 }}
+                                />
                                 <Box sx={{ width: "100%" }}>
                                     <Typography variant="h6">
                                         {user.username}
