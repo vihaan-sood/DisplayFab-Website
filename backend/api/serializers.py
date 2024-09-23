@@ -45,7 +45,7 @@ class UserUpdateSerialiser(serializers.ModelSerializer):
         if image:
             # Delete old image if it exists
             if instance.image:
-                old_image_path = instance.image.path
+                old_image_path = instance.image.url
                 if os.path.exists(old_image_path):
                     os.remove(old_image_path)
             instance.image = image
