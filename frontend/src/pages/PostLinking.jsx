@@ -144,7 +144,7 @@ function PostLinking() {
                     onClick={handleLinkPosts} // Link all selected posts
                     sx={{ mt: 2 }}
                 >
-                    Link Selected Posts
+                    Done/Skip
                 </Button>
             </Box>
         </>
