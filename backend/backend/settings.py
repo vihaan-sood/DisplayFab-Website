@@ -25,21 +25,21 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-STATIC_ROOT = BASE_DIR / 'static' 
-MEDIA_ROOT = BASE_DIR / 'media'
+#STATIC_ROOT = BASE_DIR / 'static' 
+#MEDIA_ROOT = BASE_DIR / 'media'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_URL = os.environ.get("MEDIA_URL")
 
+MEDIA_ROOT = 'media/'
 
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR,'static'),)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     "api",
     "rest_framework",
     "corsheaders",
@@ -112,7 +113,6 @@ CSRF_TRUSTED_ORIGINS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -196,6 +196,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'api.CustomUser'
 
+#EMAIL CONFIG
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -204,17 +206,21 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+#AWS S3 CONFIG
+
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_SIGNATURE_NAME = 's3v4',
-AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL =  None
-#AWS_S3_VERIFY = True
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-
-
-print("key_id",AWS_ACCESS_KEY_ID)
-print("access key",AWS_SECRET_ACCESS_KEY)
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+    
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3boto3.S3StaticStorage",
+    },
+}
