@@ -121,17 +121,11 @@ class ReadOnlyPostSerialiser(serializers.ModelSerializer):
     keywords = KeywordSerialiser(many=True, read_only=True)
     authors = UserSerialiser(many=True, read_only=True)
     content = MarkdownTextSerializer(read_only=True)
-    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image_url','date_created','my_work','report_count']
+        fields = ['id', 'title', 'subheading', 'content', 'keywords', 'link_to_paper', 'authors', 'image','date_created','my_work','report_count']
         read_only_fields = fields
-
-    def get_image_url(self, obj):
-        if obj.image:
-            return obj.image.url  # This returns the full S3 URL for the image
-        return None
 
 
 class BookmarkSerialiser(serializers.ModelSerializer):
