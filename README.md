@@ -56,6 +56,7 @@ This is the repository for the Active Materials Library, a full-stack web applic
 * [Amazon Web Services S3 Storage](https://aws.amazon.com/pm/serv-s3/) - hosting the images and styling for the project
 * [Netlify](https://www.netlify.com/) - hosting the frontend
 * [Render](https://render.com/) - hosting the backend, and the PostgreSQL database
+* [Cloudflare](https://www.cloudflare.com/en-gb/) - DNS resolution and general security
 
 
 
